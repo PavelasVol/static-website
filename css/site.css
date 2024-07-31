@@ -1,3 +1,6 @@
 ﻿body {
-background-color:aquamarine;
+    background-color: aquamarine;
+    background: url(../images/eshera.png) scroll no-repeat;
+    background-size: 100%;
 }
+
