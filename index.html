@@ -4,11 +4,182 @@
     <meta charset="utf-8" />
     <title></title>
     <link rel="stylesheet" href="css/site.css" />
+    <style>
+        body {
+            
+            /* background: url(images/eshera.png) scroll no-repeat; */
+            
+            z-index:0;
+        }
+        img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        img2 {
+            width: 100%;
+            height: auto;
+            object-fit: contain; /* Исключаем искажения пропорций */
+        }
+        button {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index:2
+        }
+        
+        p {
+            z-index:3;
+        }
+        textarea {
+            position: absolute;
+            left: 72%;
+            top: 5%;
+            width: 28%;
+            height: 50%;
+            font-size: 20px;
+            font-family: 'Times New Roman', Times, serif;
+            z-index: 10;
+            color: #ffd800; 
+            background-color: blue;
+
+            /*background: #110ef8*/
+        }
+        table {
+            z-index: 12;
+            /*
+            left: 72%;
+            top: 58%;
+            width: 28%;
+            height: 40%;
+                */
+            background: blue;
+            color: #ffd800;
+        }
+        .thead {
+            background: green;
+            color: #ffd800;
+            height: 50%;
+        }
+        .div {
+            position: relative;
+            z-index: 11;
+            left: 72%;            
+            top: 10%;
+
+            width: 28%;
+            height: 100%;
+        }
+        textarea {
+            left: 0;
+        }
+        .tab {
+            top: 20%;
+            height: 100%;
+            width: 100%;
+            margin-top: 72%;
+        }
+        .tab2 {
+            top: 80%;
+            height: 100%;
+            width: 100%;
+            margin-top: 1%;
+        }
+        .tr1 {
+            height: 50%;
+        }
+        .tr2 {
+            height: 50%;
+        }
+        .tr3 {
+            
+        }
+        .td1 {
+            width: 100%;
+            text-align: center;
+            background: #7c82f6;
+            color: black;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .td2 {            
+            width: 100%;
+            font-size: 18px;
+        }
+        .td3 {
+            
+        }
+        .text_area1 {
+            height: 10%;
+            width: 100%;
+        }
+    </style>
 </head>
-<body>
-    
-    <div> <img src="images/eshera.png" height="100" width="100" alt="Иллюстрация"> </div>
-    <h1> Примерный текст</h1>
-    <script src="js/site.js"></script>
+<body id="body_id" onclick="onclick_body()">
+
+    <!--
+        <div> <img src="images/eshera.png" height="100" width="100" alt="Иллюстрация"> </div>
+        <div> <img src="images/eshera.png" id="img" onclick="onclick_img()" height="100" width="100" alt="Иллюстрация"> </div>
+
+        <div> <img src="images/eshera.png" id="img" onclick="onclick_img()"  alt="Иллюстрация"> </div>
+    -->
+    <!-- <div> -->
+    <img src="images/eshera.png" id="img" onclick="onclick_img()" alt="Иллюстрация">
+    <!-- </div> -->
+    <!--    <form name="form0">  -->
+    <!--
+        <p id="inform"> 12345</p>
+        <p id="coordDisplay"> 67890 </p>
+        <button id="button_01" onclick="onclick_01()"> 01 </button>
+
+
+        <textarea id="id_text" name="text" rows="50" cols="1">
+        </textarea>
+        -->
+    <div id="div3" class="div">
+
+        <table class="tab2" id:"table_id2">
+            <tr class="tr3">
+                <td class="td3" id="td3">
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+
+    </div>
+
+    <div id="div" class="div">
+
+        <table class="tab" id:"table_id">
+            <tr class="tr1" id="tr1">
+                <td class="td1" id="td1">
+                </td>
+            </tr>
+            <tr class="tr2">
+                <td class="td2" id="td2">
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+
+
+
+
+
+        <!-- </form>  -->
+
+
+
+
+        <script src="js/site.js"></script>
+
+
 </body>
-</html>
+    </html>
