@@ -253,7 +253,7 @@ document.addEventListener('click', function (event) {
         document.getElementById("td2").innerHTML = names_arr2[N];
         //document.getElementById("td3").innerHTML = '<img src="../images/11_03.jpg" style="max - height: 100 %; max - width: 100 %">';
          
-        document.getElementById("td3").innerHTML = '<img src="../images/11_03.jpg"  style="width: 100%; height: auto; object-fit: contain;">';
+        document.getElementById("td3").innerHTML = '<img src="../images/11_03.png"  style="width: 100%; height: auto; object-fit: contain;">';
        // document.getElementById("td3").innerHTML = '<img src="../images/11_03.jpg"  style="width: 100%; height: auto;">';
     }
 });
