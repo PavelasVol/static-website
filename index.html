@@ -16,7 +16,7 @@
             left: 0;
             top: 0;
             width: 100%;
-            height: 100%;
+            height: 100%;            
             z-index: 1;
         }
         img2 {
@@ -24,11 +24,21 @@
             height: auto;
             object-fit: contain; /* Исключаем искажения пропорций */
         }
-        button {
+        .button1 {
             position: absolute;
-            left: 50%;
-            top: 50%;
-            z-index:2
+            left: 85%;
+            top: -80%;
+            width: 60px;
+            height: 41px;
+            z-index:20
+        }
+        .button2 {
+            position: absolute;
+            left: 5%;
+            top: -80%;
+            width: 60px;
+            height: 41px;
+            z-index: 20
         }
         
         p {
@@ -73,6 +83,13 @@
             width: 28%;
             height: 100%;
         }
+        .ppp {
+           
+            
+            top: -100%;
+            text-align: center;
+            z-index: 20
+        }
         textarea {
             left: 0;
         }
@@ -80,13 +97,19 @@
             top: 20%;
             height: 100%;
             width: 100%;
-            margin-top: 72%;
+            margin-top: 133%;
+            border: 3px solid white;
         }
         .tab2 {
             top: 80%;
             height: 100%;
             width: 100%;
             margin-top: 1%;
+            border: 3px solid white;
+        }
+        .tr0 {
+            height: 50%;
+            
         }
         .tr1 {
             height: 50%;
@@ -97,13 +120,24 @@
         .tr3 {
             
         }
+        .tr4 {
+            height: 50%;
+        }
+        .td0 {
+            width: 100%;
+        }
+        .td00 {
+            top: -80%;
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
         .td1 {
             width: 100%;
             text-align: center;
             background: #7c82f6;
             color: black;
-            font-weight: bold;
-            font-size: 20px;
+            
         }
         .td2 {            
             width: 100%;
@@ -118,52 +152,74 @@
         }
     </style>
 </head>
-<body id="body_id" onclick="onclick_body()">
+<body id="body_id" >
 
-    <!--
-        <div> <img src="images/eshera.png" height="100" width="100" alt="Иллюстрация"> </div>
-        <div> <img src="images/eshera.png" id="img" onclick="onclick_img()" height="100" width="100" alt="Иллюстрация"> </div>
-
-        <div> <img src="images/eshera.png" id="img" onclick="onclick_img()"  alt="Иллюстрация"> </div>
-    -->
-    <!-- <div> -->
-    <img src="images/eshera.png" id="img" onclick="onclick_img()" alt="Иллюстрация">
-    <!-- </div> -->
-    <!--    <form name="form0">  -->
-    <!--
-        <p id="inform"> 12345</p>
-        <p id="coordDisplay"> 67890 </p>
-        <button id="button_01" onclick="onclick_01()"> 01 </button>
-
-
-        <textarea id="id_text" name="text" rows="50" cols="1">
-        </textarea>
-        -->
+   
+    <img src="images/eshera.jpg" id="img" onclick="onclick_img()" alt="Иллюстрация">
+    
     <div id="div3" class="div">
 
         <table class="tab2" id:"table_id2">
             <tr class="tr3">
                 <td class="td3" id="td3">
+                    <div id="block"> <!-- ячейка таблицы для динамического размещения фотографии объекта-->
+
+                    </div>
                 </td>
             </tr>
         </table>
     </div>
 
-    <div>
 
+
+
+    <div>
+        <table class="tab2">
+            <tr>
+                <td>
+                </td>
+            </tr>
+        </table>
     </div>
 
     <div id="div" class="div">
 
         <table class="tab" id:"table_id">
+            <tr>
+                <td id="td00" class="td00"></td> <!-- Название объкета -->
+            </tr>
+           
             <tr class="tr1" id="tr1">
-                <td class="td1" id="td1">
+                <td class="td1" id="td1"> <!-- Название выбранной фотографии к объекту -->
                 </td>
             </tr>
             <tr class="tr2">
-                <td class="td2" id="td2">
+                <td class="td2" id="td2"> <!-- Подробный комментарий к объекту -->
                 </td>
             </tr>
+            <tr class="tr4">
+                <td>
+                    <div>
+                        <p id="text_under_img" class="ppp"></p>
+                    </div>
+                </td>
+
+            </tr>
+            <tr class="tr0" id="tr0">
+                <td>
+                    <button id="button_02" class="button2" onclick="onclick_02()">
+                        <img src="images/arrow_back.png" />
+                    </button>
+
+                </td>
+                
+                <td>
+                    <button id="button_01" class="button1" onclick="onclick_01()">
+                        <img src="images/arrow_next.png" />
+                    </button>
+                </td>
+            </tr>
+             
 
         </table>
     </div>
@@ -173,12 +229,7 @@
 
 
 
-        <!-- </form>  -->
-
-
-
-
-        <script src="js/site.js"></script>
+    <script src="js/site.js"></script>
 
 
 </body>
