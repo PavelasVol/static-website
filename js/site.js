@@ -7,6 +7,7 @@
     n = n + 1;
     direction = 1;
     on_off_image0();
+    //document.getElementById('img0').hidden = true;
     show_image();
 }
 function onclick_02() {
@@ -18,6 +19,7 @@ function onclick_02() {
     n = n - 1;
     direction = -1;
     on_off_image0();
+    //document.getElementById('img0').hidden = true;
     show_image();
 }
 
@@ -25,7 +27,7 @@ function on_off_image0() {
     if (n == 0) {
         document.getElementById('img0').hidden = true;
     } else {
-        document.getElementById('img0').hidden = false;
+        //document.getElementById('img0').hidden = false;
     }
 }
 
@@ -180,6 +182,7 @@ let click_on_circle = 1;
 var x = 0;
 var y = 0;
 var direction = 1;
+document.getElementById('div').hidden = true;
 
 document.addEventListener('click', function (event) {
    // let coordDisplay = document.getElementById("coordDisplay");
@@ -194,10 +197,12 @@ document.addEventListener('click', function (event) {
 
 
    // let N = 0;
-    if (click_on_circle == 1) {
+    //if (click_on_circle == 1)
+    {
         x = event.clientX / W * 100;
         y = event.clientY / H * 100;
     }
+    
 
     arrimg = new Array(); 
     arrimg[0] = "";     
@@ -476,7 +481,8 @@ document.addEventListener('click', function (event) {
     );
     */
     //alert(`X = ${event.clientX}, Y = ${event.clientY}, W = ${W}, x = ${x}, m1 = ${mass[1][0]}, m2=${mass[1][1]}, y = ${y}`);
-
+    //N = 0;
+    click_on_circle = 0;
     for (ii = 1; ii <= 50; ii++) {
         let i = ii;
         //alert("ii=" + ii);
@@ -485,24 +491,42 @@ document.addEventListener('click', function (event) {
             if (N == 40) {
                //alert("Женский пляж" + N);
             }
+            click_on_circle = 1;
             break;
         }
     }
 
    // alert(`X = ${event.clientX}, Y = ${event.clientY}, W = ${W}, x = ${x}, m1 = ${mass[1][0]}, m2=${mass[1][1]}, y = ${y}, N = ${N}, ${names_arr[N]}`);
     if (N>0) {
-        
-        
+                
         document.getElementById("td00").innerHTML = names_arr[N];
         document.getElementById("td2").innerHTML = names_arr2[N];
        
         if (click_on_circle == 1) {
             show_image();
+            
         }
-        click_on_circle = 1;
+        //click_on_circle = 1;               
+    } // N>0
+    //alert("N=" + N)
+    if (N > 0) {
+        document.getElementById('img0').hidden = true;
+        document.getElementById('div').hidden = false;
+    }
+    if (click_on_circle == 0) {
+        if (x < 65) { // нажатие мимо кружка, но на карте
+            document.getElementById('img0').hidden = false;
+            document.getElementById('div').hidden = true;
 
-
-        
+            str = "images/00.jpg";
+            image.setAttribute('src', str);
+            image.setAttribute("style", "width: 1%; height: auto; object-fit: contain;");
+            //image.checkVisibility = false;
+            div.appendChild(image);
+            document.getElementById('block').appendChild(div);
+            //div.checkVisibility = false;
+            
+        }
     }
 });
 
