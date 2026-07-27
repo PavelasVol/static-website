@@ -16,7 +16,13 @@
 
         }
         .screen {
-            height: 100dvh; /* Идеально подходит для мобильных */
+            /*height: 100dvh; /* Идеально подходит для мобильных */
+            min-height: 100dvh; /* МИНИМАЛЬНАЯ высота, а не жесткая */
+            height: auto !important; /* Отключаем принудительную высоту */
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Чтобы не было горизонтальной прокрутки */
         }
 
         img {
@@ -174,77 +180,78 @@
         }
     </style>
 </head>
-<body id="body_id">
-    <img src="images/eshera2.jpg" id="img" onclick="onclick_img()" alt="Иллюстрация">
-    <img src="images/eshera02.png" id="img0" onclick="onclick_img0()" alt="Иллюстрация0">
-    
-    <div id="div3" class="div">
-        <table class="tab2" id:"table_id2">
-            <tr class="tr3">
-                <td class="td3" id="td3">
-                    <div id="block">
-                        <!-- ячейка таблицы для динамического размещения фотографии объекта-->
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
+<!--<body id="body_id"> -->
+<body id="body_id" class="screen">
+        <img src="images/eshera2.jpg" id="img" onclick="onclick_img()" alt="Иллюстрация">
+        <img src="images/eshera02.png" id="img0" onclick="onclick_img0()" alt="Иллюстрация0">
 
-    <div>
-        <table class="tab2">
-            <tr>
-                <td>
-                </td>
-            </tr>
-        </table>
-    </div>
+        <div id="div3" class="div">
+            <table class="tab2" id:"table_id2">
+                <tr class="tr3">
+                    <td class="td3" id="td3">
+                        <div id="block">
+                            <!-- ячейка таблицы для динамического размещения фотографии объекта-->
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
-    <div id="div" class="div">
+        <div>
+            <table class="tab2">
+                <tr>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
-        <table class="tab" id:"table_id">
-            <tr>
-                <td id="td00" class="td00"></td> <!-- Название объкета -->
-            </tr>
+        <div id="div" class="div">
 
-            <tr class="tr1" id="tr1">
-                <td class="td1" id="td1">
-                    <!-- Название выбранной фотографии к объекту -->
-                </td>
-            </tr>
-            <tr class="tr2">
-                <td class="td2" id="td2">
-                    <!-- Подробный комментарий к объекту -->
-                </td>
-            </tr>
-            <tr class="tr4">
-                <td>
-                    <div>
-                        <p id="text_under_img" class="ppp"></p>
-                    </div>
-                </td>
+            <table class="tab" id:"table_id">
+                <tr>
+                    <td id="td00" class="td00"></td> <!-- Название объкета -->
+                </tr>
 
-            </tr>
-            <tr class="tr0" id="tr0">
-                <td>
-                    <button id="button_02" class="button2" onclick="onclick_02()">
-                        <img src="images/arrow_back.png" />
-                    </button>
+                <tr class="tr1" id="tr1">
+                    <td class="td1" id="td1">
+                        <!-- Название выбранной фотографии к объекту -->
+                    </td>
+                </tr>
+                <tr class="tr2">
+                    <td class="td2" id="td2">
+                        <!-- Подробный комментарий к объекту -->
+                    </td>
+                </tr>
+                <tr class="tr4">
+                    <td>
+                        <div>
+                            <p id="text_under_img" class="ppp"></p>
+                        </div>
+                    </td>
 
-                </td>
+                </tr>
+                <tr class="tr0" id="tr0">
+                    <td>
+                        <button id="button_02" class="button2" onclick="onclick_02()">
+                            <img src="images/arrow_back.png" />
+                        </button>
 
-                <td>
-                    <button id="button_01" class="button1" onclick="onclick_01()">
-                        <img src="images/arrow_next.png" />
-                    </button>
-                </td>
-            </tr>
+                    </td>
 
-
-        </table>
-    </div>
-
-    <script src="js/site.js"></script>
+                    <td>
+                        <button id="button_01" class="button1" onclick="onclick_01()">
+                            <img src="images/arrow_next.png" />
+                        </button>
+                    </td>
+                </tr>
 
 
-</body>
+            </table>
+        </div>
+
+        <script src="js/site.js"></script>
+
+
+    </body>
     </html>
