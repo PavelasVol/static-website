@@ -3,260 +3,310 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="Cache-Control" content="no-cache">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title></title>
     <link rel="stylesheet" href="css/site.css" />
     <style>
-        body {
-            /* background: url(images/eshera.png) scroll no-repeat; */
-            width: 100%;
-            /*max-width: 1200px;*/
-            font-size: 1rem;
-            z-index: 0;
-
-        }
-        .screen {
-            /*height: 100dvh; /* Идеально подходит для мобильных */
-            min-height: 100dvh; /* МИНИМАЛЬНАЯ высота, а не жесткая */
-            height: auto !important; /* Отключаем принудительную высоту */
-            width: 100%;
+        /* ====== ГЛОБАЛЬНЫЙ СБРОС ====== */
+        * {
             margin: 0;
             padding: 0;
-            overflow-x: hidden; /* Чтобы не было горизонтальной прокрутки */
+            box-sizing: border-box;
         }
 
-        img {
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* ====== КАРТИНКИ ====== */
+        #img {
             position: absolute;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Картинка заполнит блок без искажений (обрежет края) */
             z-index: 1;
+            display: block;
+            object-fit: contain; /* Вся картинка видна целиком */
+            pointer-events: auto;
+            background: #000;
         }
 
-        img2 {
-            width: 100%;
-            height: auto;
-            object-fit: contain; /* Исключаем искажения пропорций */
-        }
-
-        .button1 {
+        #img0 {
             position: absolute;
-            /*left: 85%;
-            top: -80%;*/
-            right: 10px; /* Вместо left: 85% */
-            bottom: 10px; /* Вместо top: -80% */
-            width: 60px;
-            height: 41px;
-            z-index: 20
-        }
-
-        .button2 {
-            position: absolute;
-            /*left: 5%;
-            top: -80%;*/
-            left: 10px; /* Вместо left: 5% */
-            bottom: 10px; /* Вместо top: -80% */
-            width: 60px;
-            height: 41px;
-            z-index: 20
-        }
-
-        p {
-            z-index: 3;
-        }
-
-        textarea {
-            position: absolute;
-            left: 72%;
-            top: 5%;
-            width: 28%;
-            height: 50%;
-            font-size: 20px;
-            font-family: 'Times New Roman', Times, serif;
-            z-index: 10;
-            color: #ffd800;
-            background-color: blue;
-            /*background: #110ef8*/
-        }
-
-        table {
-            z-index: 12;
-            /*
-            left: 72%;
-            top: 58%;
-            width: 28%;
-            height: 40%;
-                */
-            background: blue;
-            color: #ffd800;
-        }
-
-        .thead {
-            background: green;
-            color: #ffd800;
-            height: 50%;
-        }
-
-        .div {
-            position: relative;
-            z-index: 11;
-            left: 72%;
-            top: 10%;
-            width: 28%;
-            height: 100%;
-        }
-
-        .ppp {
-            top: -100%;
-            text-align: center;
-            z-index: 20
-        }
-
-        textarea {
             left: 0;
-        }
-
-        .tab {
-            top: 20%;
+            top: 0;
+            width: 100%;
             height: 100%;
-            width: 100%;
-            margin-top: 133%;
+            z-index: 2;
+            display: block;
+            object-fit: contain; /* Вся картинка видна целиком */
+            pointer-events: none;
+            background: transparent;
+        }
+
+        
+        /* ====== ПРАВАЯ ПАНЕЛЬ ====== */
+        #div {
+           
+            position: fixed;
+            z-index: 100;
+            display: none;
+            background: rgb(0, 0, 139);
             border: 3px solid white;
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            box-sizing: border-box;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            /* Удаляем: right, top, width, height - они будут задаваться через JS */
         }
 
-        .tab2 {
-            top: 80%;
-            height: 100%;
-            width: 100%;
-            margin-top: 1%;
-            border: 3px solid white;
-        }
+            #div table {
+                width: 100%;
+                height: 100%;
+                background: transparent;
+                color: #ffd800;
+                border: none;
+            }
 
-        .tr0 {
-            height: 50%;
-        }
-
-        .tr1 {
-            height: 50%;
-        }
-
-        .tr2 {
-            height: 50%;
-        }
-
-        .tr3 {
-        }
-
-        .tr4 {
-            height: 50%;
-        }
-
-        .td0 {
-            width: 100%;
-        }
-
+                #div table td {
+                    padding: 5px;
+                    vertical-align: middle;
+                }
+        /*Название объекта*/
         .td00 {
-            top: -80%;
             text-align: center;
             font-weight: bold;
-            font-size: 20px;
+            font-size: 18px;
+            color: #ffd800;
         }
-
+        /*Описание конкретной фотографии объекта*/
         .td1 {
-            width: 100%;
             text-align: center;
             background: #7c82f6;
             color: black;
+            font-size: 16px;
+            border-radius: 4px;
         }
-
+        /*Подробное описание объекта*/
         .td2 {
-            width: 100%;
-            font-size: 18px;
+            font-size: 16px;
+            color: #ffd800;
+            max-height: 150px;
+            overflow-y: auto;
         }
 
-        .td3 {
+        #block {
+            width: 100%;
+            min-height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255,255,255,0.01);
+            border-radius: 4px;
         }
 
-        .text_area1 {
-            height: 10%;
-            width: 100%;
+            #block img {
+                max-width: 100%;
+                max-height: 250px;
+                width: auto;
+                height: auto;
+                object-fit: contain;
+                display: block;
+            }
+
+        /* ====== КНОПКИ ====== */
+        .button1, .button2 {
+            position: absolute;
+            bottom: 10px;
+            width: 50px;
+            height: 40px;
+            z-index: 20;
+            background: rgba(255,255,255,0.3);
+            border: 2px solid white;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button1 {
+            right: 10px;
+        }
+
+        .button2 {
+            left: 10px;
+        }
+
+            .button1 img, .button2 img {
+                width: 30px;
+                height: 30px;
+                object-fit: contain;
+            }
+
+        .tr0 td {
+            position: relative;
+            height: 60px;
+        }
+
+        /* ============================================== */
+        /* ====== АДАПТАЦИЯ ДЛЯ СМАРТФОНОВ ====== */
+        /* ============================================== */
+        @media (max-width: 768px) {
+            #div {
+                position: fixed; /* Оставляем fixed */
+                left: 5% !important; /* Переопределяем через !important */
+                right: 5% !important;
+                top: 50% !important;
+                width: 90% !important;
+                height: auto !important;
+                max-height: 55vh;
+                transform: translateY(-50%);
+                padding: 8px;
+                z-index: 15;
+                background: rgb(0, 0, 139);
+            }
+
+                #div table td {
+                    padding: 3px;
+                    font-size: 12px;
+                }
+
+            .td00 {
+                font-size: 14px;
+            }
+
+            .td1 {
+                font-size: 12px;
+            }
+
+            .td2 {
+                font-size: 12px;
+                max-height: 80px;
+            }
+
+            #block {
+                min-height: 100px;
+            }
+
+                #block img {
+                    max-height: 150px;
+                }
+
+            .button1, .button2 {
+                width: 40px;
+                height: 35px;
+                bottom: 5px;
+            }
+
+            .button1 {
+                right: 5px;
+            }
+
+            .button2 {
+                left: 5px;
+            }
+
+                .button1 img, .button2 img {
+                    width: 25px;
+                    height: 25px;
+                }
+        }
+
+        @media (max-width: 480px) {
+            #div {
+                left: 2% !important;
+                right: 2% !important;
+                width: 96% !important;
+                max-height: 60vh;
+                padding: 5px;
+            }
+
+            .td00 {
+                font-size: 12px;
+            }
+
+            .td1 {
+                font-size: 11px;
+            }
+
+            .td2 {
+                font-size: 11px;
+                max-height: 60px;
+            }
+
+            #block {
+                min-height: 80px;
+            }
+
+                #block img {
+                    max-height: 100px;
+                }
+
+            .button1, .button2 {
+                width: 35px;
+                height: 30px;
+            }
+
+                .button1 img, .button2 img {
+                    width: 20px;
+                    height: 20px;
+                }
         }
     </style>
 </head>
-<!--<body id="body_id"> -->
-<body id="body_id" class="screen">
-        <img src="images/eshera2.jpg" id="img" onclick="onclick_img()" alt="Иллюстрация">
-        <img src="images/eshera02.png" id="img0" onclick="onclick_img0()" alt="Иллюстрация0">
+<body id="body_id">
+    <!-- ФОН (eshera2.jpg) - виден всегда -->
+    <img src="images/eshera2.jpg" id="img" onclick="onclick_img()" alt="Фон">
 
-        <div id="div3" class="div">
-            <table class="tab2" id:"table_id2">
-                <tr class="tr3">
-                    <td class="td3" id="td3">
-                        <div id="block">
-                            <!-- ячейка таблицы для динамического размещения фотографии объекта-->
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
+    <!-- КАРТА с кружками (eshera02.png) - поверх фона -->
+    <img src="images/eshera02.png" id="img0" onclick="onclick_img0()" alt="Карта">
 
-        <div>
-            <table class="tab2">
-                <tr>
-                    <td>
-                    </td>
-                </tr>
-            </table>
-        </div>
+    <!-- ПРАВАЯ ПАНЕЛЬ с информацией -->
+    <div id="div">
+        <table id="table_id">
+            <tr>
+                <td id="td00" class="td00"></td>
+            </tr>
+            <tr>
+                <td id="td1" class="td1"></td>
+            </tr>
+            <tr>
+                <td id="td2" class="td2"></td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="block"></div>
+                </td>
+            </tr>
+            <tr class="tr0">
+                <td>
+                    <button id="button_02" class="button2" onclick="onclick_02()">
+                        <img src="images/arrow_back.png" alt="Назад" />
+                    </button>
+                    <button id="button_01" class="button1" onclick="onclick_01()">
+                        <img src="images/arrow_next.png" alt="Вперед" />
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
 
-        <div id="div" class="div">
-
-            <table class="tab" id:"table_id">
-                <tr>
-                    <td id="td00" class="td00"></td> <!-- Название объкета -->
-                </tr>
-
-                <tr class="tr1" id="tr1">
-                    <td class="td1" id="td1">
-                        <!-- Название выбранной фотографии к объекту -->
-                    </td>
-                </tr>
-                <tr class="tr2">
-                    <td class="td2" id="td2">
-                        <!-- Подробный комментарий к объекту -->
-                    </td>
-                </tr>
-                <tr class="tr4">
-                    <td>
-                        <div>
-                            <p id="text_under_img" class="ppp"></p>
-                        </div>
-                    </td>
-
-                </tr>
-                <tr class="tr0" id="tr0">
-                    <td>
-                        <button id="button_02" class="button2" onclick="onclick_02()">
-                            <img src="images/arrow_back.png" />
-                        </button>
-
-                    </td>
-
-                    <td>
-                        <button id="button_01" class="button1" onclick="onclick_01()">
-                            <img src="images/arrow_next.png" />
-                        </button>
-                    </td>
-                </tr>
-
-
-            </table>
-        </div>
-
-        <script src="js/site.js"></script>
-
-
-    </body>
-    </html>
+    <script src="js/site.js"></script>
+</body>
+</html>
