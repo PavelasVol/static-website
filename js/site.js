@@ -102,81 +102,49 @@ function positionPanel() {
 
     if (!img || !panel) return;
 
-    // 1. Определяем ширину экрана
-    let windowWidth = window.innerWidth;
-    let windowHeight = window.innerHeight;
+    // 1. Получаем размеры окна браузера
+    let WB = window.innerWidth;
+    let HB = window.innerHeight;
+    let KB = WB / HB;
 
-    // 2. Определяем ширину фонового изображения (элемента img)
-    let rect = img.getBoundingClientRect();
-    let imgElementWidth = rect.width;
-    let imgElementHeight = rect.height;
-    let imgElementLeft = rect.left;
-    let imgElementTop = rect.top;
+    // 2. Получаем реальный размер изображения из файла
+    let W0 = img.naturalWidth;
+    let H0 = img.naturalHeight;
 
-    // Получаем натуральные размеры изображения
-    let naturalWidth = img.naturalWidth;
-    let naturalHeight = img.naturalHeight;
-
-    if (naturalWidth === 0 || naturalHeight === 0) {
-        setTimeout(positionPanel, 100);
+    if (W0 === 0 || H0 === 0) {
+        console.log('Изображение еще не загружено');
         return;
     }
 
-    // Вычисляем, как object-fit: contain размещает изображение
-    let aspectRatio = naturalWidth / naturalHeight;
-    let elementAspectRatio = imgElementWidth / imgElementHeight;
+    let K0 = W0 / H0;
 
-    let displayWidth, displayHeight, offsetX, offsetY;
+    // 3. Вычисляем размер изображения в браузере (W1, H1) и черные полосы (dx, dy)
+    let W1, H1, dx, dy;
 
-    if (aspectRatio > elementAspectRatio) {
-        // Изображение шире, чем элемент - высота подгоняется
-        displayHeight = imgElementHeight;
-        displayWidth = imgElementHeight * aspectRatio;
-        offsetX = (imgElementWidth - displayWidth) / 2;
-        offsetY = 0;
+    if (K0 < KB) {
+        // 2.1: Черные полосы по бокам (слева и справа)
+        H1 = HB;
+        W1 = K0 * H1;
+        dx = (WB - W1) / 2;
+        dy = 0;
     } else {
-        // Изображение выше, чем элемент - ширина подгоняется
-        displayWidth = imgElementWidth;
-        displayHeight = imgElementWidth / aspectRatio;
-        offsetX = 0;
-        offsetY = (imgElementHeight - displayHeight) / 2;
+        // 3.1: Черные полосы по вертикали (сверху и снизу)
+        W1 = WB;
+        H1 = W1 / K0;
+        dx = 0;
+        dy = (HB - H1) / 2;
     }
 
-    // 3. Вычисляем размер черной полосы (разность между шириной экрана и шириной изображения, деленная на 2)
-    let blackStripeWidth = (windowWidth - displayWidth) / 2;
-
-    // Если черная полоса отрицательная (изображение шире экрана) - устанавливаем 0
-    if (blackStripeWidth < 0) blackStripeWidth = 0;
-
-    // 4. Определяем ширину панели (28% от ширины изображения)
-    let panelWidth = displayWidth * 0.28;
-    if (panelWidth < 200) panelWidth = 200;
-    if (panelWidth > 500) panelWidth = 500;
-
-    // 5. Рассчитываем координату левой границы панели:
-    //    ширина экрана - черная полоса - ширина панели - отступ 10px
-    let panelLeft = windowWidth - blackStripeWidth - panelWidth - 10;
-
-    // Если панель выходит за левый край - корректируем
-    if (panelLeft < 10) panelLeft = 10;
+    // Горизонтальное позиционирование
+    let WP = W1 * 0.28;   // ширина панели
+    let panelWidth = WP;  // ширина панели
+    let panelLeft = dx + W1 - WP; // левый край панели должен совпадать с границей между картой изображения и правой частью с текстом
 
     // Вертикальное позиционирование
-    let panelTop = 10;
-    let panelHeight = windowHeight - 20;
-
-    // Если изображение не на всю высоту, позиционируем относительно изображения
-    if (displayHeight < windowHeight) {
-        let imgTop = imgElementTop + offsetY;
-        panelTop = imgTop + 10;
-        panelHeight = displayHeight - 20;
-    }
-
-    // Ограничиваем минимальную высоту
-    if (panelHeight < 200) panelHeight = 200;
-    if (panelTop + panelHeight > windowHeight - 10) {
-        panelTop = windowHeight - panelHeight - 10;
-    }
-    if (panelTop < 10) panelTop = 10;
+    
+    let panelHeight = H1;
+    let panelTop = dy;
+        
 
     // ====== ПРИМЕНЯЕМ СТИЛИ ======
     panel.style.position = 'fixed';
@@ -188,14 +156,60 @@ function positionPanel() {
     panel.style.bottom = 'auto';
     panel.style.transform = 'none';
 
-    console.log('=== Позиционирование панели (по вашему алгоритму) ===');
-    console.log('Ширина экрана: ' + windowWidth + 'px');
-    console.log('Ширина изображения: ' + displayWidth.toFixed(0) + 'px');
-    console.log('Черная полоса: ' + blackStripeWidth.toFixed(0) + 'px');
-    console.log('Ширина панели: ' + panelWidth.toFixed(0) + 'px');
-    console.log('Панель: left=' + panelLeft.toFixed(0) + 'px, top=' + panelTop.toFixed(0) + 'px');
-    console.log('Панель: ширина=' + panelWidth.toFixed(0) + 'px, высота=' + panelHeight.toFixed(0) + 'px');
-    console.log('Проверка: left+width=' + (panelLeft + panelWidth).toFixed(0) + 'px, должно быть <= ' + (windowWidth - blackStripeWidth - 10).toFixed(0) + 'px');
+    ///////////////////////////////////
+    
+
+    ///////////
+    // ====== ВРЕМЕННЫЙ ЯРКИЙ ФОН ДЛЯ БЛОКА КНОПОК (ДЛЯ ОТЛАДКИ) ======
+    let tr0 = document.querySelector('.tr0');
+    if (tr0) {
+        //tr0.style.background = 'rgba(255, 0, 0, 0.9)'; /* Красный полупрозрачный */
+        //tr0.style.border = '2px solid yellow';
+    }
+
+    
+
+    let buttonBack = document.getElementById('button_02');
+    let buttonNext = document.getElementById('button_01');
+    //let ww = tr0.style.width / 2;
+    let buttonWidth = panelWidth * 0.45;
+
+    if (buttonBack) {
+        //buttonBack.style.background = 'rgba(255, 255, 0, 0.8)'; /* Желтый */
+        //buttonBack.style.border = '3px solid red';
+        buttonBack.style.left = 0;//tr0.td.style.left;
+        buttonBack.style.width = buttonWidth + 'px'; 
+        
+    }
+
+    if (buttonNext) {
+        //buttonNext.style.background = 'rgba(255, 0, 255, 0.8)'; /* Розовый */
+        //buttonNext.style.border = '3px solid orange';
+        buttonNext.style.width = buttonWidth + 'px'; 
+        //buttonNext.style.marginLeft = 'auto'; /* Прижимаем вправо */
+    }
+    /*
+    // Картинки внутри кнопок
+    let images = document.querySelectorAll('.button1 img, .button2 img');
+    images.forEach(function (img) {
+        img.style.width = (buttonWidth - 10) + 'px';
+        img.style.height = (buttonHeight - 10) + 'px';
+    });
+    */
+   /*
+    // Временные цвета для отладки
+    tr0 = document.querySelector('.tr0');
+    if (tr0) {
+        tr0.style.background = 'rgba(255, 0, 0, 0.3)';
+    }
+
+    td = document.querySelector('.tr0 td');
+    if (td) {
+        td.style.background = 'rgba(0, 255, 0, 0.3)';
+    }
+    */
+
+   
 }
 
 // Вызываем при загрузке и при изменении размера окна
