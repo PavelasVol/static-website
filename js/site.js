@@ -494,6 +494,12 @@ document.addEventListener('click', function (event) {
     let img = document.getElementById('img');
     if (!img) return;
 
+    // Проверяем, не нажата ли кнопка или панель
+    let target = event.target;
+    if (target.closest('.button1') || target.closest('.button2') || target.closest('#div')) {
+        return;
+    }
+
     // 1. Получаем размеры окна браузера
     let WB = window.innerWidth;
     let HB = window.innerHeight;
@@ -510,82 +516,161 @@ document.addEventListener('click', function (event) {
 
     let K0 = W0 / H0;
 
-    // 3. Вычисляем размер изображения в браузере (W1, H1) и черные полосы (dx, dy)
-    let W1, H1, dx, dy;
+    let W1, H1, dx, dy; // ширина и высота изображения в браузере и размеры черных полос по горизонтали и вертикали
 
-    if (K0 < KB) {
-        // 2.1: Черные полосы по бокам (слева и справа)
-        H1 = HB;
-        W1 = K0 * H1;
-        dx = (WB - W1) / 2;
-        dy = 0;
-    } else {
-        // 3.1: Черные полосы по вертикали (сверху и снизу)
-        W1 = WB;
-        H1 = W1 / K0;
-        dx = 0;
-        dy = (HB - H1) / 2;
-    }
+    // 3. Проверяем, повернуто ли изображение (мобильная версия)
+    let isRotated = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+    alert("isRotated=" + isRotated);
+    if (isRotated) {
+        // Для повернутого изображения меняем местами ширину и высоту
+        // Так как изображение повернуто на 90 градусов
+        let tempK = K0;
+        K0 = 1 / K0; // Меняем соотношение сторон
+        //4. Вычисляем размер изображения в браузере(W1, H1) и черные полосы(dx, dy)
+        if (K0 < KB) {
+            H1 = HB;
+            W1 = K0 * H1;
+            dx = (WB - W1) / 2;
+            dy = 0;
+        } else {
+            W1 = WB;
+            H1 = W1 / K0;
+            dx = 0;
+            dy = (HB - H1) / 2;
+        }
 
-    // 4. Получаем координаты клика в пикселях относительно окна
-    let clickX = event.clientX;
-    let clickY = event.clientY;
+        // Для повернутого изображения координаты клика нужно пересчитать
+        // Получаем координаты клика относительно изображения
+        let rect = img.getBoundingClientRect();
 
-    // 5. Проверяем, что клик внутри изображения (не на черной полосе)
-    if (clickX < dx || clickX > dx + W1 || clickY < dy || clickY > dy + H1) {
-        console.log('Клик вне изображения (на черной полосе)');
+        // Для повернутого изображения используем другой подход
+        // Вычисляем положение изображения на экране с учетом трансформации
+        let clickX = event.clientX;
+        let clickY = event.clientY;
+
+        // При повороте на 90 градусов:
+        // x = (clickY - top) / height * 100
+        // y = (clickX - left) / width * 100
+        // Но с учетом того, что изображение центрировано
+
+        let x = (clickY - dy) / H1 * 100;
+        let y = (clickX - dx) / W1 * 100;
+
+        x = Math.max(0, Math.min(100, x));
+        y = Math.max(0, Math.min(100, y));
+
+        // Проверяем попадание в кружок
+        let found = false;
+        for (let ii = 1; ii <= 61; ii++) {
+            let dxCircle = Math.abs(x - mass[ii][0]);
+            let dyCircle = Math.abs(y - mass[ii][1]);
+            if (dxCircle < 2.0 && dyCircle < 2.0) {
+                N = ii;
+                found = true;
+                console.log(`Попали в кружок №${N}!`);
+                break;
+            }
+        }
+
+        if (found && N > 0) {
+            document.getElementById("td00").textContent = names_arr[N] || "Объект " + N;
+            document.getElementById("td2").textContent = names_arr2[N] || "Нет описания";
+            document.getElementById('div').style.display = 'block';
+            n = 1;
+            direction = 1;
+            show_image();
+        } else {
+            if (x < 70) {
+                document.getElementById('div').style.display = 'none';
+                document.getElementById('block').innerHTML = '';
+                document.getElementById("td00").textContent = '';
+                document.getElementById("td1").textContent = '';
+                document.getElementById("td2").textContent = '';
+                N = 0;
+            }
+        }
         return;
     }
 
-    // 6. Вычисляем координаты в процентах относительно изображения
-    let x = ((clickX - dx) / W1) * 100;
-    let y = ((clickY - dy) / H1) * 100;
+    
+    //let W1, H1, dx, dy;
+    // Стандартный расчет для ПК и планшетов (без поворота)
+    if (isRotated == false) {
+        // 4. Вычисляем размер изображения в браузере (W1, H1) и черные полосы (dx, dy)
+        if (K0 < KB) {
+            // 2.1: Черные полосы по бокам (слева и справа)
+            H1 = HB;
+            W1 = K0 * H1;
+            dx = (WB - W1) / 2;
+            dy = 0;
+        } else {
+            // 3.1: Черные полосы по вертикали (сверху и снизу)
+            W1 = WB;
+            H1 = W1 / K0;
+            dx = 0;
+            dy = (HB - H1) / 2;
+        }
 
-    x = Math.max(0, Math.min(100, x));
-    y = Math.max(0, Math.min(100, y));
+        // 5. Получаем координаты клика в пикселях относительно окна
+        let clickX = event.clientX;
+        let clickY = event.clientY;
 
-    //alert("x=" + x + " y=" + y);
+        // 6. Проверяем, что клик внутри изображения (не на черной полосе)
+        if (clickX < dx || clickX > dx + W1 || clickY < dy || clickY > dy + H1) {
+            console.log('Клик вне изображения (на черной полосе)');
+            return;
+        }
 
-    console.log(`=== КЛИК ===`);
-    console.log(`Окно: ${WB}x${HB}, соотношение: ${KB.toFixed(3)}`);
-    console.log(`Изображение: ${W0}x${H0}, соотношение: ${K0.toFixed(3)}`);
-    console.log(`Изображение в браузере: ${W1.toFixed(0)}x${H1.toFixed(0)}`);
-    console.log(`Черные полосы: dx=${dx.toFixed(0)}px, dy=${dy.toFixed(0)}px`);
-    console.log(`Координаты в процентах: x=${x.toFixed(2)}%, y=${y.toFixed(2)}%`);
-    console.log(`Кружок 1: ${mass[1][0]}%, ${mass[1][1]}%`);
-    console.log(`Разница с кружком 1: dx=${Math.abs(x - mass[1][0]).toFixed(2)}, dy=${Math.abs(y - mass[1][1]).toFixed(2)}`);
-    // alert("x=" + x + " y=" + y);
-       
+        // 7. Вычисляем координаты в процентах относительно изображения
+        let x = ((clickX - dx) / W1) * 100;
+        let y = ((clickY - dy) / H1) * 100;
 
-    let found = false;
-    for (let ii = 1; ii <= 61; ii++) {
-        let dx = Math.abs(x - mass[ii][0]);
-        let dy = Math.abs(y - mass[ii][1]);
+        x = Math.max(0, Math.min(100, x));
+        y = Math.max(0, Math.min(100, y));
+
         //alert("x=" + x + " y=" + y);
-        if (dx < 1.0 && dy < 1.0) {
-            N = ii;
-            found = true;
-            console.log(`Попали в кружок №${N}!`);
-            break;
-        }
-    }
 
-    if (found && N > 0) {
-        document.getElementById("td00").textContent = names_arr[N] || "Объект " + N;
-        document.getElementById("td2").textContent = names_arr2[N] || "Нет описания";
-        document.getElementById('div').style.display = 'block';
-        n = 1;
-        direction = 1;
-        show_image();
-    } else {
-        // Клик мимо кружка
-        if (x < 70) { // Чтобы случайно не скрыть при клике на панель
-            document.getElementById('div').style.display = 'none';
-            document.getElementById('block').innerHTML = '';
-            document.getElementById("td00").textContent = '';
-            document.getElementById("td1").textContent = '';
-            document.getElementById("td2").textContent = '';
-            N = 0;
+        console.log(`=== КЛИК ===`);
+        console.log(`Окно: ${WB}x${HB}, соотношение: ${KB.toFixed(3)}`);
+        console.log(`Изображение: ${W0}x${H0}, соотношение: ${K0.toFixed(3)}`);
+        console.log(`Изображение в браузере: ${W1.toFixed(0)}x${H1.toFixed(0)}`);
+        console.log(`Черные полосы: dx=${dx.toFixed(0)}px, dy=${dy.toFixed(0)}px`);
+        console.log(`Координаты в процентах: x=${x.toFixed(2)}%, y=${y.toFixed(2)}%`);
+        console.log(`Кружок 1: ${mass[1][0]}%, ${mass[1][1]}%`);
+        console.log(`Разница с кружком 1: dx=${Math.abs(x - mass[1][0]).toFixed(2)}, dy=${Math.abs(y - mass[1][1]).toFixed(2)}`);
+        // alert("x=" + x + " y=" + y);
+
+
+        let found = false;
+        for (let ii = 1; ii <= 61; ii++) {
+            let dx = Math.abs(x - mass[ii][0]);
+            let dy = Math.abs(y - mass[ii][1]);
+            //alert("x=" + x + " y=" + y);
+            if (dx < 1.0 && dy < 1.0) {
+                N = ii;
+                found = true;
+                console.log(`Попали в кружок №${N}!`);
+                break;
+            }
         }
-    }
+
+        if (found && N > 0) {
+            document.getElementById("td00").textContent = names_arr[N] || "Объект " + N;
+            document.getElementById("td2").textContent = names_arr2[N] || "Нет описания";
+            document.getElementById('div').style.display = 'block';
+            n = 1;
+            direction = 1;
+            show_image();
+        } else {
+            // Клик мимо кружка
+            if (x < 70) { // Чтобы случайно не скрыть при клике на панель
+                document.getElementById('div').style.display = 'none';
+                document.getElementById('block').innerHTML = '';
+                document.getElementById("td00").textContent = '';
+                document.getElementById("td1").textContent = '';
+                document.getElementById("td2").textContent = '';
+                N = 0;
+            }
+        }
+    }//if isrotate==false
 });
