@@ -163,8 +163,8 @@ function positionPanel() {
 
          if (isMobile) {
             // ====== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ======
-            panelWidth = WB - 10;
-             panelHeight = 50;// HB - 10;
+            panelWidth  = HB - 10;
+            panelHeight = WB - 10;
             panelLeft = 5;
             panelTop = 5;
 
@@ -299,7 +299,7 @@ mass[60] = new Array(38.90, 65.20);
 mass[61] = new Array(42.86, 91.43);
 // Название объекта
 names_arr = new Array("",
-    "1. 17:40 Вход в санаторий. КПП.",
+    "1. 19:10 Вход в санаторий. КПП.",
     "2. Почта и Сберкасса",
     "3. Регистрация. Администрация санатория.",
     "4. Новый корпус",
