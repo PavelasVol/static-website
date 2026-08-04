@@ -85,6 +85,14 @@ function show_image() {
     };
 }
 
+function closePanel() {
+    document.getElementById('div').style.display = 'none';
+    document.getElementById('block').innerHTML = '';
+    document.getElementById("td00").textContent = '';
+    document.getElementById("td1").textContent = '';
+    document.getElementById("td2").textContent = '';
+    N = 0;
+}
 // ====== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ======
 let n = 1;
 let N = 0;
@@ -628,7 +636,7 @@ document.addEventListener('click', function (event) {
         x = Math.max(0, Math.min(100, x));
         y = Math.max(0, Math.min(100, y));
 
-        alert("x=" + x + " y=" + y);
+        //alert("x=" + x + " y=" + y);
 
         console.log(`=== КЛИК ===`);
         console.log(`Окно: ${WB}x${HB}, соотношение: ${KB.toFixed(3)}`);
