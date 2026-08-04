@@ -190,8 +190,11 @@ function positionPanel() {
              panel.style.background = 'rgb(0, 0, 139)';
              panel.style.zIndex = '100';
              alert("after panel.style");
+             //alert("table=" + table);
              // ====== ПРИНУДИТЕЛЬНО УСТАНАВЛИВАЕМ СТИЛИ ДЛЯ ТАБЛИЦЫ ======
-             if (table) {
+             let table = document.getElementById('table_id');
+             if (table)
+             {
                  alert("in table begin");
                  table.style.width = '100%';
                  table.style.height = '100%';
@@ -341,7 +344,7 @@ mass[60] = new Array(38.90, 65.20);
 mass[61] = new Array(42.86, 91.43);
 // Название объекта
 names_arr = new Array("",
-    "1. 22:35 Вход в санаторий. КПП.",
+    "1. 22:50 Вход в санаторий. КПП.",
     "2. Почта и Сберкасса",
     "3. Регистрация. Администрация санатория.",
     "4. Новый корпус",
