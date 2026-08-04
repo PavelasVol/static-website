@@ -202,10 +202,13 @@ function positionPanel() {
              console.log('Ширина окна:', WB, 'Высота окна:', HB);
              console.log('Панель: 100% x 100%');
 
+             // Скрываем панель по умолчанию
+             document.getElementById('div').style.display = 'none';
+
              return; // Выходим, чтобы не применять ПК-стили
           }
 
-        // ====== ПРИМЕНЯЕМ СТИЛИ ======
+        // ====== ПРИМЕНЯЕМ СТИЛИ для ПК ======
         panel.style.position = 'fixed';
         panel.style.left = panelLeft + 'px';
         panel.style.top = panelTop + 'px';
