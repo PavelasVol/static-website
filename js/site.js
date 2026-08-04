@@ -162,13 +162,47 @@ function positionPanel() {
          //let panelWidth, panelHeight, panelLeft, panelTop;
 
          if (isMobile) {
-            // ====== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ======
-            panelWidth  = WB - 10;
-            panelHeight = HB - 10;
-            panelLeft = 5;
-            panelTop = 5;
+             // ====== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ======
+             panelWidth = WB;
+             panelHeight = HB;
+             panelLeft = 0;
+             panelTop = 0;
 
-            console.log('=== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ===');
+             // ====== ПРИНУДИТЕЛЬНО УСТАНАВЛИВАЕМ СТИЛИ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ ======
+             panel.style.position = 'fixed';
+             panel.style.left = '0px';
+             panel.style.top = '0px';
+             panel.style.width = '100%';
+             panel.style.height = '100%';
+             panel.style.maxHeight = '100vh';
+             panel.style.right = 'auto';
+             panel.style.bottom = 'auto';
+             panel.style.transform = 'none';
+             panel.style.display = 'flex';
+             panel.style.flexDirection = 'column';
+             panel.style.overflow = 'hidden';
+             panel.style.border = 'none';
+             panel.style.borderRadius = '0';
+             panel.style.padding = '10px 12px';
+             panel.style.boxSizing = 'border-box';
+             panel.style.background = 'rgb(0, 0, 139)';
+             panel.style.zIndex = '100';
+
+             // ====== ПРИНУДИТЕЛЬНО УСТАНАВЛИВАЕМ СТИЛИ ДЛЯ ТАБЛИЦЫ ======
+             if (table) {
+                 table.style.width = '100%';
+                 table.style.height = '100%';
+                 table.style.display = 'flex';
+                 table.style.flexDirection = 'column';
+                 table.style.flex = '1';
+                 table.style.minHeight = '0';
+             }
+
+             console.log('=== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ===');
+             console.log('Ширина окна:', WB, 'Высота окна:', HB);
+             console.log('Панель: 100% x 100%');
+
+             return; // Выходим, чтобы не применять ПК-стили
           }
 
         // ====== ПРИМЕНЯЕМ СТИЛИ ======
@@ -299,7 +333,7 @@ mass[60] = new Array(38.90, 65.20);
 mass[61] = new Array(42.86, 91.43);
 // Название объекта
 names_arr = new Array("",
-    "1. 19:20 Вход в санаторий. КПП.",
+    "1. 19:30 Вход в санаторий. КПП.",
     "2. Почта и Сберкасса",
     "3. Регистрация. Администрация санатория.",
     "4. Новый корпус",
