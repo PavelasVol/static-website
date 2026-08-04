@@ -571,7 +571,7 @@ document.addEventListener('click', function (event) {
                 break;
             }
         }
-
+        alert("x="+x+" y="+y)
         if (found && N > 0) {
             document.getElementById("td00").textContent = names_arr[N] || "Объект " + N;
             document.getElementById("td2").textContent = names_arr2[N] || "Нет описания";
