@@ -161,16 +161,16 @@ function positionPanel() {
          // ====== РАЗМЕРЫ ПАНЕЛИ ======
          //let panelWidth, panelHeight, panelLeft, panelTop;
 
-         if (isMobile) {
+        if (isMobile) {
              // ====== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ======
-             alert("isMobile 1")
+             //alert("isMobile 1")
              panelWidth = WB;
              panelHeight = HB;
              panelLeft = 0;
              panelTop = 0;
 
              // ====== ПРИНУДИТЕЛЬНО УСТАНАВЛИВАЕМ СТИЛИ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ ======
-             alert("in panel.style")
+             //alert("in panel.style")
              panel.style.position = 'fixed';
              panel.style.left = '0px';
              panel.style.top = '0px';
@@ -189,77 +189,68 @@ function positionPanel() {
              panel.style.boxSizing = 'border-box';
              panel.style.background = 'rgb(0, 0, 139)';
              panel.style.zIndex = '100';
-             alert("after panel.style");
+             //alert("after panel.style");
              //alert("table=" + table);
              // ====== ПРИНУДИТЕЛЬНО УСТАНАВЛИВАЕМ СТИЛИ ДЛЯ ТАБЛИЦЫ ======
              let table = document.getElementById('table_id');
              if (table)
              {
-                 alert("in table begin");
+                 //alert("in table begin");
                  table.style.width = '100%';
                  table.style.height = '100%';
                  table.style.display = 'flex';
                  table.style.flexDirection = 'column';
                  table.style.flex = '1';
                  table.style.minHeight = '0';
-                 alert("in table end")
+                 //alert("in table end")
              }
 
              console.log('=== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ===');
              console.log('Ширина окна:', WB, 'Высота окна:', HB);
              console.log('Панель: 100% x 100%');
 
-             // 
-             alert("Скрываем панель по умолчанию");
+             //   alert("Скрываем панель по умолчанию");
              document.getElementById('div').style.display = 'none';
 
              return; // Выходим, чтобы не применять ПК-стили
           }
+        if (isMobile == false) {
+            // ====== ПРИМЕНЯЕМ СТИЛИ для ПК ======
+            panel.style.position = 'fixed';
+            panel.style.left = panelLeft + 'px';
+            panel.style.top = panelTop + 'px';
+            panel.style.width = panelWidth + 'px';
+            panel.style.height = panelHeight + 'px';
+            panel.style.right = 'auto';
+            panel.style.bottom = 'auto';
+            panel.style.transform = 'none';
 
-        // ====== ПРИМЕНЯЕМ СТИЛИ для ПК ======
-        panel.style.position = 'fixed';
-        panel.style.left = panelLeft + 'px';
-        panel.style.top = panelTop + 'px';
-        panel.style.width = panelWidth + 'px';
-        panel.style.height = panelHeight + 'px';
-        panel.style.right = 'auto';
-        panel.style.bottom = 'auto';
-        panel.style.transform = 'none';
+            // ====== ВРЕМЕННЫЙ ЯРКИЙ ФОН ДЛЯ БЛОКА КНОПОК (ДЛЯ ОТЛАДКИ) ======
+            let tr0 = document.querySelector('.tr0');
+            if (tr0) {
+                //tr0.style.background = 'rgba(255, 0, 0, 0.9)'; /* Красный полупрозрачный */
+                //tr0.style.border = '2px solid yellow';
+            }
 
-        ///////////////////////////////////
-        
+            let buttonBack = document.getElementById('button_02');
+            let buttonNext = document.getElementById('button_01');
+            //let ww = tr0.style.width / 2;
+            let buttonWidth = panelWidth * 0.45;
 
-        ///////////
-        // ====== ВРЕМЕННЫЙ ЯРКИЙ ФОН ДЛЯ БЛОКА КНОПОК (ДЛЯ ОТЛАДКИ) ======
-        let tr0 = document.querySelector('.tr0');
-        if (tr0) {
-            //tr0.style.background = 'rgba(255, 0, 0, 0.9)'; /* Красный полупрозрачный */
-            //tr0.style.border = '2px solid yellow';
-        }
+            if (buttonBack) {
+                //buttonBack.style.background = 'rgba(255, 255, 0, 0.8)'; /* Желтый */
+                //buttonBack.style.border = '3px solid red';
+                buttonBack.style.left = 0;//tr0.td.style.left;
+                buttonBack.style.width = buttonWidth + 'px';
+            }
 
-
-
-        let buttonBack = document.getElementById('button_02');
-        let buttonNext = document.getElementById('button_01');
-        //let ww = tr0.style.width / 2;
-        let buttonWidth = panelWidth * 0.45;
-
-        if (buttonBack) {
-            //buttonBack.style.background = 'rgba(255, 255, 0, 0.8)'; /* Желтый */
-            //buttonBack.style.border = '3px solid red';
-            buttonBack.style.left = 0;//tr0.td.style.left;
-            buttonBack.style.width = buttonWidth + 'px';
-
-        }
-
-        if (buttonNext) {
-            //buttonNext.style.background = 'rgba(255, 0, 255, 0.8)'; /* Розовый */
-            //buttonNext.style.border = '3px solid orange';
-            buttonNext.style.width = buttonWidth + 'px';
-            //buttonNext.style.marginLeft = 'auto'; /* Прижимаем вправо */
-        }
-           
-   
+            if (buttonNext) {
+                //buttonNext.style.background = 'rgba(255, 0, 255, 0.8)'; /* Розовый */
+                //buttonNext.style.border = '3px solid orange';
+                buttonNext.style.width = buttonWidth + 'px';
+                //buttonNext.style.marginLeft = 'auto'; /* Прижимаем вправо */
+            }
+        }         
 }
 
 // Вызываем при загрузке и при изменении размера окна
@@ -344,7 +335,7 @@ mass[60] = new Array(38.90, 65.20);
 mass[61] = new Array(42.86, 91.43);
 // Название объекта
 names_arr = new Array("",
-    "1. 22:50 Вход в санаторий. КПП.",
+    "1. 23:05 Вход в санаторий. КПП.",
     "2. Почта и Сберкасса",
     "3. Регистрация. Администрация санатория.",
     "4. Новый корпус",
