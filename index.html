@@ -292,7 +292,87 @@
                     flex-direction: column;
                     flex: 1;
             }
+                /* Таблица - растягивается на всю высоту */
+                #div table {
+                    width: 100% !important;
+                    height: 100% !important;
+                    display: flex !important;
+                    flex-direction: column !important;
+                    flex: 1 !important;
+                    min-height: 0 !important;
+                }
 
+                    #div table tbody {
+                        display: flex !important;
+                        flex-direction: column !important;
+                        height: 100% !important;
+                        flex: 1 !important;
+                        min-height: 0 !important;
+                    }
+
+                    #div table tr {
+                        display: flex !important;
+                        flex-direction: column !important;
+                        flex-shrink: 0 !important;
+                        width: 100% !important;
+                    }
+
+                        /* Строка с фотографией - растягивается */
+                        #div table tr:nth-child(3) {
+                            flex: 1 !important;
+                            min-height: 0 !important;
+                        }
+
+                    #div table td {
+                        padding: 3px 5px !important;
+                        width: 100% !important;
+                        box-sizing: border-box !important;
+                    }
+
+            /* Заголовок объекта */
+            .td00 {
+                font-size: 18px !important;
+                padding: 4px 0 !important;
+                flex-shrink: 0 !important;
+                color: #ffd800;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            /* Описание объекта */
+            .td2 {
+                font-size: 15px !important;
+                max-height: 70px !important;
+                overflow-y: auto !important;
+                padding: 4px 6px !important;
+                flex-shrink: 0 !important;
+                line-height: 1.4;
+            }
+
+            /* Блок с фотографией - занимает всё свободное место */
+            #block {
+                flex: 1 !important;
+                min-height: 80px !important;
+                max-height: none !important;
+                padding: 6px !important;
+                background: rgba(255,255,255,0.05);
+                border-radius: 8px;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                overflow: hidden !important;
+                width: 100% !important;
+                height: 100% !important;
+            }
+
+                #block img {
+                    max-width: 100% !important;
+                    max-height: 100% !important;
+                    width: auto !important;
+                    height: auto !important;
+                    object-fit: contain !important;
+                    display: block !important;
+                }
 
             .td00 {
                 font-size: 14px !important;
@@ -395,86 +475,7 @@
                 box-sizing: border-box;
             }
 
-                /* Таблица - растягивается на всю высоту */
-                #div table {
-                    width: 100% !important;
-                    height: 100% !important;
-                    display: flex !important;
-                    flex-direction: column !important;
-                    flex: 1 !important;
-                    min-height: 0 !important;
-                }
-
-                    #div table tbody {
-                        display: flex !important;
-                        flex-direction: column !important;
-                        height: 100% !important;
-                        flex: 1 !important;
-                        min-height: 0 !important;
-                    }
-
-                    #div table tr {
-                        display: flex !important;
-                        flex-direction: column !important;
-                        flex-shrink: 0 !important;
-                        width: 100% !important;
-                    }
-
-                        /* Строка с фотографией - растягивается */
-                        #div table tr:nth-child(3) {
-                            flex: 1 !important;
-                            min-height: 0 !important;
-                        }
-
-                    #div table td {
-                        padding: 3px 5px !important;
-                        width: 100% !important;
-                        box-sizing: border-box !important;
-                    }
-
-            /* Заголовок объекта */
-            .td00 {
-                font-size: 18px !important;
-                padding: 4px 0 !important;
-                flex-shrink: 0 !important;
-                color: #ffd800;
-                font-weight: bold;
-                text-align: center;
-            }
-
-            /* Описание объекта */
-            .td2 {
-                font-size: 15px !important;
-                max-height: 70px !important;
-                overflow-y: auto !important;
-                padding: 4px 6px !important;
-                flex-shrink: 0 !important;
-                line-height: 1.4;
-            }
-
-            /* Блок с фотографией - занимает всё свободное место */
-            #block {
-                flex: 1 !important;
-                min-height: 80px !important;
-                max-height: none !important;
-                padding: 6px !important;
-                background: rgba(255,255,255,0.05);
-                border-radius: 8px;
-                display: flex !important;
-                justify-content: center !important;
-                align-items: center !important;
-                overflow: hidden !important;
-                width: 100% !important;
-                height: 100% !important;
-            }
-            #block img {
-                    max-width: 100% !important;
-                    max-height: 100% !important;
-                    width: auto !important;
-                    height: auto !important;
-                    object-fit: contain !important;
-                    display: block !important;
-            }
+                
 
             .td00 {
                 font-size: 16px !important;
