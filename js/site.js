@@ -163,6 +163,7 @@ function positionPanel() {
 
          if (isMobile) {
              // ====== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ======
+             alert("isMobile")
              panelWidth = WB;
              panelHeight = HB;
              panelLeft = 0;
@@ -202,7 +203,8 @@ function positionPanel() {
              console.log('Ширина окна:', WB, 'Высота окна:', HB);
              console.log('Панель: 100% x 100%');
 
-             // Скрываем панель по умолчанию
+             // 
+             alert("Скрываем панель по умолчанию");
              document.getElementById('div').style.display = 'none';
 
              return; // Выходим, чтобы не применять ПК-стили
@@ -336,7 +338,7 @@ mass[60] = new Array(38.90, 65.20);
 mass[61] = new Array(42.86, 91.43);
 // Название объекта
 names_arr = new Array("",
-    "1. 19:30 Вход в санаторий. КПП.",
+    "1. 22:05 Вход в санаторий. КПП.",
     "2. Почта и Сберкасса",
     "3. Регистрация. Администрация санатория.",
     "4. Новый корпус",
