@@ -105,118 +105,121 @@ var direction = 1;
 // ====== ПОЗИЦИОНИРОВАНИЕ ПАНЕЛИ ОТНОСИТЕЛЬНО ИЗОБРАЖЕНИЯ ======
 // ====== ПОЗИЦИОНИРОВАНИЕ ПАНЕЛИ ПО ВАШЕМУ АЛГОРИТМУ ======
 function positionPanel() {
-    let img = document.getElementById('img');
-    let panel = document.getElementById('div');
+  let isRotated = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+  //alert("isRotated=" + isRotated);
+    if (isRotated == false) {
+        let img = document.getElementById('img');
+        let panel = document.getElementById('div');
 
-    if (!img || !panel) return;
+        if (!img || !panel) return;
 
-    // 1. Получаем размеры окна браузера
-    let WB = window.innerWidth;
-    let HB = window.innerHeight;
-    let KB = WB / HB;
+        // 1. Получаем размеры окна браузера
+        let WB = window.innerWidth;
+        let HB = window.innerHeight;
+        let KB = WB / HB;
 
-    // 2. Получаем реальный размер изображения из файла
-    let W0 = img.naturalWidth;
-    let H0 = img.naturalHeight;
+        // 2. Получаем реальный размер изображения из файла
+        let W0 = img.naturalWidth;
+        let H0 = img.naturalHeight;
 
-    if (W0 === 0 || H0 === 0) {
-        console.log('Изображение еще не загружено');
-        return;
+        if (W0 === 0 || H0 === 0) {
+            console.log('Изображение еще не загружено');
+            return;
+        }
+
+        let K0 = W0 / H0;
+
+        // 3. Вычисляем размер изображения в браузере (W1, H1) и черные полосы (dx, dy)
+        let W1, H1, dx, dy;
+
+        if (K0 < KB) {
+            // 2.1: Черные полосы по бокам (слева и справа)
+            H1 = HB;
+            W1 = K0 * H1;
+            dx = (WB - W1) / 2;
+            dy = 0;
+        } else {
+            // 3.1: Черные полосы по вертикали (сверху и снизу)
+            W1 = WB;
+            H1 = W1 / K0;
+            dx = 0;
+            dy = (HB - H1) / 2;
+        }
+
+        // Горизонтальное позиционирование
+        let WP = W1 * 0.28;   // ширина панели
+        let panelWidth = WP;  // ширина панели
+        let panelLeft = dx + W1 - WP; // левый край панели должен совпадать с границей между картой изображения и правой частью с текстом
+
+        // Вертикальное позиционирование
+
+        let panelHeight = H1;
+        let panelTop = dy;
+
+
+        // ====== ПРИМЕНЯЕМ СТИЛИ ======
+        panel.style.position = 'fixed';
+        panel.style.left = panelLeft + 'px';
+        panel.style.top = panelTop + 'px';
+        panel.style.width = panelWidth + 'px';
+        panel.style.height = panelHeight + 'px';
+        panel.style.right = 'auto';
+        panel.style.bottom = 'auto';
+        panel.style.transform = 'none';
+
+        ///////////////////////////////////
+
+
+        ///////////
+        // ====== ВРЕМЕННЫЙ ЯРКИЙ ФОН ДЛЯ БЛОКА КНОПОК (ДЛЯ ОТЛАДКИ) ======
+        let tr0 = document.querySelector('.tr0');
+        if (tr0) {
+            //tr0.style.background = 'rgba(255, 0, 0, 0.9)'; /* Красный полупрозрачный */
+            //tr0.style.border = '2px solid yellow';
+        }
+
+
+
+        let buttonBack = document.getElementById('button_02');
+        let buttonNext = document.getElementById('button_01');
+        //let ww = tr0.style.width / 2;
+        let buttonWidth = panelWidth * 0.45;
+
+        if (buttonBack) {
+            //buttonBack.style.background = 'rgba(255, 255, 0, 0.8)'; /* Желтый */
+            //buttonBack.style.border = '3px solid red';
+            buttonBack.style.left = 0;//tr0.td.style.left;
+            buttonBack.style.width = buttonWidth + 'px';
+
+        }
+
+        if (buttonNext) {
+            //buttonNext.style.background = 'rgba(255, 0, 255, 0.8)'; /* Розовый */
+            //buttonNext.style.border = '3px solid orange';
+            buttonNext.style.width = buttonWidth + 'px';
+            //buttonNext.style.marginLeft = 'auto'; /* Прижимаем вправо */
+        }
+        /*
+        // Картинки внутри кнопок
+        let images = document.querySelectorAll('.button1 img, .button2 img');
+        images.forEach(function (img) {
+            img.style.width = (buttonWidth - 10) + 'px';
+            img.style.height = (buttonHeight - 10) + 'px';
+        });
+        */
+        /*
+         // Временные цвета для отладки
+         tr0 = document.querySelector('.tr0');
+         if (tr0) {
+             tr0.style.background = 'rgba(255, 0, 0, 0.3)';
+         }
+     
+         td = document.querySelector('.tr0 td');
+         if (td) {
+             td.style.background = 'rgba(0, 255, 0, 0.3)';
+         }
+         */
     }
-
-    let K0 = W0 / H0;
-
-    // 3. Вычисляем размер изображения в браузере (W1, H1) и черные полосы (dx, dy)
-    let W1, H1, dx, dy;
-
-    if (K0 < KB) {
-        // 2.1: Черные полосы по бокам (слева и справа)
-        H1 = HB;
-        W1 = K0 * H1;
-        dx = (WB - W1) / 2;
-        dy = 0;
-    } else {
-        // 3.1: Черные полосы по вертикали (сверху и снизу)
-        W1 = WB;
-        H1 = W1 / K0;
-        dx = 0;
-        dy = (HB - H1) / 2;
-    }
-
-    // Горизонтальное позиционирование
-    let WP = W1 * 0.28;   // ширина панели
-    let panelWidth = WP;  // ширина панели
-    let panelLeft = dx + W1 - WP; // левый край панели должен совпадать с границей между картой изображения и правой частью с текстом
-
-    // Вертикальное позиционирование
-    
-    let panelHeight = H1;
-    let panelTop = dy;
-        
-
-    // ====== ПРИМЕНЯЕМ СТИЛИ ======
-    panel.style.position = 'fixed';
-    panel.style.left = panelLeft + 'px';
-    panel.style.top = panelTop + 'px';
-    panel.style.width = panelWidth + 'px';
-    panel.style.height = panelHeight + 'px';
-    panel.style.right = 'auto';
-    panel.style.bottom = 'auto';
-    panel.style.transform = 'none';
-
-    ///////////////////////////////////
-    
-
-    ///////////
-    // ====== ВРЕМЕННЫЙ ЯРКИЙ ФОН ДЛЯ БЛОКА КНОПОК (ДЛЯ ОТЛАДКИ) ======
-    let tr0 = document.querySelector('.tr0');
-    if (tr0) {
-        //tr0.style.background = 'rgba(255, 0, 0, 0.9)'; /* Красный полупрозрачный */
-        //tr0.style.border = '2px solid yellow';
-    }
-
-    
-
-    let buttonBack = document.getElementById('button_02');
-    let buttonNext = document.getElementById('button_01');
-    //let ww = tr0.style.width / 2;
-    let buttonWidth = panelWidth * 0.45;
-
-    if (buttonBack) {
-        //buttonBack.style.background = 'rgba(255, 255, 0, 0.8)'; /* Желтый */
-        //buttonBack.style.border = '3px solid red';
-        buttonBack.style.left = 0;//tr0.td.style.left;
-        buttonBack.style.width = buttonWidth + 'px'; 
-        
-    }
-
-    if (buttonNext) {
-        //buttonNext.style.background = 'rgba(255, 0, 255, 0.8)'; /* Розовый */
-        //buttonNext.style.border = '3px solid orange';
-        buttonNext.style.width = buttonWidth + 'px'; 
-        //buttonNext.style.marginLeft = 'auto'; /* Прижимаем вправо */
-    }
-    /*
-    // Картинки внутри кнопок
-    let images = document.querySelectorAll('.button1 img, .button2 img');
-    images.forEach(function (img) {
-        img.style.width = (buttonWidth - 10) + 'px';
-        img.style.height = (buttonHeight - 10) + 'px';
-    });
-    */
-   /*
-    // Временные цвета для отладки
-    tr0 = document.querySelector('.tr0');
-    if (tr0) {
-        tr0.style.background = 'rgba(255, 0, 0, 0.3)';
-    }
-
-    td = document.querySelector('.tr0 td');
-    if (td) {
-        td.style.background = 'rgba(0, 255, 0, 0.3)';
-    }
-    */
-
    
 }
 
