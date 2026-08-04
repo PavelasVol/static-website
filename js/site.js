@@ -520,7 +520,7 @@ document.addEventListener('click', function (event) {
 
     // 3. Проверяем, повернуто ли изображение (мобильная версия)
     let isRotated = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-    alert("isRotated=" + isRotated);
+    //alert("isRotated=" + isRotated);
     if (isRotated) {
         // Для повернутого изображения меняем местами ширину и высоту
         // Так как изображение повернуто на 90 градусов
