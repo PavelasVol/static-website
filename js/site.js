@@ -105,9 +105,11 @@ var direction = 1;
 // ====== ПОЗИЦИОНИРОВАНИЕ ПАНЕЛИ ОТНОСИТЕЛЬНО ИЗОБРАЖЕНИЯ ======
 // ====== ПОЗИЦИОНИРОВАНИЕ ПАНЕЛИ ПО ВАШЕМУ АЛГОРИТМУ ======
 function positionPanel() {
-  let isRotated = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+   
+    // ====== ПРОВЕРКА НА МОБИЛЬНОЕ УСТРОЙСТВО (ВЕРТИКАЛЬНАЯ ОРИЕНТАЦИЯ) ======
+    let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
   //alert("isRotated=" + isRotated);
-    if (isRotated == false) {
+    
         let img = document.getElementById('img');
         let panel = document.getElementById('div');
 
@@ -156,6 +158,18 @@ function positionPanel() {
         let panelHeight = H1;
         let panelTop = dy;
 
+         // ====== РАЗМЕРЫ ПАНЕЛИ ======
+         //let panelWidth, panelHeight, panelLeft, panelTop;
+
+         if (isMobile) {
+            // ====== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ======
+            panelWidth = WB - 10;
+            panelHeight = HB - 10;
+            panelLeft = 5;
+            panelTop = 5;
+
+            console.log('=== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ===');
+          }
 
         // ====== ПРИМЕНЯЕМ СТИЛИ ======
         panel.style.position = 'fixed';
@@ -168,7 +182,7 @@ function positionPanel() {
         panel.style.transform = 'none';
 
         ///////////////////////////////////
-
+        
 
         ///////////
         // ====== ВРЕМЕННЫЙ ЯРКИЙ ФОН ДЛЯ БЛОКА КНОПОК (ДЛЯ ОТЛАДКИ) ======
@@ -199,27 +213,7 @@ function positionPanel() {
             buttonNext.style.width = buttonWidth + 'px';
             //buttonNext.style.marginLeft = 'auto'; /* Прижимаем вправо */
         }
-        /*
-        // Картинки внутри кнопок
-        let images = document.querySelectorAll('.button1 img, .button2 img');
-        images.forEach(function (img) {
-            img.style.width = (buttonWidth - 10) + 'px';
-            img.style.height = (buttonHeight - 10) + 'px';
-        });
-        */
-        /*
-         // Временные цвета для отладки
-         tr0 = document.querySelector('.tr0');
-         if (tr0) {
-             tr0.style.background = 'rgba(255, 0, 0, 0.3)';
-         }
-     
-         td = document.querySelector('.tr0 td');
-         if (td) {
-             td.style.background = 'rgba(0, 255, 0, 0.3)';
-         }
-         */
-    }
+           
    
 }
 
