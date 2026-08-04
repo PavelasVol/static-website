@@ -554,7 +554,7 @@ document.addEventListener('click', function (event) {
         // Но с учетом того, что изображение центрировано
 
         let x = (clickY - dy) / H1 * 100;
-        let y = (clickX - dx) / W1 * 100;
+        let y = 100 - (clickX - dx) / W1 * 100;
 
         x = Math.max(0, Math.min(100, x));
         y = Math.max(0, Math.min(100, y));
@@ -628,7 +628,7 @@ document.addEventListener('click', function (event) {
         x = Math.max(0, Math.min(100, x));
         y = Math.max(0, Math.min(100, y));
 
-        //alert("x=" + x + " y=" + y);
+        alert("x=" + x + " y=" + y);
 
         console.log(`=== КЛИК ===`);
         console.log(`Окно: ${WB}x${HB}, соотношение: ${KB.toFixed(3)}`);
