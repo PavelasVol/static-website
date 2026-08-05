@@ -92,6 +92,8 @@ function closePanel() {
     document.getElementById("td1").textContent = '';
     document.getElementById("td2").textContent = '';
     N = 0;
+    // Дополнительно: показать карту, если она была скрыта
+    document.getElementById('img0').hidden = false; // если скрывали
 }
 // ====== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ======
 let n = 1;
@@ -278,11 +280,11 @@ function positionPanel() {
          //let panelWidth, panelHeight, panelLeft, panelTop;
 
         if (isMobile == true) {
-            alert("to mobilePanel")
+           
             //mobilePanel();
-            alert("in mobilePanel");
+            
             // ====== ПРИНУДИТЕЛЬНО ПЕРЕОПРЕДЕЛЯЕМ ВСЕ СТИЛИ ЧЕРЕЗ cssText ======
-            alert("0");
+            
             panel.style.cssText = `
         position: fixed !important;
         left: 0px !important;
@@ -325,7 +327,7 @@ function positionPanel() {
             padding: 0 !important;
         `;
             }
-            alert("1");
+            
             // Строка с фотографией (3-я строка)
             let photoRow = document.querySelector('#div table tr:nth-child(3)');
             if (photoRow) {
@@ -339,7 +341,7 @@ function positionPanel() {
             margin: 0 !important;
         `;
             }
-            alert("2");
+            
             // Блок с фотографией
             let block = document.getElementById('block');
             if (block) {
@@ -357,7 +359,7 @@ function positionPanel() {
             margin: 0 !important;
         `;
             }
-            alert("3");
+            
             // Строка с кнопками
             let tr0 = document.querySelector('.tr0');
             if (tr0) {
@@ -373,7 +375,7 @@ function positionPanel() {
             min-height: 60px !important;
         `;
             }
-            alert("4");
+            
             let tr0td = document.querySelector('.tr0 td');
             if (tr0td) {
                 tr0td.style.cssText = `
@@ -386,7 +388,7 @@ function positionPanel() {
             gap: 20px !important;
         `;
             }
-            alert("5");
+            
             console.log('=== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ===');
             console.log('Ширина окна:', WB, 'Высота окна:', HB);
             console.log('Панель: 100% x 100%');
@@ -394,8 +396,7 @@ function positionPanel() {
             document.getElementById('div').style.display = 'none';
 
             //return; // ВАЖНО: выходим, чтобы не применять ПК-стили
-            alert("out mobilePanel");
-            alert("from mobilePanel")
+            
         } // isMobile == true
         if (isMobile == false) {
             // ====== ПРИМЕНЯЕМ СТИЛИ для ПК ======
@@ -414,8 +415,8 @@ function positionPanel() {
                 //tr0.style.background = 'rgba(255, 0, 0, 0.9)'; /* Красный полупрозрачный */
                 //tr0.style.border = '2px solid yellow';
             }
-            alert("Ширина окна:" + WB + "  Высота окна:" + HB);
-            alert("panel.style.width =" + panel.style.width + "  panel.style.height =" + panel.style.height);
+            //alert("Ширина окна:" + WB + "  Высота окна:" + HB);
+            //alert("panel.style.width =" + panel.style.width + "  panel.style.height =" + panel.style.height);
             //alert("table.style.width =" + table.style.width + "  table.style.height =" + table.style.height);
         } // isMobile == false
     // КНОПКИ
