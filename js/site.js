@@ -174,8 +174,10 @@ function positionPanel() {
              panel.style.position = 'fixed';
              panel.style.left = '0px';
              panel.style.top = '0px';
-             panel.style.width = '100%';
-             panel.style.height = '100%';
+            // panel.style.width = '100%';
+           // panel.style.height = '100%';
+            panel.style.width = panelWidth + 'px';
+            panel.style.height = panelHeight + 'px';
              panel.style.maxHeight = '100vh';
              panel.style.right = 'auto';
              panel.style.bottom = 'auto';
@@ -208,7 +210,7 @@ function positionPanel() {
              console.log('=== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ===');
              console.log('Ширина окна:', WB, 'Высота окна:', HB);
             console.log('Панель: 100% x 100%');
-            alert("Ширина окна:" + WB + "  Высота окна:" + HB);
+            alert(" 13:20 Ширина окна:" + WB + "  Высота окна:" + HB);
             alert("panel.style.width =" + panel.style.width + "  panel.style.height =" + panel.style.height);
             alert("table.style.width =" + table.style.width + "  table.style.height =" + table.style.height);
 
