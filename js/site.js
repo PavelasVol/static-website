@@ -309,7 +309,32 @@ function positionPanel() {
         visibility: visible !important;
         opacity: 1 !important;
     `;
-
+            // ====== КНОПКА ЗАКРЫТИЯ ======
+        let closeBtn = document.getElementById('closePanelBtn');
+        if (closeBtn) {
+           closeBtn.style.cssText = `
+            position: absolute !important;
+            top: 8px !important;
+            right: 10px !important;
+            width: 44px !important;
+            height: 44px !important;
+            background: rgba(255, 255, 255, 0.3) !important;
+            border: 2px solid white !important;
+            border-radius: 50% !important;
+            color: white !important;
+            font-size: 26px !important;
+            font-weight: bold !important;
+            cursor: pointer !important;
+            z-index: 999 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            line-height: 1 !important;
+            box-sizing: border-box !important;
+        `;
+            }
             // Таблица
             let table = document.getElementById('table_id');
             if (table) {
