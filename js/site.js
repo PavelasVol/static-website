@@ -336,7 +336,7 @@ function positionPanel() {
         `;
             }
             // ====== КНОПКА ЗАКРЫТИЯ (ПРИНУДИТЕЛЬНОЕ ПОЗИЦИОНИРОВАНИЕ) ======
-            let closeBtn = document.getElementById('closePanelBtn');
+            //let closeBtn = document.getElementById('closePanelBtn');
             if (closeBtn) {
                 let rect = panel.getBoundingClientRect();
                 closeBtn.style.position = 'fixed';
