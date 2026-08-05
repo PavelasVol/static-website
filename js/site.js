@@ -161,7 +161,7 @@ function positionPanel() {
          // ====== РАЗМЕРЫ ПАНЕЛИ ======
          //let panelWidth, panelHeight, panelLeft, panelTop;
 
-        if (isMobile) {
+        if (isMobile == true) {
              // ====== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ======
              //alert("isMobile 1")
              panelWidth = WB;
@@ -213,7 +213,7 @@ function positionPanel() {
              document.getElementById('div').style.display = 'none';
 
              //return; // Выходим, чтобы не применять ПК-стили
-          }
+        } // isMobile == true
         if (isMobile == false) {
             // ====== ПРИМЕНЯЕМ СТИЛИ для ПК ======
             panel.style.position = 'fixed';
@@ -231,8 +231,9 @@ function positionPanel() {
                 //tr0.style.background = 'rgba(255, 0, 0, 0.9)'; /* Красный полупрозрачный */
                 //tr0.style.border = '2px solid yellow';
             }
-
-            let buttonBack = document.getElementById('button_02');
+        } // isMobile == false
+        // КНОПКИ
+        let buttonBack = document.getElementById('button_02');
             let buttonNext = document.getElementById('button_01');
             //let ww = tr0.style.width / 2;
             let buttonWidth = panelWidth * 0.45;
@@ -250,7 +251,7 @@ function positionPanel() {
                 buttonNext.style.width = buttonWidth + 'px';
                 //buttonNext.style.marginLeft = 'auto'; /* Прижимаем вправо */
             }
-        }         
+                 
 }
 
 // Вызываем при загрузке и при изменении размера окна
