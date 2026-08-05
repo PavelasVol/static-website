@@ -178,7 +178,7 @@ function positionPanel() {
            // panel.style.height = '100%';
             panel.style.width = panelWidth + 'px';
             panel.style.height = panelHeight + 'px';
-             panel.style.maxHeight = '100vh';
+             //panel.style.maxHeight = '100vh';
              panel.style.right = 'auto';
              panel.style.bottom = 'auto';
              panel.style.transform = 'none';
@@ -198,8 +198,8 @@ function positionPanel() {
              if (table)
              {
                  //alert("in table begin");
-                 table.style.width = '100%';
-                 table.style.height = '100%';
+                 table.style.width = panelWidth + 'px';
+                 table.style.height = panelHeight + 'px';
                  table.style.display = 'flex';
                  table.style.flexDirection = 'column';
                  table.style.flex = '1';
@@ -259,6 +259,9 @@ function positionPanel() {
                 buttonNext.style.width = buttonWidth + 'px';
                 //buttonNext.style.marginLeft = 'auto'; /* Прижимаем вправо */
             }
+
+    alert("13^30 panel.style.width =" + panel.style.width + "  panel.style.height =" + panel.style.height);
+    alert("table.style.width =" + table.style.width + "  table.style.height =" + table.style.height);
                  
 }
 
