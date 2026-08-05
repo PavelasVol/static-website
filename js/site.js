@@ -102,6 +102,122 @@ var x = 0;
 var y = 0;
 var direction = 1;
 
+function mobilePanel() {
+    alert("in mobilePanel");
+    // ====== ПРИНУДИТЕЛЬНО ПЕРЕОПРЕДЕЛЯЕМ ВСЕ СТИЛИ ЧЕРЕЗ cssText ======
+    panel.style.cssText = `
+        position: fixed !important;
+        left: 0px !important;
+        top: 0px !important;
+        width: ${WB}px !important;
+        height: ${HB}px !important;
+        max-height: ${HB}px !important;
+        min-height: ${HB}px !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 10px 12px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        background: rgb(0, 0, 139) !important;
+        z-index: 100 !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    `;
+
+    // Таблица
+    let table = document.getElementById('table_id');
+    if (table) {
+        table.style.cssText = `
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 100% !important;
+            max-height: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            border: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        `;
+    }
+
+    // Строка с фотографией (3-я строка)
+    let photoRow = document.querySelector('#div table tr:nth-child(3)');
+    if (photoRow) {
+        photoRow.style.cssText = `
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            max-height: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        `;
+    }
+
+    // Блок с фотографией
+    let block = document.getElementById('block');
+    if (block) {
+        block.style.cssText = `
+            flex: 1 1 auto !important;
+            min-height: 60px !important;
+            max-height: 100% !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding: 4px !important;
+            width: 100% !important;
+            height: 100% !important;
+            overflow: hidden !important;
+            margin: 0 !important;
+        `;
+    }
+
+    // Строка с кнопками
+    let tr0 = document.querySelector('.tr0');
+    if (tr0) {
+        tr0.style.cssText = `
+            flex-shrink: 0 !important;
+            margin-top: auto !important;
+            border-top: 1px solid rgba(255,255,255,0.3) !important;
+            padding-top: 8px !important;
+            width: 100% !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            min-height: 60px !important;
+        `;
+    }
+
+    let tr0td = document.querySelector('.tr0 td');
+    if (tr0td) {
+        tr0td.style.cssText = `
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            width: 100% !important;
+            padding: 4px 0 !important;
+            box-sizing: border-box !important;
+            gap: 20px !important;
+        `;
+    }
+
+    console.log('=== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ===');
+    console.log('Ширина окна:', WB, 'Высота окна:', HB);
+    console.log('Панель: 100% x 100%');
+
+    document.getElementById('div').style.display = 'none';
+
+    //return; // ВАЖНО: выходим, чтобы не применять ПК-стили
+    alert("out mobilePanel");
+}
 // ====== ПОЗИЦИОНИРОВАНИЕ ПАНЕЛИ ОТНОСИТЕЛЬНО ИЗОБРАЖЕНИЯ ======
 // ====== ПОЗИЦИОНИРОВАНИЕ ПАНЕЛИ ПО ВАШЕМУ АЛГОРИТМУ ======
 function positionPanel() {
@@ -162,62 +278,9 @@ function positionPanel() {
          //let panelWidth, panelHeight, panelLeft, panelTop;
 
         if (isMobile == true) {
-             // ====== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ======
-             //alert("isMobile 1")
-             panelWidth = WB;
-             panelHeight = HB;
-             panelLeft = 0;
-             panelTop = 0;
-
-             // ====== ПРИНУДИТЕЛЬНО УСТАНАВЛИВАЕМ СТИЛИ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ ======
-             //alert("in panel.style")
-             panel.style.position = 'fixed';
-             panel.style.left = '0px';
-             panel.style.top = '0px';
-            // panel.style.width = '100%';
-           // panel.style.height = '100%';
-            panel.style.width = panelWidth + 'px';
-            panel.style.height = panelHeight + 'px';
-             //panel.style.maxHeight = '100vh';
-             panel.style.right = 'auto';
-             panel.style.bottom = 'auto';
-             panel.style.transform = 'none';
-             panel.style.display = 'flex';
-             panel.style.flexDirection = 'column';
-             panel.style.overflow = 'hidden';
-             panel.style.border = 'none';
-             panel.style.borderRadius = '0';
-             panel.style.padding = '10px 12px';
-             panel.style.boxSizing = 'border-box';
-             panel.style.background = 'rgb(0, 0, 139)';
-             panel.style.zIndex = '100';
-             //alert("after panel.style");
-             //alert("table=" + table);
-             // ====== ПРИНУДИТЕЛЬНО УСТАНАВЛИВАЕМ СТИЛИ ДЛЯ ТАБЛИЦЫ ======
-             let table = document.getElementById('table_id');
-             if (table)
-             {
-                 //alert("in table begin");
-                 table.style.width = panelWidth + 'px';
-                 table.style.height = panelHeight + 'px';
-                 table.style.display = 'flex';
-                 table.style.flexDirection = 'column';
-                 table.style.flex = '1';
-                 table.style.minHeight = '0';
-                 //alert("in table end")
-             }
-
-             console.log('=== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ===');
-             console.log('Ширина окна:', WB, 'Высота окна:', HB);
-            console.log('Панель: 100% x 100%');
-            alert(" 13:20 Ширина окна:" + WB + "  Высота окна:" + HB);
-            alert("panel.style.width =" + panel.style.width + "  panel.style.height =" + panel.style.height);
-            alert("table.style.width =" + table.style.width + "  table.style.height =" + table.style.height);
-
-             //   alert("Скрываем панель по умолчанию");
-             document.getElementById('div').style.display = 'none';
-
-             //return; // Выходим, чтобы не применять ПК-стили
+            alert("to mobilePanel")
+            mobilePanel();
+            alert("from mobilePanel")
         } // isMobile == true
         if (isMobile == false) {
             // ====== ПРИМЕНЯЕМ СТИЛИ для ПК ======
@@ -238,9 +301,10 @@ function positionPanel() {
             }
             alert("Ширина окна:" + WB + "  Высота окна:" + HB);
             alert("panel.style.width =" + panel.style.width + "  panel.style.height =" + panel.style.height);
-            alert("table.style.width =" + table.style.width + "  table.style.height =" + table.style.height);
+            //alert("table.style.width =" + table.style.width + "  table.style.height =" + table.style.height);
         } // isMobile == false
-        // КНОПКИ
+    // КНОПКИ
+    //alert("КНОПКИ")
         let buttonBack = document.getElementById('button_02');
             let buttonNext = document.getElementById('button_01');
             //let ww = tr0.style.width / 2;
@@ -260,8 +324,8 @@ function positionPanel() {
                 //buttonNext.style.marginLeft = 'auto'; /* Прижимаем вправо */
             }
 
-    alert("13^30 panel.style.width =" + panel.style.width + "  panel.style.height =" + panel.style.height);
-    alert("table.style.width =" + table.style.width + "  table.style.height =" + table.style.height);
+    //alert("13^30 panel.style.width =" + panel.style.width + "  panel.style.height =" + panel.style.height);
+    //alert("table.style.width =" + table.style.width + "  table.style.height =" + table.style.height);
                  
 }
 
