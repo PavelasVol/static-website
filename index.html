@@ -65,6 +65,41 @@
         /* ====== ПРАВАЯ ПАНЕЛЬ ====== */
         /* ====== ПРАВАЯ ПАНЕЛЬ ====== */
         /* ====== ПРАВАЯ ПАНЕЛЬ ====== */
+        /* Кнопка закрытия панели - общие стили */
+        .close-panel-btn {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: background 0.2s;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+            .close-panel-btn:hover {
+                background: rgba(255, 255, 255, 0.4);
+            }
+
+            .close-panel-btn:active {
+                background: rgba(255, 255, 255, 0.6);
+                transform: scale(0.9);
+            }
+        .close-panel-btn {
+            display: none; /* Скрываем на ПК, так как там обычно клик вне панели */
+        }
         #div {
             position: fixed;
             z-index: 100;
@@ -251,7 +286,16 @@
                 top: -20%;
                 pointer-events: none;
             }
-
+            .close-panel-btn {
+                display: flex !important;
+                top: 10px;
+                right: 14px;
+                width: 44px;
+                height: 44px;
+                font-size: 28px;
+                background: rgba(255, 255, 255, 0.25);
+                border: 2px solid white;
+            }
             /* Панель на всю ширину, внизу экрана */
             #div {
                 /*
@@ -441,7 +485,16 @@
                 top: 0;
                 pointer-events: none;
             }
-
+            .close-panel-btn {
+                display: flex !important;
+                top: 10px;
+                right: 14px;
+                width: 44px;
+                height: 44px;
+                font-size: 28px;
+                background: rgba(255, 255, 255, 0.25);
+                border: 2px solid white;
+            }
             #div {
                 /*
                 position: fixed !important;
@@ -459,6 +512,7 @@
                 bottom: auto !important;
                     */
                 position: fixed !important;
+                /*position: relative; /* Чтобы кнопка позиционировалась относительно панели */
                 left: 0 !important;
                 right: 0 !important;
                 top: 0 !important;
@@ -582,6 +636,9 @@
 
     <!-- ПРАВАЯ ПАНЕЛЬ с информацией -->
     <div id="div">
+        <!-- Кнопка закрытия -->
+        <button id="closePanelBtn" class="close-panel-btn" onclick="closePanel()">✕</button>
+        <!-- Таблица-->
         <table id="table_id">
             <tr>
                 <td id="td00" class="td00"></td> <!--Заголовок объекта-->
@@ -598,12 +655,13 @@
             <tr>
                 <td id="td1" class="td1"></td>   <!--Описание фотографии-->
             </tr>
-            <tr class="tr0">                     <!--Блок с двумя кнопками-->
+            <tr class="tr0">
+                <!--Блок с двумя кнопками-->
                 <td>
                     <button id="button_02" class="button2" onclick="onclick_02()">
                         <img src="images/arrow_back.png" alt="Назад" />
                     </button>
-                
+
                     <button id="button_01" class="button1" onclick="onclick_01()">
                         <img src="images/arrow_next.png" alt="Вперед" />
                     </button>
