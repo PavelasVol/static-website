@@ -147,7 +147,7 @@ function mobilePanel() {
             padding: 0 !important;
         `;
     }
-
+    alert("1");
     // Строка с фотографией (3-я строка)
     let photoRow = document.querySelector('#div table tr:nth-child(3)');
     if (photoRow) {
@@ -161,7 +161,7 @@ function mobilePanel() {
             margin: 0 !important;
         `;
     }
-
+    alert("2");
     // Блок с фотографией
     let block = document.getElementById('block');
     if (block) {
@@ -179,7 +179,7 @@ function mobilePanel() {
             margin: 0 !important;
         `;
     }
-
+    alert("3");
     // Строка с кнопками
     let tr0 = document.querySelector('.tr0');
     if (tr0) {
@@ -195,7 +195,7 @@ function mobilePanel() {
             min-height: 60px !important;
         `;
     }
-
+    alert("4");
     let tr0td = document.querySelector('.tr0 td');
     if (tr0td) {
         tr0td.style.cssText = `
@@ -208,7 +208,7 @@ function mobilePanel() {
             gap: 20px !important;
         `;
     }
-
+    alert("5");
     console.log('=== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ===');
     console.log('Ширина окна:', WB, 'Высота окна:', HB);
     console.log('Панель: 100% x 100%');
