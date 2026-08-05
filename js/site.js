@@ -335,6 +335,32 @@ function positionPanel() {
             box-sizing: border-box !important;
         `;
             }
+            // ====== КНОПКА ЗАКРЫТИЯ (ПРИНУДИТЕЛЬНОЕ ПОЗИЦИОНИРОВАНИЕ) ======
+            let closeBtn = document.getElementById('closePanelBtn');
+            if (closeBtn) {
+                let rect = panel.getBoundingClientRect();
+                closeBtn.style.position = 'fixed';
+                closeBtn.style.left = (rect.right - 50) + 'px';
+                closeBtn.style.top = (rect.top + 10) + 'px';
+
+                closeBtn.style.width = '40px';
+                closeBtn.style.height = '40px';
+                closeBtn.style.background = 'rgba(255,255,255,0.3)';
+                closeBtn.style.border = '2px solid white';
+                closeBtn.style.borderRadius = '50%';
+                closeBtn.style.color = 'white';
+                closeBtn.style.fontSize = '22px';
+                closeBtn.style.fontWeight = 'bold';
+                closeBtn.style.cursor = 'pointer';
+                closeBtn.style.zIndex = '999';
+                closeBtn.style.display = 'flex';
+                closeBtn.style.alignItems = 'center';
+                closeBtn.style.justifyContent = 'center';
+                closeBtn.style.padding = '0';
+                closeBtn.style.margin = '0';
+                closeBtn.style.lineHeight = '1';
+                closeBtn.style.boxSizing = 'border-box';
+            }
             // Таблица
             let table = document.getElementById('table_id');
             if (table) {
