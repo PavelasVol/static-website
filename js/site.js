@@ -207,7 +207,8 @@ function positionPanel() {
 
              console.log('=== МОБИЛЬНАЯ ВЕРСИЯ: панель на весь экран ===');
              console.log('Ширина окна:', WB, 'Высота окна:', HB);
-             console.log('Панель: 100% x 100%');
+            console.log('Панель: 100% x 100%');
+            alert("Ширина окна:" + WB + "  Высота окна:" + HB);
 
              //   alert("Скрываем панель по умолчанию");
              document.getElementById('div').style.display = 'none';
@@ -231,6 +232,7 @@ function positionPanel() {
                 //tr0.style.background = 'rgba(255, 0, 0, 0.9)'; /* Красный полупрозрачный */
                 //tr0.style.border = '2px solid yellow';
             }
+            alert("Ширина окна:" + WB + "  Высота окна:" + HB);
         } // isMobile == false
         // КНОПКИ
         let buttonBack = document.getElementById('button_02');
