@@ -38,7 +38,7 @@ function onclick_img0() {
     n = 1;
 }
 
-function show_image_old_iki_09_08_2026() {
+function show_image_old() {
     // Формируем имя файла: N_n.jpg (например, 01_01.jpg)
     let str = String(N).padStart(2, '0') + "_" + String(n).padStart(2, '0') + ".jpg";
     let fullPath = "images/" + str;
@@ -85,7 +85,7 @@ function show_image_old_iki_09_08_2026() {
     };
 }
 
-function show_image_iki_10_08_2026_with_video_OK() {
+function show_image() {
     // Формируем базовое имя файла без расширения
     let baseName = String(N).padStart(2, '0') + "_" + String(n).padStart(2, '0');
     let photoPath = "images/" + baseName + ".jpg";
@@ -172,85 +172,6 @@ function show_image_iki_10_08_2026_with_video_OK() {
     // (сработает либо onloadedmetadata, либо onerror)
     // Но чтобы избежать двойной загрузки, нужно вызвать videoElement.load()
     videoElement.load();
-}
-
-function show_image() {
-    let baseName = String(N).padStart(2, '0') + "_" + String(n).padStart(2, '0');
-    let photoPath = "images/" + baseName + ".jpg";
-    let videoPath = "images/" + baseName + ".mp4";
-
-    let block = document.getElementById('block');
-    if (!block) return;
-
-    // Сбрасываем масштаб при переключении медиа
-    scale = 1;
-    translateX = 0;
-    translateY = 0;
-
-    // Проверяем видео
-    let video = document.createElement('video');
-    video.src = videoPath;
-    video.style.width = "100%";
-    video.style.height = "100%";
-    video.style.objectFit = "contain";
-    video.controls = true;
-    video.playsInline = true;
-    video.setAttribute('playsinline', '');
-    video.style.display = "block";
-
-    video.onloadedmetadata = function () {
-        block.innerHTML = '';
-        currentMedia = video;
-        block.appendChild(video);
-        applyTransformToMedia();
-        setupTouchHandlers(block);
-        updateCaption();
-    };
-
-    video.onerror = function () {
-        // Пробуем фото
-        let img = document.createElement('img');
-        img.src = photoPath;
-        img.style.width = "100%";
-        img.style.height = "100%";
-        img.style.objectFit = "contain";
-        img.style.display = "block";
-
-        img.onload = function () {
-            block.innerHTML = '';
-            currentMedia = img;
-            block.appendChild(img);
-            applyTransformToMedia();
-            setupTouchHandlers(block);
-            updateCaption();
-        };
-
-        img.onerror = function () {
-            block.innerHTML = '<p style="color:white;">Нет медиа</p>';
-            // Логика переключения при отсутствии
-            if (direction == 1) {
-                n = n - 1;
-            } else {
-                n = n + 1;
-            }
-            if (n > 0) {
-                show_image();
-            } else {
-                block.innerHTML = '<p style="color:white;">Нет медиа</p>';
-            }
-        };
-    };
-
-    video.load();
-}
-
-function updateCaption() {
-    let td1Element = document.getElementById("td1");
-    if (names_arr3[N] && names_arr3[N][n]) {
-        td1Element.textContent = names_arr3[N][n];
-    } else {
-        td1Element.textContent = "Медиа " + n;
-    }
 }
 
 function closePanel() {
