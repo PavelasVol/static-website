@@ -564,127 +564,8 @@ function getMapCoordinates(clientX, clientY) {
 
     return { x: finalX, y: finalY };
 }
- //alert("567");
-function getMapCoordinates_NO(clientX, clientY) {
-    //alert("in getMapCoordinates");
-    let img = document.getElementById('img0');
-    if (!img) return { x: -1, y: -1 };
+ // ====== ПЕРЕСЧЕТ КООРДИНАТ КЛИКА С УЧЕТОМ МАСШТАБА И СМЕЩЕНИЯ ======
 
-    let rect = img.getBoundingClientRect();
-
-    // Проверяем, что клик внутри изображения
-    if (clientX < rect.left || clientX > rect.left + rect.width ||
-        clientY < rect.top || clientY > rect.top + rect.height) {
-        return { x: -1, y: -1 };
-    }
-
-    // Получаем натуральные размеры
-    let naturalWidth = img.naturalWidth;
-    let naturalHeight = img.naturalHeight;
-
-    // Текущий масштаб
-    let scale = mapScale || 1;
-    let tx = mapTranslateX || 0;
-    let ty = mapTranslateY || 0;
-
-    // ====== ОСНОВНОЙ РАСЧЕТ ======
-    // Вычисляем координаты в процентах от rect
-    let x = (clientX - rect.left) / rect.width * 100;
-    let y = (clientY - rect.top) / rect.height * 100;
-
-    // Применяем масштаб (стягиваем к центру)
-    let centerX = 49.0;
-    let centerY = 49.5;
-
-    let xScaled = centerX + (x - centerX) / scale;
-    let yScaled = centerY + (y - centerY) / scale;
-
-    // Учитываем смещение translate
-    let txPercent = tx / rect.width * 100;
-    let tyPercent = ty / rect.height * 100;
-
-    let finalX = xScaled - txPercent / scale;
-    let finalY = yScaled - tyPercent / scale;
-
-    // ====== КОРРЕКЦИЯ НА ОСНОВЕ ЭКСПЕРИМЕНТАЛЬНЫХ ДАННЫХ ======
-    // Добавляем поправку для масштаба > 1
-    if (scale > 1) {
-        let correctionX = getCorrection(scale, finalX);
-        let correctionY = getCorrection(scale, finalY);
-        finalX += correctionX;
-        finalY += correctionY;
-    }
-
-    // Ограничиваем
-    finalX = Math.max(0, Math.min(100, finalX));
-    finalY = Math.max(0, Math.min(100, finalY));
-    alert("scale=" + scale + " finalX=" + finalX + "%, finalY=" + finalY + "%");
-    console.log(`getMapCoordinates: scale=${scale.toFixed(2)}, x=${finalX.toFixed(2)}, y=${finalY.toFixed(2)}`);
-    return { x: finalX, y: finalY };
-}
-// ====== ПЕРЕСЧЕТ КООРДИНАТ КЛИКА С УЧЕТОМ МАСШТАБА И СМЕЩЕНИЯ ======
-// ====== ПЕРЕСЧЕТ КООРДИНАТ КЛИКА С УЧЕТОМ МАСШТАБА И СМЕЩЕНИЯ ======
-function getMapCoordinates_NONO(clientX, clientY) {
-    let img = document.getElementById('img0');
-    if (!img) return { x: -1, y: -1 };
-
-    let rect = img.getBoundingClientRect();
-
-    if (clientX < rect.left || clientX > rect.left + rect.width ||
-        clientY < rect.top || clientY > rect.top + rect.height) {
-        return { x: -1, y: -1 };
-    }
-
-    let scale = mapScale || 1;
-    let tx = mapTranslateX || 0;
-    let ty = mapTranslateY || 0;
-
-    // Координаты клика в процентах
-    let x = (clientX - rect.left) / rect.width * 100;
-    let y = (clientY - rect.top) / rect.height * 100;
-
-    // Центр
-    let centerX = 49.0;
-    let centerY = 49.5;
-
-    // Если масштаб 1 — возвращаем как есть
-    if (Math.abs(scale - 1.0) < 0.01) {
-        // Ищем ближайшую точку
-        let minDist = Infinity;
-        let nearest = 1;
-        for (let i = 1; i <= 61; i++) {
-            let d = Math.sqrt((x - mass[i][0]) ** 2 + (y - mass[i][1]) ** 2);
-            if (d < minDist) { minDist = d; nearest = i; }
-        }
-        if (minDist < 2.0) {
-            return { x: mass[nearest][0], y: mass[nearest][1] };
-        }
-        return { x, y };
-    }
-
-    // Применяем масштаб и смещение
-    // Сначала убираем смещение
-    let txPercent = tx / rect.width * 100;
-    let tyPercent = ty / rect.height * 100;
-    let xWithoutTx = x + txPercent;
-    let yWithoutTy = y + tyPercent;
-
-    // Применяем масштаб (стягиваем к центру)
-    let xScaled = centerX + (xWithoutTx - centerX) * scale;
-    let yScaled = centerY + (yWithoutTy - centerY) * scale;
-
-    // Ищем ближайшую точку
-    let minDist = Infinity;
-    let nearest = 1;
-    for (let i = 1; i <= 61; i++) {
-        let d = Math.sqrt((xScaled - mass[i][0]) ** 2 + (yScaled - mass[i][1]) ** 2);
-        if (d < minDist) { minDist = d; nearest = i; }
-    }
-
-    console.log(`scale=${scale.toFixed(2)}, x=${xScaled.toFixed(2)}, y=${yScaled.toFixed(2)}, nearest=${nearest}`);
-    return { x: mass[nearest][0], y: mass[nearest][1] };
-}
-//alert("687");
 // ====== НАСТРОЙКА ОБРАБОТЧИКОВ ======
 function setupTouchHandlers(container) {
     if (!container) return;
@@ -933,7 +814,78 @@ function setupMapHandlers() {
     });
     */  
 }
+// ====== ОБРАБОТЧИКИ ДЛЯ МОБИЛЬНОГО МАСШТАБИРОВАНИЯ ======
+function setupMobileMapHandlers() {
+    let img = document.getElementById('img0');
+    if (!img) return;
 
+    let lastTouchDist = 0;
+    let initialTouchScale = 1;
+    let initialTouchX = 0;
+    let initialTouchY = 0;
+    let isTouchDragging = false;
+    let touchStartX, touchStartY;
+
+    img.addEventListener('touchstart', function (e) {
+        if (e.touches.length === 1) {
+            // Один палец - перетаскивание
+            isTouchDragging = true;
+            touchStartX = e.touches[0].clientX - mapTranslateX;
+            touchStartY = e.touches[0].clientY - mapTranslateY;
+            img.style.cursor = 'grabbing';
+        } else if (e.touches.length === 2) {
+            // Два пальца - зум
+            isTouchDragging = false;
+            let touch1 = e.touches[0];
+            let touch2 = e.touches[1];
+            lastTouchDist = Math.hypot(
+                touch1.clientX - touch2.clientX,
+                touch1.clientY - touch2.clientY
+            );
+            initialTouchScale = mapScale;
+            initialTouchX = mapTranslateX;
+            initialTouchY = mapTranslateY;
+        }
+    }, { passive: true });
+
+    img.addEventListener('touchmove', function (e) {
+        e.preventDefault();
+
+        if (e.touches.length === 1 && isTouchDragging) {
+            // Перетаскивание одним пальцем
+            mapTranslateX = e.touches[0].clientX - touchStartX;
+            mapTranslateY = e.touches[0].clientY - touchStartY;
+            applyMapTransform();
+        } else if (e.touches.length === 2) {
+            // Зум двумя пальцами
+            let touch1 = e.touches[0];
+            let touch2 = e.touches[1];
+            let currentDist = Math.hypot(
+                touch1.clientX - touch2.clientX,
+                touch1.clientY - touch2.clientY
+            );
+
+            if (lastTouchDist > 0) {
+                let scaleFactor = currentDist / lastTouchDist;
+                let newScale = Math.min(Math.max(1.0, initialTouchScale * scaleFactor), 3);
+                mapScale = newScale;
+
+                // Корректируем смещение для центрирования зума
+                let rect = img.getBoundingClientRect();
+                let centerX = (touch1.clientX + touch2.clientX) / 2 - rect.left - rect.width / 2;
+                let centerY = (touch1.clientY + touch2.clientY) / 2 - rect.top - rect.height / 2;
+
+                // Применяем трансформацию
+                applyMapTransform();
+            }
+        }
+    }, { passive: false });
+
+    img.addEventListener('touchend', function (e) {
+        isTouchDragging = false;
+        img.style.cursor = 'grab';
+    }, { passive: true });
+}
 function onMapWheel(e) {
     console.log('onMapWheel: deltaY=' + e.deltaY);
     e.preventDefault();
@@ -1632,6 +1584,7 @@ window.addEventListener('load', function () {
     setTimeout(positionPanel, 300);
     createZoomIndicator();
     setTimeout(setupMapHandlers, 500); // Инициализация обработчиков карты
+    setTimeout(setupMobileMapHandlers, 500); // <-- Добавить
     console.log('Window loaded, map handlers scheduled');
 });
 window.addEventListener('resize', positionPanel);
