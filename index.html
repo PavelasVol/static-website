@@ -58,8 +58,10 @@
             z-index: 2;
             display: block;
             object-fit: contain; /* Вся картинка видна целиком */
-            pointer-events: none;
+            /*pointer-events: none; /* Измените на auto, чтобы обработчики работали */
+            pointer-events: auto;
             background: transparent;
+            cursor: grab;
         }
         /* ====== ПРАВАЯ ПАНЕЛЬ ====== */
         /* ====== ПРАВАЯ ПАНЕЛЬ ====== */
@@ -103,7 +105,7 @@
         }
         #div {
             position: fixed;
-            z-index: 100;
+            z-index: 1000 !important; /* Увеличиваем z-index */
             display: none;
             background: rgb(0, 0, 139);
             border: 3px solid white;
@@ -128,21 +130,36 @@
                     flex-direction: column;
                     height: 100%;
                 }
-
+            /*
                 #div table tr {
                     display: flex;
                     flex-direction: column;
                     flex-shrink: 0;
                     width: 100%;
                 }
+            */
+             /* Строка с фотографией - растягивается, но оставляет место для td1 */
+             #div table tr:nth-child(3) {
+                    flex: 1 1 auto !important;
+                    min-height: 0 !important;
+                    max-height: 100% !important;
+             }
 
-                #div table td {
+             #div table tr:nth-child(3) td {
+                    display: flex !important;
+                    flex-direction: column !important;
+                    padding: 0 !important; /* Убираем отступы */
+                    height: 100% !important;
+                    min-height: 0 !important;
+             }
+             /*
+             #div table td {
                     padding: 3px 5px;
                     vertical-align: middle;
                     width: 100% !important;
                     box-sizing: border-box;
-                }
-
+             }
+                 */
         /* Заголовок объекта */
         .td00 {
             text-align: center;
@@ -157,14 +174,17 @@
         .td2 {
             font-size: 16px;
             color: #ffd800;
+            /*max-height: 120px;*/
             max-height: 120px;
             overflow-y: auto;
             flex-shrink: 0;
             padding: 2px 4px;
             line-height: 1.3;
+            /*height: auto !important; /* Автоматическая высота */
         }
 
         /* Блок с фотографией */
+        /*
         #block {
             flex: 1;
             min-height: 80px;
@@ -176,8 +196,12 @@
             overflow: hidden;
             padding: 4px;
             width: 100%;
-        }
-
+            position: relative;
+            cursor: grab;
+            touch-action: none; /* Отключаем стандартные жесты для всей области */
+            /*pointer-events: auto; /* Включаем обработку событий для контейнера */
+      /*  }
+        
             #block img {
                 max-width: 100%;
                 max-height: 100%;
@@ -186,8 +210,74 @@
                 object-fit: contain;
                 display: block;
             }
+        */
+        /* Контейнер для фотографии */
+        /*
+        #media-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            pointer-events: auto !important; /* Включаем обработку событий 
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;           
+        }
+        */
+        #media-container {
+            flex: 1 1 auto !important;
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 0 !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important; /* Центрируем изображение по вертикали */
+            overflow: hidden !important;
+            position: relative !important;
+            pointer-events: auto !important;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+            padding: 0 !important; /* Убираем лишние отступы */
+        }
+
+            /*
+            #media-container img, #media-container video {
+                max-width: 100%;
+                max-height: 100%;
+                width: auto;
+                height: auto;
+                object-fit: contain;
+                display: block;
+                user-select: none;
+                -webkit-user-select: none;
+                /*pointer-events: none; /* Чтобы жесты работали через родителя 
+                pointer-events: none !important; /* Отключаем события для самого медиа 
+            }
+            */
+            #media-container img,
+            #media-container video {
+                max-width: 100% !important;
+                max-height: 100% !important;
+                width: auto !important;
+                height: auto !important;
+                object-fit: contain !important;
+                display: block !important;
+                user-select: none;
+                -webkit-user-select: none;
+                pointer-events: none !important;
+            }
+
+            /* Видео должно получать события для управления плеером */
+        #media-container video {
+           pointer-events: auto !important; /* Включаем управление для видео */
+        }
 
         /* Описание конкретной фотографии объекта */
+        /*
         .td1 {
             text-align: center;
             background: #7c82f6;
@@ -201,8 +291,44 @@
             align-items: center;
             justify-content: center;
         }
+        */
+        /* Описание конкретной фотографии объекта - над кнопками */
+        /*
+        .td1 {
+            text-align: center;
+            background: #7c82f6;
+            color: black;
+            font-size: 16px;
+            border-radius: 4px;
+            padding: 4px 8px;
+            flex-shrink: 0;
+            min-height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 !important;
+            /* Убираем все отступы 
+        }
+        */
+        /* Описание конкретной фотографии (td1) */
+        .td1 {
+            text-align: center;
+            background: #7c82f6;
+            color: black;
+            font-size: 16px;
+            border-radius: 4px;
+            padding: 4px 8px;
+            flex-shrink: 0;
+            min-height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 !important;
+            border-top: 1px solid rgba(255,255,255,0.2); /* Небольшая разделительная линия */
+        }
 
         /* ====== БЛОК С КНОПКАМИ ====== */
+        /*
         .tr0 {
             flex-shrink: 0;
             margin-top: auto;
@@ -211,17 +337,40 @@
             width: 100%;
         }
 
-            .tr0 td {
+        .tr0 td {
                 display: flex;
                 justify-content: center;
                 /*align-items: center;*/
-                gap: 20px;
+                /*gap: 20px;
                 padding: 6px 0;
                 height: 52px;
                 box-sizing: border-box;
-                position: relative;
+                position: relative;*/
                 /* Ширина устанавливается через JavaScript */
-            }
+       /* }*/
+        
+        /* Блок с кнопками - сразу под td1 */
+        .tr0 {
+            flex-shrink: 0;
+            margin-top: 0 !important; /* Убираем отступ сверху */
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 2px;
+            padding-bottom: 2px;
+            width: 100%;
+        }
+
+       
+        .tr0 td {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 4px 0;
+            height: 48px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
 
         .button1, .button2 {
             height: 36px;
@@ -326,7 +475,7 @@
                 max-height: 100vh !important;
                 transform: none !important;
                 padding: 10px 12px !important;
-                z-index: 100 !important;
+                z-index: 1000 !important; /* Увеличиваем z-index */
                 background: rgb(0, 0, 139) !important;
                 border: none !important;
                 border-radius: 0 !important;
@@ -368,11 +517,14 @@
                         width: 100% !important;
                     }
 
-                        /* Строка с фотографией - растягивается */
-                        #div table tr:nth-child(3) {
+                    
+                   /* Строка с фотографией - растягивается */
+                   #div table tr:nth-child(3) {
                             flex: 1 !important;
                             min-height: 0 !important;
-                        }
+                   }
+                        
+                    
 
                     #div table td {
                         padding: 3px 5px !important;
@@ -398,6 +550,7 @@
                 padding: 4px 6px !important;
                 flex-shrink: 0 !important;
                 line-height: 1.4;
+                /*height: auto; /* Автоматическая высота */
             }
 
             /* Блок с фотографией - занимает всё свободное место */
@@ -414,6 +567,7 @@
                 overflow: hidden !important;
                 width: 100% !important;
                 height: 100% !important;
+
             }
 
                 #block img {
@@ -429,12 +583,22 @@
                 font-size: 14px !important;
                 padding: 1px 0 !important;
             }
-
+            /*
             .td1 {
                 font-size: 12px !important;
                 padding: 3px 6px !important;
                 min-height: 24px !important;
             }
+            */
+
+            .td1 {
+                font-size: 12px !important;
+                padding: 3px 6px !important;
+                min-height: 22px !important;
+                margin: 0 !important;
+            }
+                
+            
 
             .td2 {
                 font-size: 13px !important;
@@ -451,11 +615,18 @@
                     max-height: 100% !important;
                     max-width: 100% !important;
                 }
-
+            
             .tr0 td {
                 height: 44px !important;
                 padding: 2px 5px !important;
             }
+
+            
+
+            .tr0 {
+                padding-top: 0 !important;
+            }
+           
 
             .button1, .button2 {
                 width: 44px !important;
@@ -548,7 +719,7 @@
 
             .td2 {
                 font-size: 14px !important;
-                max-height: 80px !important;
+                max-height: 180px !important;
             }
 
             #block {
@@ -586,7 +757,7 @@
 
             .td2 {
                 font-size: 11px !important;
-                max-height: 40px !important;
+                max-height: 140px !important;
             }
 
             #block {
@@ -631,11 +802,17 @@
     </style>
 </head>
 <body id="body_id">
-    <!-- ФОН (eshera2.jpg) - виден всегда -->
+    <!-- ФОН (eshera2.jpg) - виден всегда
     <img src="images/eshera2.jpg" id="img" onclick="onclick_img()" alt="Фон">
-
+        -->
     <!-- КАРТА с кружками (eshera02.png) - поверх фона -->
     <img src="images/eshera02.png" id="img0" onclick="onclick_img0()" alt="Карта">
+
+    <!-- В HTML, рядом с картой -->
+    <div id="map-zoom-indicator" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:50;background:rgba(0,0,0,0.7);color:white;padding:5px 15px;border-radius:20px;font-size:14px;display:none;">
+        Масштаб: <span id="map-zoom-level">1.0</span>x
+    </div>
+
 
     <!-- ПРАВАЯ ПАНЕЛЬ с информацией -->
     <div id="div">
@@ -651,8 +828,10 @@
                 <td id="td2" class="td2"></td>   <!--Подробное описание объекта-->
             </tr>
             <tr>
-                <td>
-                    <div id="block"></div>       <!--Фотография объекта-->
+                <td>                    
+                    <div id="media-container">
+                        <!-- Сюда будет вставляться видео или фото -->
+                    </div>
                 </td>
             </tr>
             <tr>
