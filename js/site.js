@@ -29,7 +29,7 @@ let initialScale = 1;
 let initialTranslateX = 0;
 let initialTranslateY = 0;
 let lastTapTime = 0;
-
+//alert("32");
 function onclick_01() {
     image.setAttribute("src", " ");
     image.setAttribute("style", "display: none");
@@ -205,7 +205,7 @@ function show_image_iki_10_08_2026_OK() {
     // Но чтобы избежать двойной загрузки, нужно вызвать videoElement.load()
     videoElement.load();
 }
-
+//alert("208");
 // ====== ДЛЯ ПК (МЫШЬ) ======
 function setupMouseHandlers(container) {
     if (!container) return;
@@ -249,7 +249,7 @@ function setupMouseHandlers(container) {
         applyTransformToMedia();
     });
 }
-
+//alert("252");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ ======
 function applyTransformToMedia() {
     console.log('applyTransformToMedia called, currentMedia:', currentMedia, 'mediaContainer:', mediaContainer);
@@ -274,7 +274,7 @@ function applyTransformToMedia() {
         console.log('applyTransformToMedia: currentMedia or mediaContainer is null!');
     }
 }
-
+//alert("277");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
@@ -319,7 +319,7 @@ function applyMapTransform() {
     }
     */
 }
-
+//alert("322");
 // ====== ПЕРЕСЧЕТ КООРДИНАТ КЛИКА С УЧЕТОМ МАСШТАБА ======
 function getMapCoordinates_(clientX, clientY) {
     let img = document.getElementById('img0');
@@ -470,8 +470,9 @@ function getCoordsAtScale(pointIndex, scale) {
     return { x, y };
 }
 // ====== ПЕРЕСЧЕТ КООРДИНАТ КЛИКА С УЧЕТОМ МАСШТАБА ======
+ //alert("473");
 function getMapCoordinates(clientX, clientY) {
-    //alert("getMapCoordinates");
+    //alert("in getMapCoordinates");
     let img = document.getElementById('img0');
     if (!img) return { x: -1, y: -1 };
 
@@ -482,6 +483,29 @@ function getMapCoordinates(clientX, clientY) {
         clientY < rect.top || clientY > rect.top + rect.height) {
         return { x: -1, y: -1 };
     }
+
+    
+    // ====== ПРОВЕРКА НА МОБИЛЬНОЕ УСТРОЙСТВО ======
+    let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+
+    // Координаты клика в процентах от rect
+    let clickX = (clientX - rect.left) / rect.width * 100;
+    let clickY = (clientY - rect.top) / rect.height * 100;
+
+    // ====== ЕСЛИ МОБИЛЬНОЕ УСТРОЙСТВО (повернутое изображение) ======
+    if (isMobile) {
+        // При rotate(90deg) координаты меняются местами
+        // x_original = y_click, y_original = 100 - x_click
+        let tempX = clickX;
+        let tempY = clickY;
+        clickX = tempY;
+        clickY = 100 - tempX;
+
+        console.log(`Мобильная версия: скорректированные координаты (${clickX.toFixed(2)}, ${clickY.toFixed(2)})`);
+    }
+
+    
+
 
     // ====== ПРОСТОЙ ПОДХОД ======
     // Координаты в процентах от всего элемента
@@ -494,18 +518,17 @@ function getMapCoordinates(clientX, clientY) {
     let yScaled = 50 + (y - 50) / scale;
 
     // Учитываем смещение (переводим пиксели в проценты)
-    let txPercent = (mapTranslateX || 0) / rect.width * 100;
-    let tyPercent = (mapTranslateY || 0) / rect.height * 100;
+    //let txPercent = (mapTranslateX || 0) / rect.width * 100;
+    //let tyPercent = (mapTranslateY || 0) / rect.height * 100;
 
-    let tx = 50 + (txPercent - 50) / scale;
-    let ty = 50 + (tyPercent - 50) / scale;
+    //let tx = 50 + (txPercent - 50) / scale;
+    //let ty = 50 + (tyPercent - 50) / scale;
+    //tx = txPercent*0;
+    //ty = tyPercent*0;
 
-    tx = txPercent*0;
-    ty = tyPercent*0;
 
-
-    let finalX = xScaled + tx;
-    let finalY = yScaled + ty;
+    let finalX = xScaled;
+    let finalY = yScaled;
 
     
 
@@ -537,11 +560,13 @@ function getMapCoordinates(clientX, clientY) {
         finalX = Math.max(0, Math.min(100, correctedX));
         finalY = Math.max(0, Math.min(100, correctedY));
     }
-    alert("scale=" + scale + " xScaled=" + xScaled + " yScaled=" + yScaled+" finalX=" + finalX + "%, finalY=" + finalY + "%" + " tx="+tx+" ty="+ty);
+    //alert("scale=" + scale + " xScaled=" + xScaled + " yScaled=" + yScaled+" finalX=" + finalX + "%, finalY=" + finalY + "%" + " tx="+tx+" ty="+ty);
 
     return { x: finalX, y: finalY };
 }
+ //alert("567");
 function getMapCoordinates_NO(clientX, clientY) {
+    //alert("in getMapCoordinates");
     let img = document.getElementById('img0');
     if (!img) return { x: -1, y: -1 };
 
@@ -659,7 +684,7 @@ function getMapCoordinates_NONO(clientX, clientY) {
     console.log(`scale=${scale.toFixed(2)}, x=${xScaled.toFixed(2)}, y=${yScaled.toFixed(2)}, nearest=${nearest}`);
     return { x: mass[nearest][0], y: mass[nearest][1] };
 }
-
+//alert("687");
 // ====== НАСТРОЙКА ОБРАБОТЧИКОВ ======
 function setupTouchHandlers(container) {
     if (!container) return;
@@ -1633,7 +1658,7 @@ document.getElementById('div').style.display = 'none';
 const scaleCoords = {};
 
 // ====== МАССИВЫ ДАННЫХ ОБЪЕКТОВ для масштаба 1.0 ======
-//alert("1");
+//alert("1661");
     let mass = new Array()
     mass[0] = new Array(0.0, 0.0);
     mass[1] = new Array(36.83, 29.36);
@@ -1893,7 +1918,7 @@ for (let i = 1; i <= 61; i++) {
     }
 }
 */
-//alert("2_5");
+ //alert("2_5");
 // ====== МАССИВЫ ДАННЫХ ОБЪЕКТОВ для масштаба 2.5 ======
 let mass2_5 = new Array()
 mass2_5[0] = new Array(0.0, 0.0);
@@ -1959,7 +1984,7 @@ mass2_5[59] = new Array(39.55, 62.90);
 mass2_5[60] = new Array(38.90, 65.20);
 mass2_5[61] = new Array(42.86, 91.43);
 
-//alert("3_0");
+ //alert("3_0");
 // ====== МАССИВЫ ДАННЫХ ОБЪЕКТОВ для масштаба 2.5 ======
 let mass3_0 = new Array()
 mass3_0[0] = new Array(0.0, 0.0);
@@ -2267,8 +2292,8 @@ names_arr = new Array("",
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
-document.addEventListener('click', function (event) {
-   // alert("CLICK");
+document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
+   //alert("in addEventListener: CLICK");
     let img = document.getElementById('img0');
     if (!img) return;
 
@@ -2320,44 +2345,22 @@ document.addEventListener('click', function (event) {
     //alert("mapScale=" + mapScale + " nscale=" + nscale);
     let found = false;
     //alert("in mass[25][0]=" + mass[25][0]);
-    for (let ii = 1; ii <= 61; ii++) {
-        
+    for (let ii = 1; ii <= 61; ii++) {        
         let x0 = 0.0;
         let y0 = 0.0;
        // alert("mapScale=" + mapScale + " nscale=" + nscale);
-        if (nscale == 1) {
-           // x0 = scaleCoords[1][ii].x;
-            //y0 = scaleCoords[1][ii].y;
+        if (nscale == 1) {           
             x0 = mass[ii][0];
-            y0 = mass[ii][1];
-            //alert("in scaleCoords[mapScale][ii].x =" + scaleCoords[1][ii].x);
-            //alert("in scaleCoords[mapScale][ii].y =" + scaleCoords[1][ii].y);
-            //alert("mass[25][0]=" + mass[25][0]);
-           // alert("x0 =" + x0 + " x=" + x);
-            //alert("mass[25][0]=" + mass[25][0]);
-           // alert("y0 =" + y0 + " y=" + y);
+            y0 = mass[ii][1];           
         }
         if (nscale == 3) {
             x0 = mass2_0[ii][0];
-            y0 = mass2_0[ii][1];
-            /*
-            x0 = scaleCoords[3][ii].x;
-            y0 = scaleCoords[3][ii].y;
-            alert("in scaleCoords[3][ii].x =" + scaleCoords[3][ii].x + " x=" + x);
-            alert("in scaleCoords[3][ii].y =" + scaleCoords[3][ii].y + " y=" + y);
-            */
+            y0 = mass2_0[ii][1];            
         }
         if (nscale == 5) {
             x0 = mass3_0[ii][0];
-            y0 = mass3_0[ii][1];
-            /*
-            x0 = scaleCoords[5][ii].x;
-            y0 = scaleCoords[5][ii].y;
-            alert("in scaleCoords[5][ii].x =" + scaleCoords[5][ii].x+" x="+x);
-            alert("in scaleCoords[5][ii].y =" + scaleCoords[5][ii].y + " y=" + y);
-            */
-        }
-       
+            y0 = mass3_0[ii][1];           
+        }       
        
         //alert("in scaleCoords[mapScale][ii].x =" + scaleCoords[nscale][ii].x);
         //alert("in scaleCoords[mapScale][ii].y =" + scaleCoords[nscale][ii].y);
@@ -2433,7 +2436,7 @@ document.addEventListener('click', function (event) {
 });
 
 document.addEventListener__('click', function (event) {
-    alert("addEventListener('click', function (event)");
+    //alert("addEventListener('click', function (event)");
     let img = document.getElementById('img0');
     if (!img) return;
 
