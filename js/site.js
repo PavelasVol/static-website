@@ -286,6 +286,58 @@ function applyMapTransform() {
 
     console.log('applyMapTransform: scale=' + mapScale + ', translateX=' + mapTranslateX + ', translateY=' + mapTranslateY);
 
+
+    // ====== ПРОВЕРКА НА МОБИЛЬНОЕ УСТРОЙСТВО ======
+    let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+
+    // Получаем размеры контейнера
+    let containerWidth = window.innerWidth;
+    let containerHeight = window.innerHeight;
+
+    // Ограничиваем перемещение
+    let imgWidth = img.offsetWidth || containerWidth;
+    let imgHeight = img.offsetHeight || containerHeight;
+
+    let maxTranslateX = Math.max(0, (imgWidth * mapScale - containerWidth) / 2);
+    let maxTranslateY = Math.max(0, (imgHeight * mapScale - containerHeight) / 2);
+
+    let clampedX = Math.min(Math.max(mapTranslateX, -maxTranslateX), maxTranslateX);
+    let clampedY = Math.min(Math.max(mapTranslateY, -maxTranslateY), maxTranslateY);
+
+    // ====== ФОРМИРУЕМ ТРАНСФОРМАЦИЮ ======
+    let transformString = `translate(${clampedX}px, ${clampedY}px) scale(${mapScale})`;
+
+    // Если мобильное устройство, добавляем поворот
+    if (isMobile) {
+        // Для вертикальной ориентации добавляем поворот на 90 градусов
+        // Также нужно увеличить масштаб для заполнения экрана
+        let mobileScale = mapScale * 1.4; // Компенсируем масштаб из CSS
+        transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`;
+
+        // Корректируем положение для повернутого изображения
+        // При rotate(90deg) центр вращения находится в центре
+        // Нужно сместить изображение, чтобы оно было по центру
+        let offsetX = (containerWidth - containerHeight) / 2;
+        let offsetY = (containerHeight - containerWidth) / 2;
+        // transformString = `translate(${clampedX + offsetX}px, ${clampedY + offsetY}px) rotate(90deg) scale(${mobileScale})`;
+    }
+
+    img.style.transform = transformString;
+    img.style.transformOrigin = 'center center';
+    img.style.transition = 'transform 0.05s ease';
+
+    // Обновляем индикатор масштаба
+    let indicator = document.getElementById('map-zoom-level');
+    if (indicator) {
+        indicator.textContent = mapScale.toFixed(1);
+    }
+    let container = document.getElementById('map-zoom-indicator');
+    if (container) {
+        container.style.display = 'block';
+    }
+
+
+/*
     
     // Получаем размеры контейнера
     let containerWidth = window.innerWidth;
@@ -311,6 +363,8 @@ function applyMapTransform() {
     }
     let container = document.getElementById('map-zoom-indicator');
     container.style.display = 'block';
+    */
+
     /*
     if (container && mapScale !== 1) {
         container.style.display = 'block';
