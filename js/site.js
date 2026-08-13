@@ -484,7 +484,7 @@ function getMapCoordinates(clientX, clientY) {
         return { x: -1, y: -1 };
     }
 
-    
+    /*
     // ====== ПРОВЕРКА НА МОБИЛЬНОЕ УСТРОЙСТВО ======
     let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
 
@@ -504,7 +504,7 @@ function getMapCoordinates(clientX, clientY) {
         console.log(`Мобильная версия: скорректированные координаты (${clickX.toFixed(2)}, ${clickY.toFixed(2)})`);
     }
 
-    
+    */
 
 
     // ====== ПРОСТОЙ ПОДХОД ======
@@ -2302,141 +2302,231 @@ document.addEventListener('click', function (event) { // Работает хор
     let target = event.target;
 
     // Если клик по панели или её элементам - игнорируем
-    if (target.closest('#div')) {
-        return;
-    }
+    if (target.closest('#div')) { return; }
 
     // Если клик по кнопкам навигации - игнорируем
-    if (target.closest('.button1') || target.closest('.button2')) {
-        return;
-    }
+    if (target.closest('.button1') || target.closest('.button2')) { return; }
 
     // Если клик по медиа-контейнеру - игнорируем
-    if (target.closest('#media-container') || target.closest('#block')) {
+    if (target.closest('#media-container') || target.closest('#block')) { return; }
+
+
+    //  Проверяем, повернуто ли изображение (мобильная версия)
+    let isRotated = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+
+    
+    if (isRotated == false) { // Версия для ПК
+        // Получаем координаты клика с учетом масштаба карты
+        let coords = getMapCoordinates(event.clientX, event.clientY);
+        let x = coords.x;
+        let y = coords.y;
+
+        // Проверяем, что клик внутри изображения
+        let rect = img.getBoundingClientRect();
+        if (event.clientX < rect.left || event.clientX > rect.left + rect.width ||
+            event.clientY < rect.top || event.clientY > rect.top + rect.height) {
+            console.log('Клик вне изображения');
+            return;
+        }
+
+        console.log(`=== КЛИК (с учетом масштаба) ===`);
+        console.log(`Координаты в процентах: x=${x.toFixed(2)}%, y=${y.toFixed(2)}%`);
+        console.log(`Масштаб карты: ${mapScale.toFixed(2)}`);
+
+        let nscale = 0;
+        if ((mapScale > 0.95) && (mapScale < 1.05)) { nscale = 1; }
+        if ((mapScale > 1.45) && (mapScale < 1.55)) { nscale = 2; }
+        if ((mapScale > 1.95) && (mapScale < 2.05)) { nscale = 3; }
+        if ((mapScale > 2.45) && (mapScale < 2.55)) { nscale = 4; }
+        if ((mapScale > 2.95) && (mapScale < 3.05)) { nscale = 5; }
+
+        // Проверяем попадание в кружок
+        //alert("in addEventListener 36.83 scaleCoords[1.0][1].x =" + scaleCoords[1.0][1].x);
+        //alert("mapScale=" + mapScale + " nscale=" + nscale);
+        let found = false;
+        //alert("in mass[25][0]=" + mass[25][0]);
+        for (let ii = 1; ii <= 61; ii++) {
+            let x0 = 0.0;
+            let y0 = 0.0;
+            // alert("mapScale=" + mapScale + " nscale=" + nscale);
+            if (nscale == 1) {
+                x0 = mass[ii][0];
+                y0 = mass[ii][1];
+            }
+            if (nscale == 3) {
+                x0 = mass2_0[ii][0];
+                y0 = mass2_0[ii][1];
+            }
+            if (nscale == 5) {
+                x0 = mass3_0[ii][0];
+                y0 = mass3_0[ii][1];
+            }
+
+            //alert("in scaleCoords[mapScale][ii].x =" + scaleCoords[nscale][ii].x);
+            //alert("in scaleCoords[mapScale][ii].y =" + scaleCoords[nscale][ii].y);
+            // alert("x0="+x0+" y0="+y0);
+            let dx = Math.abs(x - x0);
+            let dy = Math.abs(y - y0);
+
+            // alert("x=" + x + " x0=" + x0 + " dx=" + dx + "y=" + y + " y0=" + y0 + " dy=" + dy);
+            //alert(" dx=" + dx + " dy=" + dy);
+            // Увеличиваем радиус захвата при большем масштабе
+            let captureRadius = mapScale > 1 ? 2.0 / mapScale : 1.0;
+            if (dx < captureRadius && dy < captureRadius) {
+                N = ii;
+                found = true;
+                console.log(`Попали в кружок №${N}!`);
+                break;
+            }
+        }
+
+        if (found && N > 0) {
+            document.getElementById("td00").textContent = names_arr[N] || "Объект " + N;
+            document.getElementById("td2").textContent = names_arr2[N] || "Нет описания";
+            document.getElementById('div').style.display = 'block';
+
+            let panel = document.getElementById('div');
+
+            // ====== ПРИНУДИТЕЛЬНОЕ ОТОБРАЖЕНИЕ ПАНЕЛИ ======
+            panel.style.display = 'block';
+            panel.style.zIndex = '9999'; // Принудительно поверх всего
+            panel.style.position = 'fixed';
+            // panel.style.left = '10px';
+            //panel.style.top = '100px';
+            //panel.style.width = '400px';
+            // panel.style.height = '500px';
+            panel.style.background = 'rgb(0, 0, 139)';
+            panel.style.border = '3px solid white';
+            panel.style.borderRadius = '8px';
+            panel.style.padding = '10px';
+            panel.style.boxSizing = 'border-box';
+            panel.style.visibility = 'visible';
+            panel.style.opacity = '1';
+
+            console.log('Панель принудительно показана');
+            console.log('panel.style.display:', panel.style.display);
+            console.log('panel.style.zIndex:', panel.style.zIndex);
+            console.log('img.style.zIndex:', img.style.zIndex);
+
+            // Для мобильной версии
+            if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
+                panel.style.width = '100%';
+                panel.style.height = '100%';
+                panel.style.left = '0px';
+                panel.style.top = '0px';
+                panel.style.border = 'none';
+                panel.style.borderRadius = '0';
+                panel.style.zIndex = '9999';
+            }
+
+            n = 1;
+            direction = 1;
+            show_image();
+        } else {
+            // Клик мимо кружка
+            if (x < 70) {
+                document.getElementById('div').style.display = 'none';
+                document.getElementById('block').innerHTML = '';
+                document.getElementById("td00").textContent = '';
+                document.getElementById("td1").textContent = '';
+                document.getElementById("td2").textContent = '';
+                N = 0;
+            }
+        }
         return;
     }
 
-    // Получаем координаты клика с учетом масштаба карты
-    let coords = getMapCoordinates(event.clientX, event.clientY);
-    let x = coords.x;
-    let y = coords.y;
+    if (isRotated) { // Версия для мобильных устройств
+        // 1. Получаем размеры окна браузера
+        let WB = window.innerWidth;
+        let HB = window.innerHeight;
+        let KB = WB / HB;
 
-    // Проверяем, что клик внутри изображения
-    let rect = img.getBoundingClientRect();
-    if (event.clientX < rect.left || event.clientX > rect.left + rect.width ||
-        event.clientY < rect.top || event.clientY > rect.top + rect.height) {
-        console.log('Клик вне изображения');
+        // 2. Получаем реальный размер изображения из файла
+        let W0 = img.naturalWidth;
+        let H0 = img.naturalHeight;
+
+        if (W0 === 0 || H0 === 0) {
+            console.log('Изображение еще не загружено');
+            return;
+        }
+
+        let K0 = W0 / H0;
+
+        let W1, H1, dx, dy; // ширина и высота изображения в браузере и размеры черных полос по горизонтали и вертикали
+        // Для повернутого изображения меняем местами ширину и высоту
+        // Так как изображение повернуто на 90 градусов
+        let tempK = K0;
+        K0 = 1 / K0; // Меняем соотношение сторон
+        //4. Вычисляем размер изображения в браузере(W1, H1) и черные полосы(dx, dy)
+        if (K0 < KB) {
+            H1 = HB;
+            W1 = K0 * H1;
+            dx = (WB - W1) / 2;
+            dy = 0;
+        } else {
+            W1 = WB;
+            H1 = W1 / K0;
+            dx = 0;
+            dy = (HB - H1) / 2;
+        }
+
+        // Для повернутого изображения координаты клика нужно пересчитать
+        // Получаем координаты клика относительно изображения
+        let rect = img.getBoundingClientRect();
+
+        // Для повернутого изображения используем другой подход
+        // Вычисляем положение изображения на экране с учетом трансформации
+        let clickX = event.clientX;
+        let clickY = event.clientY;
+
+        // При повороте на 90 градусов:
+        // x = (clickY - top) / height * 100
+        // y = (clickX - left) / width * 100
+        // Но с учетом того, что изображение центрировано
+
+        let x = (clickY - dy) / H1 * 100;
+        let y = 100 - (clickX - dx) / W1 * 100;
+
+        x = Math.max(0, Math.min(100, x));
+        y = Math.max(0, Math.min(100, y));
+
+        // Проверяем попадание в кружок
+        let found = false;
+        for (let ii = 1; ii <= 61; ii++) {
+            let dxCircle = Math.abs(x - mass[ii][0]);
+            let dyCircle = Math.abs(y - mass[ii][1]);
+            if (dxCircle < 2.0 && dyCircle < 2.0) {
+                N = ii;
+                found = true;
+                console.log(`Попали в кружок №${N}!`);
+                break;
+            }
+        }
+        //alert("x="+x+" y="+y)
+        if (found && N > 0) {
+            document.getElementById("td00").textContent = names_arr[N] || "Объект " + N;
+            document.getElementById("td2").textContent = names_arr2[N] || "Нет описания";
+            document.getElementById('div').style.display = 'block';
+            n = 1;
+            direction = 1;
+            show_image();
+        } else {
+            if (x < 70) {
+                document.getElementById('div').style.display = 'none';
+                document.getElementById('block').innerHTML = '';
+                document.getElementById("td00").textContent = '';
+                document.getElementById("td1").textContent = '';
+                document.getElementById("td2").textContent = '';
+                N = 0;
+            }
+        }
         return;
-    }
-
-    console.log(`=== КЛИК (с учетом масштаба) ===`);
-    console.log(`Координаты в процентах: x=${x.toFixed(2)}%, y=${y.toFixed(2)}%`);
-    console.log(`Масштаб карты: ${mapScale.toFixed(2)}`);
-
-    let nscale = 0;
-    if ((mapScale > 0.95) && (mapScale < 1.05)) { nscale = 1; }
-    if ((mapScale > 1.45) && (mapScale < 1.55)) { nscale = 2; }
-    if ((mapScale > 1.95) && (mapScale < 2.05)) { nscale = 3; }
-    if ((mapScale > 2.45) && (mapScale < 2.55)) { nscale = 4; }
-    if ((mapScale > 2.95) && (mapScale < 3.05)) { nscale = 5; }
-
-    // Проверяем попадание в кружок
-    //alert("in addEventListener 36.83 scaleCoords[1.0][1].x =" + scaleCoords[1.0][1].x);
-    //alert("mapScale=" + mapScale + " nscale=" + nscale);
-    let found = false;
-    //alert("in mass[25][0]=" + mass[25][0]);
-    for (let ii = 1; ii <= 61; ii++) {        
-        let x0 = 0.0;
-        let y0 = 0.0;
-       // alert("mapScale=" + mapScale + " nscale=" + nscale);
-        if (nscale == 1) {           
-            x0 = mass[ii][0];
-            y0 = mass[ii][1];           
-        }
-        if (nscale == 3) {
-            x0 = mass2_0[ii][0];
-            y0 = mass2_0[ii][1];            
-        }
-        if (nscale == 5) {
-            x0 = mass3_0[ii][0];
-            y0 = mass3_0[ii][1];           
-        }       
-       
-        //alert("in scaleCoords[mapScale][ii].x =" + scaleCoords[nscale][ii].x);
-        //alert("in scaleCoords[mapScale][ii].y =" + scaleCoords[nscale][ii].y);
-       // alert("x0="+x0+" y0="+y0);
-        let dx = Math.abs(x - x0);
-        let dy = Math.abs(y - y0);
-
-        // alert("x=" + x + " x0=" + x0 + " dx=" + dx + "y=" + y + " y0=" + y0 + " dy=" + dy);
-        //alert(" dx=" + dx + " dy=" + dy);
-        // Увеличиваем радиус захвата при большем масштабе
-        let captureRadius = mapScale > 1 ? 2.0 / mapScale : 1.0;
-        if (dx < captureRadius && dy < captureRadius) {
-            N = ii;
-            found = true;
-            console.log(`Попали в кружок №${N}!`);
-            break;
-        }
-    }
-
-    if (found && N > 0) {
-        document.getElementById("td00").textContent = names_arr[N] || "Объект " + N;
-        document.getElementById("td2").textContent = names_arr2[N] || "Нет описания";
-        document.getElementById('div').style.display = 'block';
-
-        let panel = document.getElementById('div');
-       
-        // ====== ПРИНУДИТЕЛЬНОЕ ОТОБРАЖЕНИЕ ПАНЕЛИ ======
-        panel.style.display = 'block';
-        panel.style.zIndex = '9999'; // Принудительно поверх всего
-        panel.style.position = 'fixed';
-       // panel.style.left = '10px';
-        //panel.style.top = '100px';
-        //panel.style.width = '400px';
-       // panel.style.height = '500px';
-        panel.style.background = 'rgb(0, 0, 139)';
-        panel.style.border = '3px solid white';
-        panel.style.borderRadius = '8px';
-        panel.style.padding = '10px';
-        panel.style.boxSizing = 'border-box';
-        panel.style.visibility = 'visible';
-        panel.style.opacity = '1';
-
-        console.log('Панель принудительно показана');
-        console.log('panel.style.display:', panel.style.display);
-        console.log('panel.style.zIndex:', panel.style.zIndex);
-        console.log('img.style.zIndex:', img.style.zIndex);
-
-        // Для мобильной версии
-        if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
-            panel.style.width = '100%';
-            panel.style.height = '100%';
-            panel.style.left = '0px';
-            panel.style.top = '0px';
-            panel.style.border = 'none';
-            panel.style.borderRadius = '0';
-            panel.style.zIndex = '9999';
-        }
-
-        n = 1;
-        direction = 1;
-        show_image();
-    } else {
-        // Клик мимо кружка
-        if (x < 70) {
-            document.getElementById('div').style.display = 'none';
-            document.getElementById('block').innerHTML = '';
-            document.getElementById("td00").textContent = '';
-            document.getElementById("td1").textContent = '';
-            document.getElementById("td2").textContent = '';
-            N = 0;
-        }
     }
 });
 
 document.addEventListener__('click', function (event) {
-    //alert("addEventListener('click', function (event)");
+    alert("in addEventListener('click', function (event)");
     let img = document.getElementById('img0');
     if (!img) return;
 
@@ -2475,7 +2565,7 @@ document.addEventListener__('click', function (event) {
 
     let W1, H1, dx, dy; // ширина и высота изображения в браузере и размеры черных полос по горизонтали и вертикали
 
-    
+    //alert("");
 
     // 3. Проверяем, повернуто ли изображение (мобильная версия)
     let isRotated = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
