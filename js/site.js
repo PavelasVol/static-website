@@ -323,6 +323,10 @@ function applyMapTransform() {
         transformString = `translate(${clampedX + offsetX}px, ${clampedY + offsetY}px) rotate(90deg) scale(${mobileScale})`;
     }
     */
+    if (isMobile) {
+        transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`
+    }
+
 
     img.style.transform = transformString;
     img.style.transformOrigin = 'center center';
@@ -611,7 +615,7 @@ function getMapCoordinates(clientX, clientY) {
 
     // Корректируем с учетом object-fit: contain (черные полосы)
     // Но при масштабе > 1 черные полосы исчезают, поэтому корректировка нужна только при scale <= 1
-    if ((scale <= 1.5) && (isMobile == false)) {
+    if ((scale <= 1.5)) {
         // Получаем натуральные размеры
         let naturalWidth = img.naturalWidth;
         let naturalHeight = img.naturalHeight;
@@ -2321,7 +2325,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-alert("23:45");
+alert("00:05");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
