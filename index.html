@@ -435,7 +435,9 @@
                 height: 100%;
                 z-index: 2;
                 display: block;
-                object-fit: contain;
+                
+                /* Вместо contain используем cover, чтобы заполнить экран */
+                object-fit: cover;
                 pointer-events: none;
                 background: transparent;
                 transform: rotate(90deg);
