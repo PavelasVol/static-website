@@ -541,10 +541,10 @@ function getMapCoordinates(clientX, clientY) {
     let x = 0.0;
     let y = 0.0;
 
-    /*
+   
     // ====== ПРОВЕРКА НА МОБИЛЬНОЕ УСТРОЙСТВО ======
     let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-
+     /*
     // ====== ЕСЛИ МОБИЛЬНОЕ УСТРОЙСТВО (повернутое изображение) ======
     if (isMobile == true) {
         // При rotate(90deg) координаты меняются местами
@@ -2319,7 +2319,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-alert("20:55");
+alert("21:05");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
@@ -2349,7 +2349,7 @@ document.addEventListener('click', function (event) { // Работает хор
         let coords = getMapCoordinates(event.clientX, event.clientY);
         let x = coords.x;
         let y = coords.y;
-        alert("x0="+x+" y0="+y);
+        alert("x0_PC="+x+" y0_PC="+y);
 
         // Проверяем, что клик внутри изображения
         let rect = img.getBoundingClientRect();
@@ -2536,7 +2536,7 @@ document.addEventListener('click', function (event) { // Работает хор
         if ((mapScale > 2.95) && (mapScale < 3.05)) { nscale = 5; }
 
        // alert("scale=" + scale + " xScaled=" + xScaled + " yScaled=" + yScaled + " finalX=" + finalX + "%, finalY=" + finalY + "%");
-        alert("x=" + x + " y=" + y);
+        //alert("x=" + x + " y=" + y);
 
         // Применяем масштаб (координаты "сжимаются" к центру)
         let scale = mapScale || 1;
