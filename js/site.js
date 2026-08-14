@@ -2498,6 +2498,17 @@ document.addEventListener('click', function (event) { // Работает хор
         x = Math.max(0, Math.min(100, x));
         y = Math.max(0, Math.min(100, y));
 
+
+
+       // alert("scale=" + scale + " xScaled=" + xScaled + " yScaled=" + yScaled + " finalX=" + finalX + "%, finalY=" + finalY + "%");
+        alert("x=" + x + " y=" + y);
+
+        // Применяем масштаб (координаты "сжимаются" к центру)
+        let scale = mapScale || 1;
+        let xScaled = 50 + (x - 50) / scale;
+        let yScaled = 50 + (y - 50) / scale;
+
+        alert("scale=" + scale + " xScaled=" + xScaled + " yScaled=" + yScaled);
         // Проверяем попадание в кружок
         let found = false;
         for (let ii = 1; ii <= 61; ii++) {
