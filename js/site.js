@@ -614,7 +614,7 @@ function getMapCoordinates(clientX, clientY) {
         finalX = Math.max(0, Math.min(100, correctedX));
         finalY = Math.max(0, Math.min(100, correctedY));
     }
-    //alert("scale=" + scale + " xScaled=" + xScaled + " yScaled=" + yScaled+" finalX=" + finalX + "%, finalY=" + finalY + "%" + " tx="+tx+" ty="+ty);
+    alert("scale=" + scale + " xScaled=" + xScaled + " yScaled=" + yScaled+" finalX=" + finalX + "%, finalY=" + finalY + "%");
 
     return { x: finalX, y: finalY };
 }
