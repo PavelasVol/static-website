@@ -2336,6 +2336,7 @@ document.addEventListener('click', function (event) { // Работает хор
         let coords = getMapCoordinates(event.clientX, event.clientY);
         let x = coords.x;
         let y = coords.y;
+        alert("x0="+x+" y0="+y);
 
         // Проверяем, что клик внутри изображения
         let rect = img.getBoundingClientRect();
@@ -2507,6 +2508,7 @@ document.addEventListener('click', function (event) { // Работает хор
 
         x = Math.max(0, Math.min(100, x));
         y = Math.max(0, Math.min(100, y));
+        alert("x0=" + x + " y0=" + y);
 
         let nscale = 0;
         if ((mapScale > 0.95) && (mapScale < 1.05)) { nscale = 1; }
