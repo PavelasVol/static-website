@@ -306,12 +306,13 @@ function applyMapTransform() {
 
     // ====== ФОРМИРУЕМ ТРАНСФОРМАЦИЮ ======
     let transformString = `translate(${clampedX}px, ${clampedY}px) scale(${mapScale})`;
-
+    // Поворот будет применяться через CSS-медиазапросы
     // Если мобильное устройство, добавляем поворот
+    /*
     if (isMobile) {
         // Для вертикальной ориентации добавляем поворот на 90 градусов
         // Также нужно увеличить масштаб для заполнения экрана
-        let mobileScale = mapScale * 1.0; // Компенсируем масштаб из CSS 1.4
+        let mobileScale = mapScale * 1.4; // Компенсируем масштаб из CSS 1.4
         transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`;
 
         // Корректируем положение для повернутого изображения
@@ -319,8 +320,9 @@ function applyMapTransform() {
         // Нужно сместить изображение, чтобы оно было по центру
         let offsetX = (containerWidth - containerHeight) / 2;
         let offsetY = (containerHeight - containerWidth) / 2;
-        // transformString = `translate(${clampedX + offsetX}px, ${clampedY + offsetY}px) rotate(90deg) scale(${mobileScale})`;
+        transformString = `translate(${clampedX + offsetX}px, ${clampedY + offsetY}px) rotate(90deg) scale(${mobileScale})`;
     }
+    */
 
     img.style.transform = transformString;
     img.style.transformOrigin = 'center center';
@@ -2319,7 +2321,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-alert("21:25");
+alert("22:30");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
