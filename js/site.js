@@ -538,34 +538,38 @@ function getMapCoordinates(clientX, clientY) {
         return { x: -1, y: -1 };
     }
 
-    /*
+    let x = 0.0;
+    let y = 0.0;
     // ====== ПРОВЕРКА НА МОБИЛЬНОЕ УСТРОЙСТВО ======
     let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
 
-    // Координаты клика в процентах от rect
-    let clickX = (clientX - rect.left) / rect.width * 100;
-    let clickY = (clientY - rect.top) / rect.height * 100;
-
     // ====== ЕСЛИ МОБИЛЬНОЕ УСТРОЙСТВО (повернутое изображение) ======
-    if (isMobile) {
+    if (isMobile == true) {
         // При rotate(90deg) координаты меняются местами
         // x_original = y_click, y_original = 100 - x_click
+        // Координаты клика в процентах от rect
+        let clickX = (clientX - rect.left) / rect.width * 100;
+        let clickY = (clientY - rect.top) / rect.height * 100;
         let tempX = clickX;
         let tempY = clickY;
-        clickX = tempY;
-        clickY = 100 - tempX;
+        x = tempY;
+        y = 100 - tempX;
+
+       // let x = (clickY - dy) / H1 * 100;
+       // let y = 100 - (clickX - dx) / W1 * 100;
 
         console.log(`Мобильная версия: скорректированные координаты (${clickX.toFixed(2)}, ${clickY.toFixed(2)})`);
     }
 
-    */
+    if (isMobile == false) {
+        // Координаты в процентах от всего элемента
+        x = (clientX - rect.left) / rect.width * 100;
+        y = (clientY - rect.top) / rect.height * 100;
+    }
 
 
     // ====== ПРОСТОЙ ПОДХОД ======
-    // Координаты в процентах от всего элемента
-    let x = (clientX - rect.left) / rect.width * 100;
-    let y = (clientY - rect.top) / rect.height * 100;
-
+   
     // Применяем масштаб (координаты "сжимаются" к центру)
     let scale = mapScale || 1;
     let xScaled = 50 + (x - 50) / scale;
@@ -588,7 +592,7 @@ function getMapCoordinates(clientX, clientY) {
 
     // Корректируем с учетом object-fit: contain (черные полосы)
     // Но при масштабе > 1 черные полосы исчезают, поэтому корректировка нужна только при scale <= 1
-    if (scale <= 1.5) {
+    if ((scale <= 1.5) && (isMobile == false)) {
         // Получаем натуральные размеры
         let naturalWidth = img.naturalWidth;
         let naturalHeight = img.naturalHeight;
@@ -2321,7 +2325,7 @@ document.addEventListener('click', function (event) { // Работает хор
     //  Проверяем, повернуто ли изображение (мобильная версия)
     let isRotated = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
 
-    
+    isRotated = false;
     if (isRotated == false) { // Версия для ПК
         // Получаем координаты клика с учетом масштаба карты
         let coords = getMapCoordinates(event.clientX, event.clientY);
@@ -2498,7 +2502,12 @@ document.addEventListener('click', function (event) { // Работает хор
         x = Math.max(0, Math.min(100, x));
         y = Math.max(0, Math.min(100, y));
 
-
+        let nscale = 0;
+        if ((mapScale > 0.95) && (mapScale < 1.05)) { nscale = 1; }
+        if ((mapScale > 1.45) && (mapScale < 1.55)) { nscale = 2; }
+        if ((mapScale > 1.95) && (mapScale < 2.05)) { nscale = 3; }
+        if ((mapScale > 2.45) && (mapScale < 2.55)) { nscale = 4; }
+        if ((mapScale > 2.95) && (mapScale < 3.05)) { nscale = 5; }
 
        // alert("scale=" + scale + " xScaled=" + xScaled + " yScaled=" + yScaled + " finalX=" + finalX + "%, finalY=" + finalY + "%");
         alert("x=" + x + " y=" + y);
