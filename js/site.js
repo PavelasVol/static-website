@@ -611,7 +611,7 @@ function getMapCoordinates(clientX, clientY) {
 
     // Корректируем с учетом object-fit: contain (черные полосы)
     // Но при масштабе > 1 черные полосы исчезают, поэтому корректировка нужна только при scale <= 1
-    if ((scale <= 1.5)) {
+    if ((scale <= 1.5) && (isMobile == false)) {
         // Получаем натуральные размеры
         let naturalWidth = img.naturalWidth;
         let naturalHeight = img.naturalHeight;
@@ -2321,7 +2321,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-alert("23:30");
+alert("23:45");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
