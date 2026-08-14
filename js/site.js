@@ -540,6 +540,8 @@ function getMapCoordinates(clientX, clientY) {
 
     let x = 0.0;
     let y = 0.0;
+
+    /*
     // ====== ПРОВЕРКА НА МОБИЛЬНОЕ УСТРОЙСТВО ======
     let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
 
@@ -566,10 +568,12 @@ function getMapCoordinates(clientX, clientY) {
         x = (clientX - rect.left) / rect.width * 100;
         y = (clientY - rect.top) / rect.height * 100;
     }
-
+    */
 
     // ====== ПРОСТОЙ ПОДХОД ======
-   
+    // Координаты в процентах от всего элемента
+    x = (clientX - rect.left) / rect.width * 100;
+    y = (clientY - rect.top) / rect.height * 100;
     // Применяем масштаб (координаты "сжимаются" к центру)
     let scale = mapScale || 1;
     let xScaled = 50 + (x - 50) / scale;
@@ -592,7 +596,7 @@ function getMapCoordinates(clientX, clientY) {
 
     // Корректируем с учетом object-fit: contain (черные полосы)
     // Но при масштабе > 1 черные полосы исчезают, поэтому корректировка нужна только при scale <= 1
-    if ((scale <= 1.5) && (isMobile == false)) {
+    if ((scale <= 1.5)) {
         // Получаем натуральные размеры
         let naturalWidth = img.naturalWidth;
         let naturalHeight = img.naturalHeight;
@@ -618,7 +622,7 @@ function getMapCoordinates(clientX, clientY) {
         finalX = Math.max(0, Math.min(100, correctedX));
         finalY = Math.max(0, Math.min(100, correctedY));
     }
-    alert("scale=" + scale + " xScaled=" + xScaled + " yScaled=" + yScaled+" finalX=" + finalX + "%, finalY=" + finalY + "%");
+    //alert("scale=" + scale + " xScaled=" + xScaled + " yScaled=" + yScaled+" finalX=" + finalX + "%, finalY=" + finalY + "%");
 
     return { x: finalX, y: finalY };
 }
@@ -2325,7 +2329,7 @@ document.addEventListener('click', function (event) { // Работает хор
     //  Проверяем, повернуто ли изображение (мобильная версия)
     let isRotated = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
 
-    isRotated = false;
+    
     if (isRotated == false) { // Версия для ПК
         // Получаем координаты клика с учетом масштаба карты
         let coords = getMapCoordinates(event.clientX, event.clientY);
