@@ -2452,6 +2452,7 @@ document.addEventListener('click', function (event) { // Работает хор
     }
 
     if (isRotated) { // Версия для мобильных устройств
+        alert("18:40");
         // 1. Получаем размеры окна браузера
         let WB = window.innerWidth;
         let HB = window.innerHeight;
