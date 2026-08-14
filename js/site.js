@@ -572,8 +572,21 @@ function getMapCoordinates(clientX, clientY) {
 
     // ====== ПРОСТОЙ ПОДХОД ======
     // Координаты в процентах от всего элемента
-    x = (clientX - rect.left) / rect.width * 100;
-    y = (clientY - rect.top) / rect.height * 100;
+    if (isMobile == false) {
+        x = (clientX - rect.left) / rect.width * 100;
+        y = (clientY - rect.top) / rect.height * 100;
+    }
+
+    if (isMobile == true) {
+        let clickX = (clientX - rect.left) / rect.width * 100;
+        let clickY = (clientY - rect.top) / rect.height * 100;
+        let tempX = clickX;
+        let tempY = clickY;
+        x = tempY;
+        y = 100 - tempX;
+    }
+
+
     // Применяем масштаб (координаты "сжимаются" к центру)
     let scale = mapScale || 1;
     let xScaled = 50 + (x - 50) / scale;
@@ -2306,7 +2319,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-alert("19:25");
+alert("20:35");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
