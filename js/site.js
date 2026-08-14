@@ -2306,6 +2306,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
+alert("18:40");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
@@ -2452,7 +2453,7 @@ document.addEventListener('click', function (event) { // Работает хор
     }
 
     if (isRotated) { // Версия для мобильных устройств
-        alert("18:40");
+        //alert("18:40");
         // 1. Получаем размеры окна браузера
         let WB = window.innerWidth;
         let HB = window.innerHeight;
