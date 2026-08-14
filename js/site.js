@@ -2522,6 +2522,9 @@ document.addEventListener('click', function (event) { // Работает хор
         let yScaled = 50 + (y - 50) / scale;
 
         alert("scale=" + scale + " xScaled=" + xScaled + " yScaled=" + yScaled);
+
+
+
         // Проверяем попадание в кружок
         let found = false;
         for (let ii = 1; ii <= 61; ii++) {
