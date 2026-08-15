@@ -435,14 +435,12 @@
                 height: 100%;
                 z-index: 2;
                 display: block;
-                /* Вместо contain используем cover, чтобы заполнить экран */
-                /*object-fit: cover;*/
+                /* Используем contain, чтобы изображение вписывалось в экран */
                 object-fit: contain;
                 pointer-events: none;
                 background: transparent;
-                
-                transform: rotate(90deg) scale(1.4);
-                transform-origin: center center;
+                /* Только поворот, без масштабирования! */
+                transform: rotate(90deg);
                 transform-origin: center center;
                 /*
                 object-fit: contain;
