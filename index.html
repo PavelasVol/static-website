@@ -431,15 +431,13 @@
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: 100%;
-                height: 100%;
+                width: 100vw;
+                height: 100vh;
                 z-index: 2;
                 display: block;
-                /* Используем contain, чтобы изображение вписывалось в экран */
                 object-fit: contain;
                 pointer-events: none;
                 background: transparent;
-                /* Только поворот, без масштабирования! */
                 transform: rotate(90deg);
                 transform-origin: center center;
                 /*
