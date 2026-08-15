@@ -324,18 +324,33 @@ function applyMapTransform() {
 //alert("322");
 function applyMobileScale() {
     let img = document.getElementById('img0');
-    if (!img) return;
-
+    if (!img) {
+        alert('applyMobileScale: img0 not found');
+        return;
+    }
     let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-    if (!isMobile) return;
-
+    alert('applyMobileScale: isMobile =' + isMobile + " " + 'window.innerWidth =' + window.innerWidth + " " + 'window.innerHeight =' + window.innerHeight);
+    if (!isMobile) {
+        img.style.transform = '';
+        alert('applyMobileScale: ПК режим, трансформация сброшена');
+        return;
+    }
+    if (img.naturalWidth === 0 || img.naturalHeight === 0) {
+        alert('applyMobileScale: изображение еще не загружено, повтор через 200ms');
+        setTimeout(applyMobileScale, 200);
+        return;
+    }
     let rect = img.getBoundingClientRect();
     let naturalWidth = img.naturalWidth;
     let naturalHeight = img.naturalHeight;
 
+    alert('naturalWidth =' + naturalWidth + ' naturalHeight =' + naturalHeight);
+    
     // При повороте на 90° меняем местами ширину и высоту
     let imageWidth = naturalHeight;
     let imageHeight = naturalWidth;
+
+    alert('imageWidth (после поворота) =' + imageWidth + ' imageHeight (после поворота) =' + imageHeight);
 
     let windowWidth = window.innerWidth;
     let windowHeight = window.innerHeight;
@@ -344,17 +359,34 @@ function applyMobileScale() {
     let scaleX = windowWidth / imageWidth;
     let scaleY = windowHeight / imageHeight;
 
+    alert('scaleX =' + scaleX +' scaleY =' + scaleY);
+
     // Выбираем минимальный масштаб (чтобы изображение полностью помещалось)
     let scale = Math.min(scaleX, scaleY);
+    alert('scale (min) =' + scale);
 
     // Ограничиваем масштаб (не меньше 1 и не больше 2)
     scale = Math.min(Math.max(scale, 1.0), 2.0);
+    alert('scale (ограниченный) =' + scale);
+
+    // Проверяем, есть ли mapScale
+    alert('mapScale =' + mapScale);
 
     console.log(`Мобильный масштаб: ${scale.toFixed(2)} (ширина: ${windowWidth}, высота: ${windowHeight})`);
 
     // Применяем масштаб
-    img.style.transform = `rotate(90deg) scale(${scale})`;
+    //img.style.transform = `rotate(90deg) scale(${scale})`;
+    //img.style.transformOrigin = 'center center';
+    if (mapScale && mapScale > 1) {
+        img.style.transform = `rotate(90deg) scale(${mapScale})`;
+        alert('Применяем mapScale:' + mapScale);
+    } else {
+        img.style.transform = `rotate(90deg) scale(${scale})`;
+        alert('Применяем мобильный масштаб:' + scale);
+    }
     img.style.transformOrigin = 'center center';
+
+    console.log('applyMobileScale: применена трансформация');
 }
 
 // Вызываем при загрузке и изменении размера
@@ -2328,7 +2360,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-alert("11:00");
+alert("13:10");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
