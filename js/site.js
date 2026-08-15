@@ -278,7 +278,7 @@ function applyTransformToMedia() {
 }
 //alert("277");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-alert("00:25");
+alert("00:40");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
@@ -319,7 +319,7 @@ function applyMapTransform() {
             //if (mobileScale < 0.5) mobileScale = 0.5;
             if (mobileScale > 3.0) mobileScale = 3.0;
             // Применяем трансформацию
-            mobileScale = 1.0; // Временно для отладки
+            //mobileScale = 1.0; // Временно для отладки
             let finalScale = mapScale / mobileScale;            
             img.style.width = 'auto';
             img.style.height = 'auto';
