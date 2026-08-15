@@ -322,6 +322,59 @@ function applyMapTransform() {
     }
 }
 //alert("322");
+function applyMobileScale() {
+    let img = document.getElementById('img0');
+    if (!img) return;
+
+    let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+    if (!isMobile) return;
+
+    let rect = img.getBoundingClientRect();
+    let naturalWidth = img.naturalWidth;
+    let naturalHeight = img.naturalHeight;
+
+    // При повороте на 90° меняем местами ширину и высоту
+    let imageWidth = naturalHeight;
+    let imageHeight = naturalWidth;
+
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+
+    // Вычисляем масштаб, чтобы изображение занимало всю ширину или высоту
+    let scaleX = windowWidth / imageWidth;
+    let scaleY = windowHeight / imageHeight;
+
+    // Выбираем минимальный масштаб (чтобы изображение полностью помещалось)
+    let scale = Math.min(scaleX, scaleY);
+
+    // Ограничиваем масштаб (не меньше 1 и не больше 2)
+    scale = Math.min(Math.max(scale, 1.0), 2.0);
+
+    console.log(`Мобильный масштаб: ${scale.toFixed(2)} (ширина: ${windowWidth}, высота: ${windowHeight})`);
+
+    // Применяем масштаб
+    img.style.transform = `rotate(90deg) scale(${scale})`;
+    img.style.transformOrigin = 'center center';
+}
+
+// Вызываем при загрузке и изменении размера
+window.addEventListener('load', function () {
+    setTimeout(applyMobileScale, 300);
+});
+//window.addEventListener('resize', applyMobileScale);
+window.addEventListener('resize', function () {
+    //?positionPanel();
+    // ====== ДОБАВЬТЕ ЭТУ СТРОКУ ======
+    applyMobileScale();
+});
+// Добавьте новый обработчик
+window.addEventListener('orientationchange', function () {
+    // Даем время на завершение анимации поворота
+    setTimeout(function () {
+        applyMobileScale();
+        positionPanel();
+    }, 500);
+});
 // ====== ПЕРЕСЧЕТ КООРДИНАТ КЛИКА С УЧЕТОМ МАСШТАБА ======
 function getMapCoordinates_(clientX, clientY) {
     let img = document.getElementById('img0');
@@ -929,6 +982,8 @@ function onMapWheel(e) {
         translateX = 0;
         translateY = 0;
         applyTransformToMedia();
+        // ====== ДОБАВЬТЕ ЭТУ СТРОКУ ======
+        applyMobileScale(); // При возврате к масштабу 1 пересчитываем мобильный масштаб
     }
 }
 
@@ -1608,6 +1663,9 @@ window.addEventListener('load', function () {
     createZoomIndicator();
     setTimeout(setupMapHandlers, 500); // Инициализация обработчиков карты
     setTimeout(setupMobileMapHandlers, 500); // <-- Добавить
+   
+    // ====== ДОБАВЬТЕ ЭТУ СТРОКУ ======
+    setTimeout(applyMobileScale, 400); // После загрузки изображения
     console.log('Window loaded, map handlers scheduled');
 });
 window.addEventListener('resize', positionPanel);
@@ -1622,6 +1680,9 @@ window.addEventListener('resize', positionPanel);
 document.getElementById('img0').addEventListener('load', function () {
     setTimeout(positionPanel, 300);
     setTimeout(setupMapHandlers, 500);
+
+    // ====== ДОБАВЬТЕ ЭТУ СТРОКУ ======
+    setTimeout(applyMobileScale, 300);
     console.log('img0 loaded, map handlers scheduled');
 });
 
@@ -2267,7 +2328,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-alert("10:40");
+alert("11:00");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
