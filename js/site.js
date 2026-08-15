@@ -278,7 +278,7 @@ function applyTransformToMedia() {
 }
 //alert("277");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-alert("00:20");
+alert("00:25");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
