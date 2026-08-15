@@ -276,6 +276,7 @@ function applyTransformToMedia() {
 }
 //alert("277");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
+alert("15:35");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
@@ -315,7 +316,7 @@ function applyMapTransform() {
             //if (mobileScale < 0.5) mobileScale = 0.5;
             if (mobileScale > 3.0) mobileScale = 3.0;
             // Применяем трансформацию
-            let finalScale = mapScale;
+            let finalScale = mapScale / mobileScale;
             img.style.transform = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${finalScale})`;
             //alert("Мобильная трансформация: rotate(90deg) scale(" + finalScale.toFixed(2) + ")");
             alert("Мобильная трансформация: translate("+ clampedX.toFixed(0)+", "+clampedY.toFixed(0)+") rotate(90deg) scale("+finalScale.toFixed(3)+")");
@@ -2400,7 +2401,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-alert("15:20");
+
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
