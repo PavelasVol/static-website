@@ -252,6 +252,7 @@ function setupMouseHandlers(container) {
 //alert("252");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ ======
 function applyTransformToMedia() {
+    alert("applyTransformToMedia called, currentMedia:" + currentMedia + "mediaContainer:" + mediaContainer);
     console.log('applyTransformToMedia called, currentMedia:', currentMedia, 'mediaContainer:', mediaContainer);
     if (currentMedia && mediaContainer) {
         // Ограничиваем перемещение
@@ -270,13 +271,14 @@ function applyTransformToMedia() {
         currentMedia.style.transformOrigin = 'center center';
         currentMedia.style.transition = 'transform 0.05s ease';
         console.log('applyTransformToMedia: transform applied');
+        alert("applyTransformToMedia: transform applied");
     } else {
         console.log('applyTransformToMedia: currentMedia or mediaContainer is null!');
     }
 }
 //alert("277");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-alert("15:35");
+alert("23:55");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
@@ -312,10 +314,12 @@ function applyMapTransform() {
             let imageHeight = img.naturalWidth;
             let scaleX = window.innerWidth / imageWidth;
             let scaleY = window.innerHeight / imageHeight;
+            alert("imageWidth=" + imageWidth + " imageHeight = " + imageHeight + " window.innerWidth=" + window.innerWidth + " window.innerHeight" + " scaleX=" + scaleX + " scaleY=" + scaleY);
             mobileScale = Math.min(scaleX, scaleY); // Вписывание
             //if (mobileScale < 0.5) mobileScale = 0.5;
             if (mobileScale > 3.0) mobileScale = 3.0;
             // Применяем трансформацию
+            mobileScale = 1.0; // Временно для отладки
             let finalScale = mapScale / mobileScale;
             img.style.transform = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${finalScale})`;
             //alert("Мобильная трансформация: rotate(90deg) scale(" + finalScale.toFixed(2) + ")");
