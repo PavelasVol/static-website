@@ -321,7 +321,7 @@ function calculateMobileBaseScale() {
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-alert("12:05");
+alert("12:25");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
@@ -570,7 +570,7 @@ window.addEventListener('load', function () {
     setTimeout(setupMapHandlers, 500);
     setTimeout(setupMobileMapHandlers, 500);
     setTimeout(function () {
-        mobileBaseScale = calculateMobileBaseScale();
+        
         console.log('mobileBaseScale =', mobileBaseScale);
         // Применяем трансформацию
         applyMapTransform();  // <-- Вызываем applyMapTransform
@@ -578,7 +578,7 @@ window.addEventListener('load', function () {
 });
 //window.addEventListener('resize', applyMobileScale);
 window.addEventListener('resize', function () {
-    mobileBaseScale = calculateMobileBaseScale();
+    //mobileBaseScale = calculateMobileBaseScale();
     positionPanel();
     applyMapTransform();  // <-- Вызываем applyMapTransform
 });
@@ -586,7 +586,7 @@ window.addEventListener('resize', function () {
 window.addEventListener('orientationchange', function () {
     // Даем время на завершение анимации поворота
     setTimeout(function () {
-        mobileBaseScale = calculateMobileBaseScale();
+        //mobileBaseScale = calculateMobileBaseScale();
         applyMapTransform();
         positionPanel();
     }, 500);
@@ -1898,7 +1898,7 @@ document.getElementById('img0').addEventListener('load', function () {
     setTimeout(setupMapHandlers, 500);
 
     setTimeout(function () {
-        mobileBaseScale = calculateMobileBaseScale();
+        //mobileBaseScale = calculateMobileBaseScale();
         console.log('mobileBaseScale (after load) =', mobileBaseScale);
         applyMapTransform();  // <-- Вызываем applyMapTransform
     }, 300);
