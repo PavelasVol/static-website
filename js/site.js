@@ -278,7 +278,7 @@ function applyTransformToMedia() {
 }
 //alert("277");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-alert("09:50");
+alert("10:10");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
@@ -335,12 +335,12 @@ function applyMapTransform() {
             // В JavaScript только translate и пользовательский scale
             // CSS уже делает object-fit: contain
             // Добавляем rotate и scale
-            img.style.transform = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mapScale})`;
-            //img.style.transform = `translate(${clampedX}px, ${clampedY}px) scale(${mapScale})`;
+            img.style.transform = `translate(${clampedX}px, ${clampedY}px) rotate(90deg))`;
+            img.style.transform = `translate(${clampedX}px, ${clampedY}px) scale(${mapScale})`;
             img.style.transformOrigin = 'center center';
             img.style.transition = 'transform 0.05s ease';
 
-            img.style.objectFit = contain;
+            //img.style.objectFit = contain;
             alert("out applyMapTransform");
 
             //alert("Мобильная трансформация: rotate(90deg) scale(" + finalScale.toFixed(2) + ")");
