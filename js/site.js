@@ -30,10 +30,6 @@ let initialTranslateX = 0;
 let initialTranslateY = 0;
 let lastTapTime = 0;
 //alert("32");
-
-// ====== ИНИЦИАЛИЗАЦИЯ ======
-let mobileBaseScale = 1.0;
-
 function onclick_01() {
     image.setAttribute("src", " ");
     image.setAttribute("style", "display: none");
@@ -256,7 +252,6 @@ function setupMouseHandlers(container) {
 //alert("252");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ ======
 function applyTransformToMedia() {
-    alert("applyTransformToMedia called, currentMedia:" + currentMedia + "mediaContainer:" + mediaContainer);
     console.log('applyTransformToMedia called, currentMedia:', currentMedia, 'mediaContainer:', mediaContainer);
     if (currentMedia && mediaContainer) {
         // Ограничиваем перемещение
@@ -275,53 +270,12 @@ function applyTransformToMedia() {
         currentMedia.style.transformOrigin = 'center center';
         currentMedia.style.transition = 'transform 0.05s ease';
         console.log('applyTransformToMedia: transform applied');
-        alert("applyTransformToMedia: transform applied");
     } else {
         console.log('applyTransformToMedia: currentMedia or mediaContainer is null!');
     }
 }
 //alert("277");
-// ====== ВЫЧИСЛЕНИЕ БАЗОВОГО МОБИЛЬНОГО МАСШТАБА ======
-function calculateMobileBaseScale() {
-    let img = document.getElementById('img0');
-    if (!img) return 1.0;
-
-    let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-    if (!isMobile) return 1.0;
-
-    if (img.naturalWidth === 0 || img.naturalHeight === 0) {
-        return 1.0;
-    }
-
-    let naturalWidth = img.naturalWidth;   // 4521
-    let naturalHeight = img.naturalHeight; // 2555
-
-    // При повороте на 90° меняем местами
-    let imageWidth = naturalHeight;   // 2555
-    let imageHeight = naturalWidth;   // 4521
-
-    let windowWidth = window.innerWidth;
-    let windowHeight = window.innerHeight;
-
-    // Вычисляем масштаб для вписывания в экран
-    let scaleX = windowWidth / imageWidth;   // 360 / 2555 = 0.1409
-    let scaleY = windowHeight / imageHeight; // 623 / 4521 = 0.1378
-
-    // Базовый масштаб = минимальный для вписывания
-    let baseScale = Math.min(scaleX, scaleY);
-
-    console.log('calculateMobileBaseScale:');
-    console.log('  imageWidth:', imageWidth, 'imageHeight:', imageHeight);
-    console.log('  scaleX:', scaleX, 'scaleY:', scaleY);
-    console.log('  baseScale:', baseScale);
-
-    return baseScale;
-}
-
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-
-// ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-alert("22:35");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
@@ -331,10 +285,11 @@ function applyMapTransform() {
     //if (!img) return;
 
     console.log('applyMapTransform: scale=' + mapScale + ', translateX=' + mapTranslateX + ', translateY=' + mapTranslateY);
-    //alert("in applyMapTransform");
 
+
+    // ====== ПРОВЕРКА НА МОБИЛЬНОЕ УСТРОЙСТВО ======
     let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-   
+
     // Получаем размеры контейнера
     let containerWidth = window.innerWidth;
     let containerHeight = window.innerHeight;
@@ -349,94 +304,33 @@ function applyMapTransform() {
     let clampedX = Math.min(Math.max(mapTranslateX, -maxTranslateX), maxTranslateX);
     let clampedY = Math.min(Math.max(mapTranslateY, -maxTranslateY), maxTranslateY);
 
+    // ====== ФОРМИРУЕМ ТРАНСФОРМАЦИЮ ======
+    let transformString = `translate(${clampedX}px, ${clampedY}px) scale(${mapScale})`;
+    // Поворот будет применяться через CSS-медиазапросы
+    // Если мобильное устройство, добавляем поворот
+    /*
     if (isMobile) {
-        alert("=== МОБИЛЬНАЯ ВЕРСИЯ ===");
-        // Вычисляем базовый мобильный масштаб (вписывание)
-        let mobileScale = 1.0;
-        if (img.naturalWidth > 0 && img.naturalHeight > 0) {
-            alert("in if");
-            // При повороте на 90° меняем местами ширину и высоту
-            let rotatedWidth = naturalHeight;   // 2555
-            let rotatedHeight = naturalWidth;   // 4521
-            alert("naturalWidth=" + naturalWidth + " naturalHeight=" + naturalHeight);
-            alert("rotatedWidth=" + rotatedWidth + " rotatedHeight=" + rotatedHeight);
+        // Для вертикальной ориентации добавляем поворот на 90 градусов
+        // Также нужно увеличить масштаб для заполнения экрана
+        let mobileScale = mapScale * 1.4; // Компенсируем масштаб из CSS 1.4
+        transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`;
 
-            // Базовый масштаб для вписывания в экран
-            let scaleX = windowWidth / rotatedWidth;
-            let scaleY = windowHeight / rotatedHeight;
-            alert("scaleX=" + scaleX.toFixed(4) + " scaleY=" + scaleY.toFixed(4));
-            let baseScale = Math.min(scaleX, scaleY);
-            if (baseScale < 0.05) baseScale = 0.05;
-            if (baseScale > 3.0) baseScale = 3.0;
-
-            // Итоговый масштаб
-            let finalScale = baseScale * mapScale;
-            alert("baseScale=" + baseScale.toFixed(4) + " mapScale=" + mapScale.toFixed(2) + " finalScale=" + finalScale.toFixed(4));
-            // Размеры изображения на экране после трансформации
-            let displayWidth = rotatedWidth * finalScale;
-            let displayHeight = rotatedHeight * finalScale;
-            alert("displayWidth=" + displayWidth.toFixed(2) + " displayHeight=" + displayHeight.toFixed(2));
-            
-            // Ограничиваем перемещение
-            let maxTranslateX = Math.max(0, (displayWidth - windowWidth) / 2);
-            let maxTranslateY = Math.max(0, (displayHeight - windowHeight) / 2);
-            let clampedX = Math.min(Math.max(mapTranslateX, -maxTranslateX), maxTranslateX);
-            let clampedY = Math.min(Math.max(mapTranslateY, -maxTranslateY), maxTranslateY);
-            alert("clampedX=" + clampedX.toFixed(2) + " clampedY=" + clampedY.toFixed(2));
-
-            // Центрируем изображение
-            let offsetX = (windowWidth - displayWidth) / 2;
-            let offsetY = (windowHeight - displayHeight) / 2;
-            alert("windowWidth=" + windowWidth + " windowHeight=" + windowHeight);
-            alert("offsetX=" + offsetX.toFixed(2) + " offsetY=" + offsetY.toFixed(2));
-            let finalTranslateX = offsetX + clampedX;
-            let finalTranslateY = offsetY + clampedY;           
-            
-            
-            alert("finalTranslateX=" + finalTranslateX.toFixed(2) + " finalTranslateY=" + finalTranslateY.toFixed(2));
-
-            // ====== ПРИМЕНЯЕМ СТИЛИ ======
-            // Сначала сбрасываем все стили, которые могут мешать
-            img.style.width = rotatedWidth + 'px';
-            img.style.height = rotatedHeight + 'px';
-            img.style.maxWidth = 'none';
-            img.style.maxHeight = 'none';
-            img.style.position = 'absolute';
-            img.style.left = '0';
-            img.style.top = '0';
-            img.style.margin = '0';
-            img.style.padding = '0';
-            img.style.border = 'none';
-            img.style.objectFit = 'none';
-            img.style.display = 'block';
-            img.style.visibility = 'visible';
-            img.style.opacity = '1';
-            img.style.pointerEvents = 'none';
-            img.style.transformOrigin = 'center center';
-            img.style.transition = 'transform 0.05s ease';
-
-            // Применяем трансформацию
-            img.style.transform = `translate(${finalTranslateX}px, ${finalTranslateY}px) rotate(90deg) scale(${finalScale})`;
-
-            alert("Трансформация применена:\ntranslate(" + finalTranslateX.toFixed(2) + "px, " + finalTranslateY.toFixed(2) + "px)\nrotate(90deg)\nscale(" + finalScale.toFixed(4) + ")");
-            alert("Размер элемента: " + rotatedWidth + "x" + rotatedHeight + "px");
-
-            //alert("Мобильная трансформация: rotate(90deg) scale(" + finalScale.toFixed(2) + ")");
-            //alert("Мобильная трансформация: translate("+ clampedX.toFixed(0)+", "+clampedY.toFixed(0)+") rotate(90deg) scale("+finalScale.toFixed(3)+")");
-        }
-    } else {
-        // ПК
-        img.style.transform = `translate(${clampedX}px, ${clampedY}px) scale(${mapScale})`;
+        // Корректируем положение для повернутого изображения
+        // При rotate(90deg) центр вращения находится в центре
+        // Нужно сместить изображение, чтобы оно было по центру
+        let offsetX = (containerWidth - containerHeight) / 2;
+        let offsetY = (containerHeight - containerWidth) / 2;
+        transformString = `translate(${clampedX + offsetX}px, ${clampedY + offsetY}px) rotate(90deg) scale(${mobileScale})`;
+    }
+    */
+    if (isMobile) {
+        transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`
     }
 
-    // ====== ФОРМИРУЕМ ТРАНСФОРМАЦИЮ ======
-    // Только translate и scale, без rotate!
-    // Поворот управляется через CSS
-    //let transformString = `translate(${clampedX}px, ${clampedY}px) scale(${mapScale})`;    
-    // Применяем трансформацию
-    //img.style.transform = transformString;
-    //img.style.transformOrigin = 'center center';
-    //img.style.transition = 'transform 0.05s ease';
+
+    img.style.transform = transformString;
+    img.style.transformOrigin = 'center center';
+    img.style.transition = 'transform 0.05s ease';
 
     // Обновляем индикатор масштаба
     let indicator = document.getElementById('map-zoom-level');
@@ -447,115 +341,45 @@ function applyMapTransform() {
     if (container) {
         container.style.display = 'block';
     }
+
+
+/*
+    
+    // Получаем размеры контейнера
+    let containerWidth = window.innerWidth;
+    let containerHeight = window.innerHeight;
+    // Ограничиваем перемещение
+    let imgWidth = img.offsetWidth || containerWidth;
+    let imgHeight = img.offsetHeight || containerHeight;
+
+    let maxTranslateX = Math.max(0, (imgWidth * mapScale - containerWidth) / 2);
+    let maxTranslateY = Math.max(0, (imgHeight * mapScale - containerHeight) / 2);
+
+    let clampedX = Math.min(Math.max(mapTranslateX, -maxTranslateX), maxTranslateX);
+    let clampedY = Math.min(Math.max(mapTranslateY, -maxTranslateY), maxTranslateY);
+
+    img.style.transform = `translate(${clampedX}px, ${clampedY}px) scale(${mapScale})`;
+    img.style.transformOrigin = 'center center';
+    img.style.transition = 'transform 0.05s ease';
+
+    // Обновляем индикатор масштаба
+    let indicator = document.getElementById('map-zoom-level');
+    if (indicator) {
+        indicator.textContent = mapScale.toFixed(1);
+    }
+    let container = document.getElementById('map-zoom-indicator');
+    container.style.display = 'block';
+    */
+
+    /*
+    if (container && mapScale !== 1) {
+        container.style.display = 'block';
+    } else if (container) {
+        container.style.display = 'none';
+    }
+    */
 }
 //alert("322");
-function applyMobileScale() {
-    let img = document.getElementById('img0');
-    if (!img) {
-        alert('applyMobileScale: img0 not found');
-        return;
-    }
-    let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-    alert('applyMobileScale: isMobile =' + isMobile + " " + 'window.innerWidth =' + window.innerWidth + " " + 'window.innerHeight =' + window.innerHeight);
-    if (!isMobile) {
-        img.style.transform = '';
-        alert('applyMobileScale: ПК режим, трансформация сброшена');
-        return;
-    }
-    if (img.naturalWidth === 0 || img.naturalHeight === 0) {
-        alert('applyMobileScale: изображение еще не загружено, повтор через 200ms');
-        setTimeout(applyMobileScale, 200);
-        return;
-    }
-    let rect = img.getBoundingClientRect();
-    let naturalWidth = img.naturalWidth;
-    let naturalHeight = img.naturalHeight;
-
-    alert('naturalWidth =' + naturalWidth + ' naturalHeight =' + naturalHeight);
-    
-    // При повороте на 90° меняем местами ширину и высоту
-    let imageWidth = naturalHeight;
-    let imageHeight = naturalWidth;
-
-    alert('imageWidth (после поворота) =' + imageWidth + ' imageHeight (после поворота) =' + imageHeight);
-
-    let windowWidth = window.innerWidth;
-    let windowHeight = window.innerHeight;
-
-    // Вычисляем масштаб, чтобы изображение занимало всю ширину или высоту
-    let scaleX = windowWidth / imageWidth;
-    let scaleY = windowHeight / imageHeight;
-
-    alert('scaleX =' + scaleX +' scaleY =' + scaleY);
-
-    // Выбираем минимальный масштаб (чтобы изображение полностью помещалось)
-    let scale = Math.min(scaleX, scaleY);
-    alert('scale (min) =' + scale);
-
-    // Ограничиваем масштаб (не меньше 1 и не больше 2)
-    scale = Math.min(Math.max(scale, 1.0), 2.0);
-    alert('scale (ограниченный) =' + scale);
-
-
-    // Не ограничиваем снизу, чтобы изображение не становилось слишком большим
-    // Но не даем стать слишком маленьким
-    if (scale < 0.5) scale = 0.5;
-    if (scale > 2.0) scale = 2.0;
-
-
-
-
-
-    // Проверяем, есть ли mapScale
-    //alert('mapScale =' + mapScale);
-
-    console.log(`Мобильный масштаб: ${scale.toFixed(2)} (ширина: ${windowWidth}, высота: ${windowHeight})`);
-
-    // Применяем масштаб
-    //img.style.transform = `rotate(90deg) scale(${scale})`;
-    //img.style.transformOrigin = 'center center';
-    
-    if (mapScale && mapScale > 1) {
-        img.style.transform = `rotate(90deg) scale(${scale * mapScale})`;
-        alert('Итоговый масштаб с mapScale:' + mapScale);
-    } else {
-        img.style.transform = `rotate(90deg) scale(${scale})`;
-        alert('Применяем мобильный масштаб:' + scale);
-    }
-    img.style.transformOrigin = 'center center';
-
-    console.log('applyMobileScale: применена трансформация');
-}
-
-// Вызываем при загрузке и изменении размера
-window.addEventListener('load', function () {
-    //setTimeout(applyMobileScale, 300);
-    setTimeout(positionPanel, 300);
-    createZoomIndicator();  
-    setTimeout(setupMapHandlers, 500);
-    setTimeout(setupMobileMapHandlers, 500);
-    setTimeout(function () {
-        
-        console.log('mobileBaseScale =', mobileBaseScale);
-        // Применяем трансформацию
-        applyMapTransform();  // <-- Вызываем applyMapTransform
-    }, 300);
-});
-//window.addEventListener('resize', applyMobileScale);
-window.addEventListener('resize', function () {
-    //mobileBaseScale = calculateMobileBaseScale();
-    positionPanel();
-    applyMapTransform();  // <-- Вызываем applyMapTransform
-});
-// Добавьте новый обработчик
-window.addEventListener('orientationchange', function () {
-    // Даем время на завершение анимации поворота
-    setTimeout(function () {
-        //mobileBaseScale = calculateMobileBaseScale();
-        applyMapTransform();
-        positionPanel();
-    }, 500);
-});
 // ====== ПЕРЕСЧЕТ КООРДИНАТ КЛИКА С УЧЕТОМ МАСШТАБА ======
 function getMapCoordinates_(clientX, clientY) {
     let img = document.getElementById('img0');
@@ -1163,8 +987,6 @@ function onMapWheel(e) {
         translateX = 0;
         translateY = 0;
         applyTransformToMedia();
-        // ====== ДОБАВЬТЕ ЭТУ СТРОКУ ======
-       // applyMobileScale(); // При возврате к масштабу 1 пересчитываем мобильный масштаб
     }
 }
 
@@ -1844,9 +1666,6 @@ window.addEventListener('load', function () {
     createZoomIndicator();
     setTimeout(setupMapHandlers, 500); // Инициализация обработчиков карты
     setTimeout(setupMobileMapHandlers, 500); // <-- Добавить
-   
-    // ====== ДОБАВЬТЕ ЭТУ СТРОКУ ======
-    //setTimeout(applyMobileScale, 400); // После загрузки изображения
     console.log('Window loaded, map handlers scheduled');
 });
 window.addEventListener('resize', positionPanel);
@@ -1861,12 +1680,7 @@ window.addEventListener('resize', positionPanel);
 document.getElementById('img0').addEventListener('load', function () {
     setTimeout(positionPanel, 300);
     setTimeout(setupMapHandlers, 500);
-
-    setTimeout(function () {
-        //mobileBaseScale = calculateMobileBaseScale();
-        console.log('mobileBaseScale (after load) =', mobileBaseScale);
-        applyMapTransform();  // <-- Вызываем applyMapTransform
-    }, 300);
+    console.log('img0 loaded, map handlers scheduled');
 });
 
 
@@ -2511,7 +2325,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-
+alert("00:05");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
