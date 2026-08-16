@@ -278,7 +278,7 @@ function applyTransformToMedia() {
 }
 //alert("277");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-alert("08:00");
+alert("08:45");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
@@ -314,7 +314,7 @@ function applyMapTransform() {
             let imageHeight = img.naturalWidth;
             let scaleX = window.innerWidth / imageWidth;
             let scaleY = window.innerHeight / imageHeight;
-            alert("imageWidth=" + imageWidth + " imageHeight = " + imageHeight + " window.innerWidth=" + window.innerWidth + " window.innerHeight" + " scaleX=" + scaleX + " scaleY=" + scaleY);
+            alert("imageWidth=" + imageWidth + " imageHeight = " + imageHeight + " window.innerWidth=" + window.innerWidth + " window.innerHeight=" + window.innerHeight+ " scaleX=" + scaleX + " scaleY=" + scaleY);
             mobileScale = Math.min(scaleX, scaleY); // Вписывание
             if (mobileScale < 0.1) mobileScale = 0.1;
             if (mobileScale > 3.0) mobileScale = 3.0;
@@ -324,16 +324,16 @@ function applyMapTransform() {
             alert("finalScale=" + finalScale);
 
             // Убедимся, что изображение видимо
-            img.style.display = 'block';
-            img.style.visibility = 'visible';
-            img.style.opacity = '1';
-            img.style.position = 'absolute';
-            img.style.left = '0';
-            img.style.top = '0';
-            img.style.width = 'auto';
-            img.style.height = 'auto';
-            img.style.maxWidth = 'none';
-            img.style.maxHeight = 'none';
+            //img.style.display = 'block';
+            //img.style.visibility = 'visible';
+            //img.style.opacity = '1';
+            //img.style.position = 'absolute';
+            //img.style.left = '0';
+            //img.style.top = '0';
+            //img.style.width = 'auto';
+            //img.style.height = 'auto';
+            //img.style.maxWidth = 'none';
+            //img.style.maxHeight = 'none';
             img.style.transform = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${finalScale})`;
             img.style.transformOrigin = 'center center';
             img.style.transition = 'transform 0.05s ease';
