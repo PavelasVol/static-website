@@ -321,7 +321,7 @@ function calculateMobileBaseScale() {
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-alert("10:55");
+alert("11:35");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
@@ -385,14 +385,41 @@ function applyMapTransform() {
             // ====== МОБИЛЬНАЯ ВЕРСИЯ ======
             // ====== ИСПОЛЬЗУЕМ mobileBaseScale ДЛЯ БАЗОВОГО МАСШТАБА ======
             // Итоговый масштаб = базовый * пользовательский
-            let finalScale = mobileBaseScale * mapScale;
 
+            let finalScale = mobileBaseScale * mapScale;
             // Сначала применяем базовый масштаб (вписывание), затем пользовательский
+            //img.style.transform = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${finalScale})`;
+            //img.style.transformOrigin = 'center center';
+            //img.style.transition = 'transform 0.05s ease';
+
+            // ====== МОБИЛЬНАЯ ВЕРСИЯ ======
+            // Сначала устанавливаем размер элемента (чтобы он не занимал лишнее место)
+            img.style.width = displayWidth + 'px';
+            img.style.height = displayHeight + 'px';
+            img.style.maxWidth = 'none';
+            img.style.maxHeight = 'none';
+            alert("Сначала устанавили размер элемента (чтобы он не занимал лишнее место)");
+            // Затем применяем трансформацию
             img.style.transform = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${finalScale})`;
             img.style.transformOrigin = 'center center';
             img.style.transition = 'transform 0.05s ease';
+            img.style.display = 'block';
+            img.style.visibility = 'visible';
+            img.style.opacity = '1';
+            alert("Затем применили трансформацию");
+            alert('Мобильная трансформация:' + " baseScale=" + baseScale + '  mapScale=' + mapScale + " finalScale" + finalScale + '  displayWidth:' + displayWidth + 'displayHeight:' + displayHeight + "  translate= " + clampedX + " " + clampedY);
 
-            alert('Мобильная трансформация:' + " mobileBaseScale=" + mobileBaseScale + '  mapScale=' + mapScale + " finalScale" + finalScale + "  translate= " + clampedX + " " + clampedY);
+            console.log('=== Мобильная трансформация ===');
+            console.log('  baseScale:', baseScale);
+            console.log('  mapScale:', mapScale);
+            console.log('  finalScale:', finalScale);
+            console.log('  displayWidth:', displayWidth, 'displayHeight:', displayHeight);
+            console.log('  translate:', clampedX, clampedY);
+
+
+
+
+           // alert('Мобильная трансформация:' + " mobileBaseScale=" + mobileBaseScale + '  mapScale=' + mapScale + " finalScale" + finalScale + "  translate= " + clampedX + " " + clampedY);
 
             console.log('Мобильная трансформация:');
             console.log('  mobileBaseScale:', mobileBaseScale);
