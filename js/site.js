@@ -321,7 +321,7 @@ function calculateMobileBaseScale() {
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-alert("11:55");
+alert("12:05");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
@@ -334,7 +334,7 @@ function applyMapTransform() {
     //alert("in applyMapTransform");
 
     let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-
+   
     // Получаем размеры контейнера
     let containerWidth = window.innerWidth;
     let containerHeight = window.innerHeight;
@@ -385,7 +385,8 @@ function applyMapTransform() {
             // ====== МОБИЛЬНАЯ ВЕРСИЯ ======
             // ====== ИСПОЛЬЗУЕМ mobileBaseScale ДЛЯ БАЗОВОГО МАСШТАБА ======
             // Итоговый масштаб = базовый * пользовательский
-
+            let windowWidth = window.innerWidth;
+            let windowHeight = window.innerHeight;
             // Используем натуральные размеры
             let naturalWidth = img.naturalWidth;
             let naturalHeight = img.naturalHeight;
