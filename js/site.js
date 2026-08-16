@@ -278,7 +278,7 @@ function applyTransformToMedia() {
 }
 //alert("277");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-alert("09:40");
+alert("09:48");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
@@ -310,6 +310,7 @@ function applyMapTransform() {
         // Вычисляем базовый мобильный масштаб (вписывание)
         let mobileScale = 1.0;
         if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+            alert("in applyMapTransform");
             //let imageWidth = img.naturalHeight;
             // imageHeight = img.naturalWidth;
             //let scaleX = window.innerWidth / imageWidth;
@@ -340,6 +341,7 @@ function applyMapTransform() {
             img.style.transition = 'transform 0.05s ease';
 
             img.style.objectFit = contain;
+            alert("out applyMapTransform");
 
             //alert("Мобильная трансформация: rotate(90deg) scale(" + finalScale.toFixed(2) + ")");
             //alert("Мобильная трансформация: translate("+ clampedX.toFixed(0)+", "+clampedY.toFixed(0)+") rotate(90deg) scale("+finalScale.toFixed(3)+")");
