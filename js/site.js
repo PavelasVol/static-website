@@ -30,6 +30,10 @@ let initialTranslateX = 0;
 let initialTranslateY = 0;
 let lastTapTime = 0;
 //alert("32");
+
+// ====== ИНИЦИАЛИЗАЦИЯ ======
+let mobileBaseScale = 1.0;
+
 function onclick_01() {
     image.setAttribute("src", " ");
     image.setAttribute("style", "display: none");
@@ -277,8 +281,47 @@ function applyTransformToMedia() {
     }
 }
 //alert("277");
+// ====== ВЫЧИСЛЕНИЕ БАЗОВОГО МОБИЛЬНОГО МАСШТАБА ======
+function calculateMobileBaseScale() {
+    let img = document.getElementById('img0');
+    if (!img) return 1.0;
+
+    let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+    if (!isMobile) return 1.0;
+
+    if (img.naturalWidth === 0 || img.naturalHeight === 0) {
+        return 1.0;
+    }
+
+    let naturalWidth = img.naturalWidth;   // 4521
+    let naturalHeight = img.naturalHeight; // 2555
+
+    // При повороте на 90° меняем местами
+    let imageWidth = naturalHeight;   // 2555
+    let imageHeight = naturalWidth;   // 4521
+
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+
+    // Вычисляем масштаб для вписывания в экран
+    let scaleX = windowWidth / imageWidth;   // 360 / 2555 = 0.1409
+    let scaleY = windowHeight / imageHeight; // 623 / 4521 = 0.1378
+
+    // Базовый масштаб = минимальный для вписывания
+    let baseScale = Math.min(scaleX, scaleY);
+
+    console.log('calculateMobileBaseScale:');
+    console.log('  imageWidth:', imageWidth, 'imageHeight:', imageHeight);
+    console.log('  scaleX:', scaleX, 'scaleY:', scaleY);
+    console.log('  baseScale:', baseScale);
+
+    return baseScale;
+}
+
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-alert("10:10");
+
+// ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
+alert("10:45");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
@@ -335,10 +378,32 @@ function applyMapTransform() {
             // В JavaScript только translate и пользовательский scale
             // CSS уже делает object-fit: contain
             // Добавляем rotate и scale
-            img.style.transform = `translate(${clampedX}px, ${clampedY}px) rotate(90deg))`;
-            img.style.transform = `translate(${clampedX}px, ${clampedY}px) scale(${mapScale})`;
+           // img.style.transform = `translate(${clampedX}px, ${clampedY}px) rotate(90deg))`;
+            // img.style.transform = `translate(${clampedX}px, ${clampedY}px) scale(${mapScale})`;
+
+
+            // ====== МОБИЛЬНАЯ ВЕРСИЯ ======
+            // ====== ИСПОЛЬЗУЕМ mobileBaseScale ДЛЯ БАЗОВОГО МАСШТАБА ======
+            // Итоговый масштаб = базовый * пользовательский
+            let finalScale = mobileBaseScale * mapScale;
+
+            // Сначала применяем базовый масштаб (вписывание), затем пользовательский
+            img.style.transform = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${finalScale})`;
             img.style.transformOrigin = 'center center';
             img.style.transition = 'transform 0.05s ease';
+
+            alert('Мобильная трансформация:' + " mobileBaseScale=" + mobileBaseScale + '  mapScale=' + mapScale + " finalScale" + finalScale + "  translate= " + clampedX + " " + clampedY);
+
+            console.log('Мобильная трансформация:');
+            console.log('  mobileBaseScale:', mobileBaseScale);
+            console.log('  mapScale:', mapScale);
+            console.log('  finalScale:', finalScale);
+            console.log('  translate:', clampedX, clampedY);
+
+
+           // img.style.transform = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mapScale})`;
+            //img.style.transformOrigin = 'center center';
+            //img.style.transition = 'transform 0.05s ease';
 
             //img.style.objectFit = contain;
             alert("out applyMapTransform");
@@ -453,15 +518,19 @@ function applyMobileScale() {
 window.addEventListener('load', function () {
     //setTimeout(applyMobileScale, 300);
     setTimeout(positionPanel, 300);
-    createZoomIndicator();
+    createZoomIndicator();  
     setTimeout(setupMapHandlers, 500);
     setTimeout(setupMobileMapHandlers, 500);
     setTimeout(function () {
+        mobileBaseScale = calculateMobileBaseScale();
+        console.log('mobileBaseScale =', mobileBaseScale);
+        // Применяем трансформацию
         applyMapTransform();  // <-- Вызываем applyMapTransform
     }, 300);
 });
 //window.addEventListener('resize', applyMobileScale);
 window.addEventListener('resize', function () {
+    mobileBaseScale = calculateMobileBaseScale();
     positionPanel();
     applyMapTransform();  // <-- Вызываем applyMapTransform
 });
@@ -469,6 +538,7 @@ window.addEventListener('resize', function () {
 window.addEventListener('orientationchange', function () {
     // Даем время на завершение анимации поворота
     setTimeout(function () {
+        mobileBaseScale = calculateMobileBaseScale();
         applyMapTransform();
         positionPanel();
     }, 500);
@@ -1780,6 +1850,8 @@ document.getElementById('img0').addEventListener('load', function () {
     setTimeout(setupMapHandlers, 500);
 
     setTimeout(function () {
+        mobileBaseScale = calculateMobileBaseScale();
+        console.log('mobileBaseScale (after load) =', mobileBaseScale);
         applyMapTransform();  // <-- Вызываем applyMapTransform
     }, 300);
 });
