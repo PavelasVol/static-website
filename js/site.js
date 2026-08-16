@@ -278,7 +278,7 @@ function applyTransformToMedia() {
 }
 //alert("277");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-alert("09:10");
+alert("09:20");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
@@ -310,14 +310,14 @@ function applyMapTransform() {
         // Вычисляем базовый мобильный масштаб (вписывание)
         let mobileScale = 1.0;
         if (img.naturalWidth > 0 && img.naturalHeight > 0) {
-            let imageWidth = img.naturalHeight;
-            let imageHeight = img.naturalWidth;
-            let scaleX = window.innerWidth / imageWidth;
-            let scaleY = window.innerHeight / imageHeight;
+            //let imageWidth = img.naturalHeight;
+            // imageHeight = img.naturalWidth;
+            //let scaleX = window.innerWidth / imageWidth;
+            //let scaleY = window.innerHeight / imageHeight;
             //alert("imageWidth=" + imageWidth + " imageHeight = " + imageHeight + " window.innerWidth=" + window.innerWidth + " window.innerHeight=" + window.innerHeight+ " scaleX=" + scaleX + " scaleY=" + scaleY);
-            mobileScale = Math.min(scaleX, scaleY); // Вписывание
-            if (mobileScale < 0.1) mobileScale = 0.1;
-            if (mobileScale > 3.0) mobileScale = 3.0;
+            //mobileScale = Math.min(scaleX, scaleY); // Вписывание
+            //if (mobileScale < 0.1) mobileScale = 0.1;
+            //if (mobileScale > 3.0) mobileScale = 3.0;
             // Применяем трансформацию
             //mobileScale = 1.0; // Временно для отладки
             //let finalScale = mapScale * mobileScale;
@@ -337,7 +337,7 @@ function applyMapTransform() {
             img.style.transition = 'transform 0.05s ease';
 
             //alert("Мобильная трансформация: rotate(90deg) scale(" + finalScale.toFixed(2) + ")");
-            alert("Мобильная трансформация: translate("+ clampedX.toFixed(0)+", "+clampedY.toFixed(0)+") rotate(90deg) scale("+finalScale.toFixed(3)+")");
+            //alert("Мобильная трансформация: translate("+ clampedX.toFixed(0)+", "+clampedY.toFixed(0)+") rotate(90deg) scale("+finalScale.toFixed(3)+")");
         }
     } else {
         // ПК
