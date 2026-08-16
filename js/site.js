@@ -321,7 +321,7 @@ function calculateMobileBaseScale() {
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-alert("12:55");
+alert("22:35");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
