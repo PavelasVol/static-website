@@ -321,7 +321,7 @@ function calculateMobileBaseScale() {
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
-alert("11:35");
+alert("11:55");
 function applyMapTransform() {
     let img = document.getElementById('img0');
     if (!img) {
@@ -386,7 +386,27 @@ function applyMapTransform() {
             // ====== ИСПОЛЬЗУЕМ mobileBaseScale ДЛЯ БАЗОВОГО МАСШТАБА ======
             // Итоговый масштаб = базовый * пользовательский
 
-            let finalScale = mobileBaseScale * mapScale;
+            // Используем натуральные размеры
+            let naturalWidth = img.naturalWidth;
+            let naturalHeight = img.naturalHeight;
+            // При повороте на 90° меняем местами
+
+            let rotatedWidth = naturalHeight;   // 2555
+            let rotatedHeight = naturalWidth;   // 4521
+
+            // Базовый масштаб для вписывания в экран
+            let scaleX = windowWidth / rotatedWidth;
+            let scaleY = windowHeight / rotatedHeight;
+            let baseScale = Math.min(scaleX, scaleY);
+            if (baseScale < 0.05) baseScale = 0.05;
+            if (baseScale > 3.0) baseScale = 3.0;
+
+
+
+            let finalScale = baseScale * mapScale;
+            // Размеры изображения на экране после трансформации
+            let displayWidth = rotatedWidth * finalScale;
+            let displayHeight = rotatedHeight * finalScale;
             // Сначала применяем базовый масштаб (вписывание), затем пользовательский
             //img.style.transform = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${finalScale})`;
             //img.style.transformOrigin = 'center center';
