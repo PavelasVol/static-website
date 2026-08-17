@@ -325,6 +325,17 @@ function applyMapTransform() {
     */
     if (isMobile) {
         alert("11:15");
+        // Для вертикальной ориентации добавляем поворот на 90 градусов
+        // Также нужно увеличить масштаб для заполнения экрана
+        let mobileScale = mapScale * 1.4; // Компенсируем масштаб из CSS 1.4
+        //transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`;
+
+        // Корректируем положение для повернутого изображения
+        // При rotate(90deg) центр вращения находится в центре
+        // Нужно сместить изображение, чтобы оно было по центру
+        let offsetX = (containerWidth - containerHeight) / 2;
+        let offsetY = (containerHeight - containerWidth) / 2;
+        transformString = `translate(${clampedX + offsetX}px, ${clampedY + offsetY}px) rotate(90deg) scale(${mobileScale})`;
         transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`
     }
 
