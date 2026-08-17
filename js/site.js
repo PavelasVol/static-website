@@ -324,7 +324,7 @@ function applyMapTransform() {
     }
     */
     if (isMobile) {
-        alert("10:55");
+        alert("11:05");
         transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`
     }
 
