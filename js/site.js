@@ -880,6 +880,7 @@ function setupMapHandlers() {
     */  
 }
 // ====== ОБРАБОТЧИКИ ДЛЯ МОБИЛЬНОГО МАСШТАБИРОВАНИЯ ======
+alert("20^00");
 function setupMobileMapHandlers() {
     let img = document.getElementById('img0');
     if (!img) return;
@@ -956,7 +957,7 @@ function onMapWheel(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    let delta = e.deltaY > 0 ? -1.0 : 1.0;
+    let delta = e.deltaY > 0 ? -1.0 : 1.0; // Шаг масштабирования
     mapScale = Math.min(Math.max(1.0, mapScale + delta), 3);
     applyMapTransform();
     // Обновляем индикатор масштаба
