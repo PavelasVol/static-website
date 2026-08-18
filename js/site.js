@@ -914,6 +914,83 @@ function setupMobileMapHandlers() {
 
     let lastTouchDist = 0;
     let initialTouchScale = 1;
+    let isTouchDragging = false;
+    let touchStartX, touchStartY;
+
+    img.addEventListener('touchstart', function (e) {
+        if (e.touches.length === 1) {
+            // Один палец - перетаскивание
+            isTouchDragging = true;
+            touchStartX = e.touches[0].clientX - mapTranslateX;
+            touchStartY = e.touches[0].clientY - mapTranslateY;
+            img.style.cursor = 'grabbing';
+        } else if (e.touches.length === 2) {
+            // Два пальца - начало зума
+            isTouchDragging = false;
+            let touch1 = e.touches[0];
+            let touch2 = e.touches[1];
+            // ====== ВАЖНО: запоминаем расстояние между пальцами ======
+            lastTouchDist = Math.hypot(
+                touch1.clientX - touch2.clientX,
+                touch1.clientY - touch2.clientY
+            );
+            initialTouchScale = mapScale;
+            console.log('Начало зума: lastTouchDist=' + lastTouchDist);
+        }
+    }, { passive: true });
+
+    img.addEventListener('touchmove', function (e) {
+        e.preventDefault();
+
+        if (e.touches.length === 1 && isTouchDragging) {
+            // Перетаскивание одним пальцем
+            mapTranslateX = e.touches[0].clientX - touchStartX;
+            mapTranslateY = e.touches[0].clientY - touchStartY;
+            applyMapTransform();
+        } else if (e.touches.length === 2) {
+            // Зум двумя пальцами
+            let touch1 = e.touches[0];
+            let touch2 = e.touches[1];
+            let currentDist = Math.hypot(
+                touch1.clientX - touch2.clientX,
+                touch1.clientY - touch2.clientY
+            );
+
+            if (lastTouchDist > 0) {
+                let scaleFactor = currentDist / lastTouchDist;
+                let newScale = Math.min(Math.max(0.5, initialTouchScale * scaleFactor), 3.0);
+                mapScale = newScale;
+                applyMapTransform();
+                console.log('Зум: scaleFactor=' + scaleFactor + ', newScale=' + newScale);
+            } else {
+                // ====== ВАЖНО: если lastTouchDist = 0, запоминаем текущее расстояние ======
+                lastTouchDist = currentDist;
+                initialTouchScale = mapScale;
+                console.log('Инициализация зума: lastTouchDist=' + lastTouchDist);
+            }
+        }
+    }, { passive: false });
+
+    img.addEventListener('touchend', function (e) {
+        // Сбрасываем состояние при отпускании
+        if (e.touches.length < 2) {
+            // Если осталось меньше двух пальцев, сбрасываем lastTouchDist
+            // Но не сразу, чтобы не потерять значение при следующем касании
+            setTimeout(function () {
+                lastTouchDist = 0;
+                console.log('lastTouchDist сброшен');
+            }, 100);
+        }
+        isTouchDragging = false;
+        img.style.cursor = 'grab';
+    }, { passive: true });
+}
+function setupMobileMapHandlers_iki_18_08_2026() {
+    let img = document.getElementById('img0');
+    if (!img) return;
+
+    let lastTouchDist = 0;
+    let initialTouchScale = 1;
     let initialTouchX = 0;
     let initialTouchY = 0;
     let isTouchDragging = false;
@@ -939,12 +1016,13 @@ function setupMobileMapHandlers() {
             initialTouchScale = mapScale;
             initialTouchX = mapTranslateX;
             initialTouchY = mapTranslateY;
+           
         }
     }, { passive: true });
 
     img.addEventListener('touchmove', function (e) {
         e.preventDefault();
-        alert("img.addEventListener('touchmove'");
+        
         if (e.touches.length === 1 && isTouchDragging) {
             // Перетаскивание одним пальцем
             mapTranslateX = e.touches[0].clientX - touchStartX;
@@ -958,12 +1036,12 @@ function setupMobileMapHandlers() {
                 touch1.clientX - touch2.clientX,
                 touch1.clientY - touch2.clientY
             );
-
+            alert("lastTouchDist=" + lastTouchDist);
             if (lastTouchDist > 0) {
                 let scaleFactor = currentDist / lastTouchDist;
                 let newScale = Math.min(Math.max(1.0, initialTouchScale * scaleFactor), 3);
                 mapScale = newScale;
-
+                alert("in 2zoom mapScale=" + mapScale);
                 // Корректируем смещение для центрирования зума
                 let rect = img.getBoundingClientRect();
                 let centerX = (touch1.clientX + touch2.clientX) / 2 - rect.left - rect.width / 2;
