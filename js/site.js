@@ -274,7 +274,7 @@ function applyTransformToMedia() {
         console.log('applyTransformToMedia: currentMedia or mediaContainer is null!');
     }
 }
-//alert("277");
+alert("0:05");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
@@ -324,7 +324,7 @@ function applyMapTransform() {
     }
     */
     if (isMobile) {
-        alert("11:30");
+        //alert("11:30");
         // Для вертикальной ориентации добавляем поворот на 90 градусов
         // Также нужно увеличить масштаб для заполнения экрана
         let mobileScale = mapScale * 1.7; // Компенсируем масштаб из CSS 1.4
