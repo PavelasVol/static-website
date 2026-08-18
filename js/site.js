@@ -274,7 +274,7 @@ function applyTransformToMedia() {
         console.log('applyTransformToMedia: currentMedia or mediaContainer is null!');
     }
 }
-//alert("277");
+alert("20^15");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
@@ -324,7 +324,7 @@ function applyMapTransform() {
     }
     */
     if (isMobile) {
-        alert("19:00");
+        alert("20:15");
         /*
         let mobileScale = mapScale * 1.4; // Компенсируем масштаб из CSS 1.4        
         let offsetX = (containerWidth - containerHeight) / 2;
@@ -332,10 +332,13 @@ function applyMapTransform() {
         transformString = `translate(${clampedX + offsetX}px, ${clampedY + offsetY}px) rotate(90deg) scale(${mobileScale})`;
         transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`
         */
+
+
         // ====== МОБИЛЬНАЯ ВЕРСИЯ ======
         // Добавляем rotate(90deg) и scale от пользователя
         // Коэффициент 1.4 - это базовый масштаб из CSS для заполнения экрана
         // Но при масштабировании пользователем он умножается на mapScale
+        /*
         let mobileScale = 1.4 * mapScale;
         transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`;
 
@@ -343,6 +346,19 @@ function applyMapTransform() {
         console.log('  mapScale:', mapScale);
         console.log('  mobileScale:', mobileScale);
         console.log('  translate:', clampedX, clampedY);
+        */
+        // Для вертикальной ориентации добавляем поворот на 90 градусов
+        // Также нужно увеличить масштаб для заполнения экрана
+        let mobileScale = mapScale * 1.4; // Компенсируем масштаб из CSS 1.4
+        //transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`;
+
+        // Корректируем положение для повернутого изображения
+        // При rotate(90deg) центр вращения находится в центре
+        // Нужно сместить изображение, чтобы оно было по центру
+        let offsetX = (containerWidth - containerHeight) / 2;
+        let offsetY = (containerHeight - containerWidth) / 2;
+        transformString = `translate(${clampedX + offsetX}px, ${clampedY + offsetY}px) rotate(90deg) scale(${mobileScale})`;
+        transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`
     }
 
 
