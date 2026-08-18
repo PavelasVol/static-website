@@ -327,7 +327,7 @@ function applyMapTransform() {
         alert("11:30");
         // Для вертикальной ориентации добавляем поворот на 90 градусов
         // Также нужно увеличить масштаб для заполнения экрана
-        let mobileScale = mapScale * 1.4; // Компенсируем масштаб из CSS 1.4
+        let mobileScale = mapScale * 1.7; // Компенсируем масштаб из CSS 1.4
         //transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`;
 
         // Корректируем положение для повернутого изображения
@@ -920,6 +920,7 @@ function setupMobileMapHandlers() {
     let touchStartX, touchStartY;
 
     img.addEventListener('touchstart', function (e) {
+        alert("img.addEventListener('touchstart");
         if (e.touches.length === 1) {
             // Один палец - перетаскивание
             isTouchDragging = true;
@@ -943,7 +944,7 @@ function setupMobileMapHandlers() {
 
     img.addEventListener('touchmove', function (e) {
         e.preventDefault();
-
+        alert("img.addEventListener('touchmove'");
         if (e.touches.length === 1 && isTouchDragging) {
             // Перетаскивание одним пальцем
             mapTranslateX = e.touches[0].clientX - touchStartX;
