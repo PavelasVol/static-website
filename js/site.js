@@ -324,19 +324,25 @@ function applyMapTransform() {
     }
     */
     if (isMobile) {
-        alert("11:30");
-        // Для вертикальной ориентации добавляем поворот на 90 градусов
-        // Также нужно увеличить масштаб для заполнения экрана
-        let mobileScale = mapScale * 1.4; // Компенсируем масштаб из CSS 1.4
-        //transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`;
-
-        // Корректируем положение для повернутого изображения
-        // При rotate(90deg) центр вращения находится в центре
-        // Нужно сместить изображение, чтобы оно было по центру
+        alert("19:00");
+        /*
+        let mobileScale = mapScale * 1.4; // Компенсируем масштаб из CSS 1.4        
         let offsetX = (containerWidth - containerHeight) / 2;
         let offsetY = (containerHeight - containerWidth) / 2;
         transformString = `translate(${clampedX + offsetX}px, ${clampedY + offsetY}px) rotate(90deg) scale(${mobileScale})`;
         transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`
+        */
+        // ====== МОБИЛЬНАЯ ВЕРСИЯ ======
+        // Добавляем rotate(90deg) и scale от пользователя
+        // Коэффициент 1.4 - это базовый масштаб из CSS для заполнения экрана
+        // Но при масштабировании пользователем он умножается на mapScale
+        let mobileScale = 1.4 * mapScale;
+        transformString = `translate(${clampedX}px, ${clampedY}px) rotate(90deg) scale(${mobileScale})`;
+
+        console.log('Мобильная трансформация:');
+        console.log('  mapScale:', mapScale);
+        console.log('  mobileScale:', mobileScale);
+        console.log('  translate:', clampedX, clampedY);
     }
 
 
@@ -355,41 +361,7 @@ function applyMapTransform() {
     }
 
 
-/*
-    
-    // Получаем размеры контейнера
-    let containerWidth = window.innerWidth;
-    let containerHeight = window.innerHeight;
-    // Ограничиваем перемещение
-    let imgWidth = img.offsetWidth || containerWidth;
-    let imgHeight = img.offsetHeight || containerHeight;
 
-    let maxTranslateX = Math.max(0, (imgWidth * mapScale - containerWidth) / 2);
-    let maxTranslateY = Math.max(0, (imgHeight * mapScale - containerHeight) / 2);
-
-    let clampedX = Math.min(Math.max(mapTranslateX, -maxTranslateX), maxTranslateX);
-    let clampedY = Math.min(Math.max(mapTranslateY, -maxTranslateY), maxTranslateY);
-
-    img.style.transform = `translate(${clampedX}px, ${clampedY}px) scale(${mapScale})`;
-    img.style.transformOrigin = 'center center';
-    img.style.transition = 'transform 0.05s ease';
-
-    // Обновляем индикатор масштаба
-    let indicator = document.getElementById('map-zoom-level');
-    if (indicator) {
-        indicator.textContent = mapScale.toFixed(1);
-    }
-    let container = document.getElementById('map-zoom-indicator');
-    container.style.display = 'block';
-    */
-
-    /*
-    if (container && mapScale !== 1) {
-        container.style.display = 'block';
-    } else if (container) {
-        container.style.display = 'none';
-    }
-    */
 }
 //alert("322");
 // ====== ПЕРЕСЧЕТ КООРДИНАТ КЛИКА С УЧЕТОМ МАСШТАБА ======
