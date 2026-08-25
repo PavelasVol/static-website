@@ -278,7 +278,7 @@ function applyTransformToMedia() {
 
 
 // ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
-alert("14:20");
+alert("14:30");
 
 // ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
 function createMobileZoomControls() {
@@ -316,6 +316,7 @@ function createMobileZoomControls() {
         backdrop-filter: blur(10px) !important;
         border: 2px solid rgba(255, 255, 255, 0.2) !important;
         box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6) !important;
+        min-width: 70px !important;
     `;
 
     // Кнопка "Увеличить" (+)
@@ -323,8 +324,8 @@ function createMobileZoomControls() {
     zoomInBtn.id = 'zoom-in-btn';
     zoomInBtn.innerHTML = '+';
     zoomInBtn.style.cssText = `
-        width: 60px !important;
-        height: 60px !important;
+        width: 40px !important;
+        height: 40px !important;
         border-radius: 50% !important;
         background: rgba(255, 255, 255, 0.9) !important;
         color: #333 !important;
@@ -355,8 +356,8 @@ function createMobileZoomControls() {
     resetBtn.id = 'zoom-reset-btn';
     resetBtn.innerHTML = '1x';
     resetBtn.style.cssText = `
-        width: 60px !important;
-        height: 60px !important;
+        width: 40px !important;
+        height: 40px !important;
         border-radius: 50% !important;
         background: rgba(255, 165, 0, 0.9) !important;
         color: white !important;
