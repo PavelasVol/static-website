@@ -274,7 +274,7 @@ function applyTransformToMedia() {
         console.log('applyTransformToMedia: currentMedia or mediaContainer is null!');
     }
 }
-alert("10:15");
+alert("10:30");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
@@ -959,16 +959,13 @@ function setupMobileMapHandlers() {
             if (lastTouchDist > 0) {
                 let scaleFactor = currentDist / lastTouchDist;
                 let newScale = Math.min(Math.max(0.5, initialTouchScale * scaleFactor), 3.0);
-
-
-
-
+                
                 mapScale = newScale;
 
                 let delta = e.deltaY > 0 ? -1.0 : 1.0;
                 mapScale = Math.min(Math.max(1.0, mapScale + delta), 3);
 
-                alert("mapScale=" + mapScale);
+                //alert("mapScale=" + mapScale);
                 applyMapTransform();
                 console.log('Зум: scaleFactor=' + scaleFactor + ', newScale=' + newScale);
             } else {
