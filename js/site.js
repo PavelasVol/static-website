@@ -274,7 +274,7 @@ function applyTransformToMedia() {
         console.log('applyTransformToMedia: currentMedia or mediaContainer is null!');
     }
 }
-alert("0:05");
+alert("10:00");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
@@ -997,7 +997,7 @@ function setupMobileMapHandlers_iki_18_08_2026() {
     let touchStartX, touchStartY;
 
     img.addEventListener('touchstart', function (e) {
-        alert("img.addEventListener('touchstart");
+        //alert("img.addEventListener('touchstart");
         if (e.touches.length === 1) {
             // Один палец - перетаскивание
             isTouchDragging = true;
@@ -1036,12 +1036,12 @@ function setupMobileMapHandlers_iki_18_08_2026() {
                 touch1.clientX - touch2.clientX,
                 touch1.clientY - touch2.clientY
             );
-            alert("lastTouchDist=" + lastTouchDist);
+            //alert("lastTouchDist=" + lastTouchDist);
             if (lastTouchDist > 0) {
                 let scaleFactor = currentDist / lastTouchDist;
                 let newScale = Math.min(Math.max(1.0, initialTouchScale * scaleFactor), 3);
                 mapScale = newScale;
-                alert("in 2zoom mapScale=" + mapScale);
+                //alert("in 2zoom mapScale=" + mapScale);
                 // Корректируем смещение для центрирования зума
                 let rect = img.getBoundingClientRect();
                 let centerX = (touch1.clientX + touch2.clientX) / 2 - rect.left - rect.width / 2;
@@ -1060,6 +1060,7 @@ function setupMobileMapHandlers_iki_18_08_2026() {
 }
 function onMapWheel(e) {
     console.log('onMapWheel: deltaY=' + e.deltaY);
+    alert("in onMapWheel");
     e.preventDefault();
     e.stopPropagation();
 
@@ -2446,7 +2447,7 @@ document.addEventListener('click', function (event) { // Работает хор
         let coords = getMapCoordinates(event.clientX, event.clientY);
         let x = coords.x;
         let y = coords.y;
-        alert("x0_PC="+x+" y0_PC="+y);
+        //alert("x0_PC="+x+" y0_PC="+y);
 
         // Проверяем, что клик внутри изображения
         let rect = img.getBoundingClientRect();
