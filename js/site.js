@@ -279,25 +279,41 @@ function applyTransformToMedia() {
 
 // ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
 alert("13:10");
+
+// ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
 function createMobileZoomControls() {
     // Проверяем, существует ли уже панель
-    if (document.getElementById('mobile-zoom-controls')) return;
+    let existingControls = document.getElementById('mobile-zoom-controls');
+    if (existingControls) {
+        existingControls.remove();
+    }
 
     let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-    if (!isMobile) return;
-    alert("in createMobileZoomControls");
+    if (!isMobile) {
+        console.log('createMobileZoomControls: не мобильное устройство');
+        return;
+    }
+
+    console.log('createMobileZoomControls: создаем кнопки для мобильного');
+
     // Создаем контейнер для кнопок
     let controls = document.createElement('div');
     controls.id = 'mobile-zoom-controls';
     controls.style.cssText = `
         position: fixed !important;
         right: 20px !important;
-        bottom: 100px !important;
-        z-index: 1000 !important;
+        bottom: 120px !important;
+        z-index: 9999 !important;
         display: flex !important;
         flex-direction: column !important;
-        gap: 10px !important;
+        gap: 12px !important;
         pointer-events: auto !important;
+        background: rgba(0, 0, 0, 0.5) !important;
+        padding: 12px 10px !important;
+        border-radius: 30px !important;
+        backdrop-filter: blur(10px) !important;
+        border: 2px solid rgba(255, 255, 255, 0.2) !important;
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6) !important;
     `;
 
     // Кнопка "Увеличить" (+)
@@ -305,57 +321,31 @@ function createMobileZoomControls() {
     zoomInBtn.id = 'zoom-in-btn';
     zoomInBtn.innerHTML = '+';
     zoomInBtn.style.cssText = `
-        width: 54px !important;
-        height: 54px !important;
+        width: 60px !important;
+        height: 60px !important;
         border-radius: 50% !important;
-        background: rgba(0, 0, 0, 0.7) !important;
-        color: white !important;
-        border: 2px solid rgba(255, 255, 255, 0.5) !important;
-        font-size: 28px !important;
+        background: rgba(255, 255, 255, 0.9) !important;
+        color: #333 !important;
+        border: 2px solid rgba(255, 255, 255, 0.8) !important;
+        font-size: 32px !important;
         font-weight: bold !important;
         cursor: pointer !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
-        backdrop-filter: blur(5px) !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
         transition: all 0.2s ease !important;
         user-select: none !important;
         -webkit-tap-highlight-color: transparent !important;
         touch-action: manipulation !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        line-height: 1 !important;
     `;
     zoomInBtn.onclick = function (e) {
         e.stopPropagation();
+        e.preventDefault();
         zoomMapIn();
-    };
-
-    // Кнопка "Уменьшить" (-)
-    let zoomOutBtn = document.createElement('button');
-    zoomOutBtn.id = 'zoom-out-btn';
-    zoomOutBtn.innerHTML = '−';
-    zoomOutBtn.style.cssText = `
-        width: 54px !important;
-        height: 54px !important;
-        border-radius: 50% !important;
-        background: rgba(0, 0, 0, 0.7) !important;
-        color: white !important;
-        border: 2px solid rgba(255, 255, 255, 0.5) !important;
-        font-size: 28px !important;
-        font-weight: bold !important;
-        cursor: pointer !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
-        backdrop-filter: blur(5px) !important;
-        transition: all 0.2s ease !important;
-        user-select: none !important;
-        -webkit-tap-highlight-color: transparent !important;
-        touch-action: manipulation !important;
-    `;
-    zoomOutBtn.onclick = function (e) {
-        e.stopPropagation();
-        zoomMapOut();
     };
 
     // Кнопка "Сбросить" (1x)
@@ -363,28 +353,63 @@ function createMobileZoomControls() {
     resetBtn.id = 'zoom-reset-btn';
     resetBtn.innerHTML = '1x';
     resetBtn.style.cssText = `
-        width: 54px !important;
-        height: 54px !important;
+        width: 60px !important;
+        height: 60px !important;
         border-radius: 50% !important;
-        background: rgba(0, 0, 0, 0.7) !important;
+        background: rgba(255, 165, 0, 0.9) !important;
         color: white !important;
-        border: 2px solid rgba(255, 255, 255, 0.5) !important;
-        font-size: 16px !important;
+        border: 2px solid rgba(255, 165, 0, 0.8) !important;
+        font-size: 18px !important;
         font-weight: bold !important;
         cursor: pointer !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
-        backdrop-filter: blur(5px) !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
         transition: all 0.2s ease !important;
         user-select: none !important;
         -webkit-tap-highlight-color: transparent !important;
         touch-action: manipulation !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        line-height: 1 !important;
     `;
     resetBtn.onclick = function (e) {
         e.stopPropagation();
+        e.preventDefault();
         resetMapZoom();
+    };
+
+    // Кнопка "Уменьшить" (-)
+    let zoomOutBtn = document.createElement('button');
+    zoomOutBtn.id = 'zoom-out-btn';
+    zoomOutBtn.innerHTML = '−';
+    zoomOutBtn.style.cssText = `
+        width: 60px !important;
+        height: 60px !important;
+        border-radius: 50% !important;
+        background: rgba(255, 255, 255, 0.9) !important;
+        color: #333 !important;
+        border: 2px solid rgba(255, 255, 255, 0.8) !important;
+        font-size: 32px !important;
+        font-weight: bold !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+        transition: all 0.2s ease !important;
+        user-select: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+        touch-action: manipulation !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        line-height: 1 !important;
+    `;
+    zoomOutBtn.onclick = function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        zoomMapOut();
     };
 
     // Добавляем кнопки в контейнер
@@ -395,15 +420,13 @@ function createMobileZoomControls() {
     // Добавляем контейнер на страницу
     document.body.appendChild(controls);
 
-    // Показываем индикатор масштаба рядом с кнопками
-    let indicator = document.getElementById('map-zoom-indicator');
-    if (indicator) {
-        indicator.style.bottom = '200px';
-        indicator.style.left = '50%';
-        indicator.style.transform = 'translateX(-50%)';
-    }
-
     console.log('Мобильные кнопки управления масштабом созданы');
+    console.log('controls position:', controls.style.position);
+    console.log('controls right:', controls.style.right);
+    console.log('controls bottom:', controls.style.bottom);
+
+    // Обновляем состояние кнопок
+    setTimeout(updateZoomButtonsState, 100);
 }
 
 // ====== УПРАВЛЕНИЕ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
@@ -411,22 +434,38 @@ function createMobileZoomControls() {
 // Увеличение масштаба
 function zoomMapIn() {
     let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+    console.log('zoomMapIn: текущий масштаб=' + mapScale + ', isMobile=' + isMobile);
 
     if (isMobile) {
         // Для мобильных - только 1, 2, 3
-        if (mapScale < 3) {
-            mapScale = Math.round(mapScale) + 1;
+        let currentScale = Math.round(mapScale);
+        if (currentScale < 3) {
+            mapScale = currentScale + 1;
             mapTranslateX = 0;
             mapTranslateY = 0;
             applyMapTransform();
             console.log('zoomMapIn: масштаб увеличен до ' + mapScale);
+            // Визуальная обратная связь
+            let btn = document.getElementById('zoom-in-btn');
+            if (btn) {
+                btn.style.transform = 'scale(0.9)';
+                btn.style.background = 'rgba(100, 200, 255, 0.9)';
+                setTimeout(() => {
+                    btn.style.transform = 'scale(1)';
+                    btn.style.background = 'rgba(255, 255, 255, 0.9)';
+                }, 200);
+            }
         } else {
             console.log('zoomMapIn: уже максимальный масштаб');
             // Визуальная обратная связь
             let btn = document.getElementById('zoom-in-btn');
             if (btn) {
-                btn.style.opacity = '0.5';
-                setTimeout(() => { btn.style.opacity = '1'; }, 300);
+                btn.style.transform = 'scale(0.9)';
+                btn.style.background = 'rgba(255, 100, 100, 0.9)';
+                setTimeout(() => {
+                    btn.style.transform = 'scale(1)';
+                    btn.style.background = 'rgba(255, 255, 255, 0.9)';
+                }, 300);
             }
         }
     } else {
@@ -439,22 +478,38 @@ function zoomMapIn() {
 // Уменьшение масштаба
 function zoomMapOut() {
     let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+    console.log('zoomMapOut: текущий масштаб=' + mapScale + ', isMobile=' + isMobile);
 
     if (isMobile) {
         // Для мобильных - только 1, 2, 3
-        if (mapScale > 1) {
-            mapScale = Math.round(mapScale) - 1;
+        let currentScale = Math.round(mapScale);
+        if (currentScale > 1) {
+            mapScale = currentScale - 1;
             mapTranslateX = 0;
             mapTranslateY = 0;
             applyMapTransform();
             console.log('zoomMapOut: масштаб уменьшен до ' + mapScale);
+            // Визуальная обратная связь
+            let btn = document.getElementById('zoom-out-btn');
+            if (btn) {
+                btn.style.transform = 'scale(0.9)';
+                btn.style.background = 'rgba(100, 200, 255, 0.9)';
+                setTimeout(() => {
+                    btn.style.transform = 'scale(1)';
+                    btn.style.background = 'rgba(255, 255, 255, 0.9)';
+                }, 200);
+            }
         } else {
             console.log('zoomMapOut: уже минимальный масштаб');
             // Визуальная обратная связь
             let btn = document.getElementById('zoom-out-btn');
             if (btn) {
-                btn.style.opacity = '0.5';
-                setTimeout(() => { btn.style.opacity = '1'; }, 300);
+                btn.style.transform = 'scale(0.9)';
+                btn.style.background = 'rgba(255, 100, 100, 0.9)';
+                setTimeout(() => {
+                    btn.style.transform = 'scale(1)';
+                    btn.style.background = 'rgba(255, 255, 255, 0.9)';
+                }, 300);
             }
         }
     } else {
@@ -466,58 +521,90 @@ function zoomMapOut() {
 
 // Сброс масштаба
 function resetMapZoom() {
+    console.log('resetMapZoom: сброс масштаба');
     mapScale = 1;
     mapTranslateX = 0;
     mapTranslateY = 0;
     applyMapTransform();
+
+    // Визуальная обратная связь
+    let btn = document.getElementById('zoom-reset-btn');
+    if (btn) {
+        btn.style.transform = 'scale(0.9)';
+        btn.style.background = 'rgba(255, 200, 50, 0.9)';
+        setTimeout(() => {
+            btn.style.transform = 'scale(1)';
+            btn.style.background = 'rgba(255, 165, 0, 0.9)';
+        }, 200);
+    }
     console.log('resetMapZoom: масштаб сброшен до 1');
 }
 
 // ====== ОБНОВЛЕНИЕ СОСТОЯНИЯ КНОПОК МАСШТАБА ======
 function updateZoomButtonsState() {
     let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-    if (!isMobile) return;
+    if (!isMobile) {
+        // Скрываем кнопки на ПК
+        let controls = document.getElementById('mobile-zoom-controls');
+        if (controls) {
+            controls.style.display = 'none';
+        }
+        return;
+    }
 
     let zoomInBtn = document.getElementById('zoom-in-btn');
     let zoomOutBtn = document.getElementById('zoom-out-btn');
     let resetBtn = document.getElementById('zoom-reset-btn');
 
-    if (zoomInBtn) {
-        // Блокируем кнопку "+" если достигнут максимум
-        if (mapScale >= 3) {
-            zoomInBtn.style.opacity = '0.4';
-            zoomInBtn.style.cursor = 'not-allowed';
-        } else {
-            zoomInBtn.style.opacity = '1';
-            zoomInBtn.style.cursor = 'pointer';
-        }
+    if (!zoomInBtn || !zoomOutBtn || !resetBtn) {
+        console.log('updateZoomButtonsState: кнопки не найдены');
+        return;
     }
 
-    if (zoomOutBtn) {
-        // Блокируем кнопку "-" если достигнут минимум
-        if (mapScale <= 1) {
-            zoomOutBtn.style.opacity = '0.4';
-            zoomOutBtn.style.cursor = 'not-allowed';
-        } else {
-            zoomOutBtn.style.opacity = '1';
-            zoomOutBtn.style.cursor = 'pointer';
-        }
+    let currentScale = Math.round(mapScale);
+    console.log('updateZoomButtonsState: currentScale=' + currentScale);
+
+    // Кнопка "+"
+    if (currentScale >= 3) {
+        zoomInBtn.style.opacity = '0.5';
+        zoomInBtn.style.background = 'rgba(200, 200, 200, 0.9)';
+        zoomInBtn.style.cursor = 'not-allowed';
+    } else {
+        zoomInBtn.style.opacity = '1';
+        zoomInBtn.style.background = 'rgba(255, 255, 255, 0.9)';
+        zoomInBtn.style.cursor = 'pointer';
     }
 
-    if (resetBtn) {
-        // Подсвечиваем кнопку сброса если масштаб не 1
-        if (mapScale !== 1) {
-            resetBtn.style.background = 'rgba(255, 165, 0, 0.7)';
-            resetBtn.style.borderColor = 'rgba(255, 165, 0, 0.8)';
-        } else {
-            resetBtn.style.background = 'rgba(0, 0, 0, 0.7)';
-            resetBtn.style.borderColor = 'rgba(255, 255, 255, 0.5)';
-        }
+    // Кнопка "-"
+    if (currentScale <= 1) {
+        zoomOutBtn.style.opacity = '0.5';
+        zoomOutBtn.style.background = 'rgba(200, 200, 200, 0.9)';
+        zoomOutBtn.style.cursor = 'not-allowed';
+    } else {
+        zoomOutBtn.style.opacity = '1';
+        zoomOutBtn.style.background = 'rgba(255, 255, 255, 0.9)';
+        zoomOutBtn.style.cursor = 'pointer';
+    }
+
+    // Кнопка сброса
+    if (currentScale !== 1) {
+        resetBtn.style.background = 'rgba(255, 200, 50, 0.9)';
+        resetBtn.style.borderColor = 'rgba(255, 200, 50, 0.8)';
+        resetBtn.innerHTML = currentScale + 'x';
+    } else {
+        resetBtn.style.background = 'rgba(255, 165, 0, 0.9)';
+        resetBtn.style.borderColor = 'rgba(255, 165, 0, 0.8)';
+        resetBtn.innerHTML = '1x';
+    }
+
+    // Показываем кнопки
+    let controls = document.getElementById('mobile-zoom-controls');
+    if (controls) {
+        controls.style.display = 'flex';
     }
 }
 
-
-alert("12:30");
+alert("13:30");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
@@ -2085,7 +2172,7 @@ window.addEventListener('load', function () {
     setTimeout(setupMapHandlers, 500); // Инициализация обработчиков карты
     setTimeout(setupMobileMapHandlers, 500); // <-- Добавить
     // Создаем мобильные кнопки управления
-    //setTimeout(createMobileZoomControls, 400);
+    setTimeout(createMobileZoomControls, 400);
     console.log('Window loaded, map handlers scheduled');
 });
 //window.addEventListener('resize', positionPanel);
@@ -2098,7 +2185,7 @@ window.addEventListener('resize', function () {
     let controls = document.getElementById('mobile-zoom-controls');
 
     if (isMobile && !controls) {
-        //createMobileZoomControls();
+        createMobileZoomControls();
     } else if (!isMobile && controls) {
         controls.remove();
     }
