@@ -274,7 +274,7 @@ function applyTransformToMedia() {
         console.log('applyTransformToMedia: currentMedia or mediaContainer is null!');
     }
 }
-alert("10:00");
+alert("10:15");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
@@ -959,7 +959,16 @@ function setupMobileMapHandlers() {
             if (lastTouchDist > 0) {
                 let scaleFactor = currentDist / lastTouchDist;
                 let newScale = Math.min(Math.max(0.5, initialTouchScale * scaleFactor), 3.0);
+
+
+
+
                 mapScale = newScale;
+
+                let delta = e.deltaY > 0 ? -1.0 : 1.0;
+                mapScale = Math.min(Math.max(1.0, mapScale + delta), 3);
+
+                alert("mapScale=" + mapScale);
                 applyMapTransform();
                 console.log('Зум: scaleFactor=' + scaleFactor + ', newScale=' + newScale);
             } else {
@@ -1060,7 +1069,7 @@ function setupMobileMapHandlers_iki_18_08_2026() {
 }
 function onMapWheel(e) {
     console.log('onMapWheel: deltaY=' + e.deltaY);
-    alert("in onMapWheel");
+    //alert("in onMapWheel");
     e.preventDefault();
     e.stopPropagation();
 
