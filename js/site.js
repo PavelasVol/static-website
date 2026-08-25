@@ -274,7 +274,7 @@ function applyTransformToMedia() {
         console.log('applyTransformToMedia: currentMedia or mediaContainer is null!');
     }
 }
-alert("10:35");
+alert("11:15");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
@@ -289,6 +289,28 @@ function applyMapTransform() {
 
     // ====== ПРОВЕРКА НА МОБИЛЬНОЕ УСТРОЙСТВО ======
     let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+
+
+    // ====== НОВАЯ ЛОГИКА: ОКРУГЛЯЕМ МАСШТАБ ДЛЯ МОБИЛЬНЫХ ======
+    if (isMobile) {
+        // Квантуем mapScale до 1, 2 или 3
+        let newScale = Math.round(mapScale);
+        // Ограничиваем диапазон
+        newScale = Math.min(Math.max(1, newScale), 3);
+
+        // Если масштаб изменился после округления, сбрасываем смещение в ноль для центрирования
+        if (newScale !== mapScale) {
+            mapScale = newScale;
+            mapTranslateX = 0;
+            mapTranslateY = 0;
+            console.log(`applyMapTransform: Масштаб принудительно установлен на ${mapScale}. Смещение сброшено.`);
+        } else {
+            // Если масштаб не изменился, используем его как есть (но он уже должен быть 1,2,3)
+            // Можно добавить проверку, что mapScale уже квантован, но для надежности:
+            mapScale = newScale;
+        }
+    }
+
 
     // Получаем размеры контейнера
     let containerWidth = window.innerWidth;
