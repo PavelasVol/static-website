@@ -294,6 +294,7 @@ function applyMapTransform() {
     // ====== НОВАЯ ЛОГИКА: ОКРУГЛЯЕМ МАСШТАБ ДЛЯ МОБИЛЬНЫХ ======
     if (isMobile) {
         // Квантуем mapScale до 1, 2 или 3
+        alert("mapScale="+mapScale);
         let newScale = Math.round(mapScale);
         // Ограничиваем диапазон
         newScale = Math.min(Math.max(1, newScale), 3);
