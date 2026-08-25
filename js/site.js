@@ -278,7 +278,7 @@ function applyTransformToMedia() {
 
 
 // ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
-alert("14:30");
+alert("21:15");
 
 // ====== ИНИЦИАЛИЗАЦИЯ КНОПОК (не создаем, только настраиваем) ======
 function initZoomControls() {
@@ -330,7 +330,7 @@ function initZoomControls() {
 
 
 // ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
-function createMobileZoomControls() {
+function createMobileZoomControls() { // не используется
     // Проверяем, существует ли уже панель
     let existingControls = document.getElementById('mobile-zoom-controls');
     if (existingControls) {
