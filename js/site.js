@@ -274,7 +274,249 @@ function applyTransformToMedia() {
         console.log('applyTransformToMedia: currentMedia or mediaContainer is null!');
     }
 }
-alert("12:20");
+
+
+
+// ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
+function createMobileZoomControls() {
+    // Проверяем, существует ли уже панель
+    if (document.getElementById('mobile-zoom-controls')) return;
+
+    let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+    if (!isMobile) return;
+
+    // Создаем контейнер для кнопок
+    let controls = document.createElement('div');
+    controls.id = 'mobile-zoom-controls';
+    controls.style.cssText = `
+        position: fixed !important;
+        right: 20px !important;
+        bottom: 100px !important;
+        z-index: 1000 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        pointer-events: auto !important;
+    `;
+
+    // Кнопка "Увеличить" (+)
+    let zoomInBtn = document.createElement('button');
+    zoomInBtn.id = 'zoom-in-btn';
+    zoomInBtn.innerHTML = '+';
+    zoomInBtn.style.cssText = `
+        width: 54px !important;
+        height: 54px !important;
+        border-radius: 50% !important;
+        background: rgba(0, 0, 0, 0.7) !important;
+        color: white !important;
+        border: 2px solid rgba(255, 255, 255, 0.5) !important;
+        font-size: 28px !important;
+        font-weight: bold !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
+        backdrop-filter: blur(5px) !important;
+        transition: all 0.2s ease !important;
+        user-select: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+        touch-action: manipulation !important;
+    `;
+    zoomInBtn.onclick = function (e) {
+        e.stopPropagation();
+        zoomMapIn();
+    };
+
+    // Кнопка "Уменьшить" (-)
+    let zoomOutBtn = document.createElement('button');
+    zoomOutBtn.id = 'zoom-out-btn';
+    zoomOutBtn.innerHTML = '−';
+    zoomOutBtn.style.cssText = `
+        width: 54px !important;
+        height: 54px !important;
+        border-radius: 50% !important;
+        background: rgba(0, 0, 0, 0.7) !important;
+        color: white !important;
+        border: 2px solid rgba(255, 255, 255, 0.5) !important;
+        font-size: 28px !important;
+        font-weight: bold !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
+        backdrop-filter: blur(5px) !important;
+        transition: all 0.2s ease !important;
+        user-select: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+        touch-action: manipulation !important;
+    `;
+    zoomOutBtn.onclick = function (e) {
+        e.stopPropagation();
+        zoomMapOut();
+    };
+
+    // Кнопка "Сбросить" (1x)
+    let resetBtn = document.createElement('button');
+    resetBtn.id = 'zoom-reset-btn';
+    resetBtn.innerHTML = '1x';
+    resetBtn.style.cssText = `
+        width: 54px !important;
+        height: 54px !important;
+        border-radius: 50% !important;
+        background: rgba(0, 0, 0, 0.7) !important;
+        color: white !important;
+        border: 2px solid rgba(255, 255, 255, 0.5) !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
+        backdrop-filter: blur(5px) !important;
+        transition: all 0.2s ease !important;
+        user-select: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+        touch-action: manipulation !important;
+    `;
+    resetBtn.onclick = function (e) {
+        e.stopPropagation();
+        resetMapZoom();
+    };
+
+    // Добавляем кнопки в контейнер
+    controls.appendChild(zoomInBtn);
+    controls.appendChild(resetBtn);
+    controls.appendChild(zoomOutBtn);
+
+    // Добавляем контейнер на страницу
+    document.body.appendChild(controls);
+
+    // Показываем индикатор масштаба рядом с кнопками
+    let indicator = document.getElementById('map-zoom-indicator');
+    if (indicator) {
+        indicator.style.bottom = '200px';
+        indicator.style.left = '50%';
+        indicator.style.transform = 'translateX(-50%)';
+    }
+
+    console.log('Мобильные кнопки управления масштабом созданы');
+}
+
+// ====== УПРАВЛЕНИЕ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
+
+// Увеличение масштаба
+function zoomMapIn() {
+    let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+
+    if (isMobile) {
+        // Для мобильных - только 1, 2, 3
+        if (mapScale < 3) {
+            mapScale = Math.round(mapScale) + 1;
+            mapTranslateX = 0;
+            mapTranslateY = 0;
+            applyMapTransform();
+            console.log('zoomMapIn: масштаб увеличен до ' + mapScale);
+        } else {
+            console.log('zoomMapIn: уже максимальный масштаб');
+            // Визуальная обратная связь
+            let btn = document.getElementById('zoom-in-btn');
+            if (btn) {
+                btn.style.opacity = '0.5';
+                setTimeout(() => { btn.style.opacity = '1'; }, 300);
+            }
+        }
+    } else {
+        // Для ПК - плавное изменение
+        mapScale = Math.min(mapScale + 0.5, 3);
+        applyMapTransform();
+    }
+}
+
+// Уменьшение масштаба
+function zoomMapOut() {
+    let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+
+    if (isMobile) {
+        // Для мобильных - только 1, 2, 3
+        if (mapScale > 1) {
+            mapScale = Math.round(mapScale) - 1;
+            mapTranslateX = 0;
+            mapTranslateY = 0;
+            applyMapTransform();
+            console.log('zoomMapOut: масштаб уменьшен до ' + mapScale);
+        } else {
+            console.log('zoomMapOut: уже минимальный масштаб');
+            // Визуальная обратная связь
+            let btn = document.getElementById('zoom-out-btn');
+            if (btn) {
+                btn.style.opacity = '0.5';
+                setTimeout(() => { btn.style.opacity = '1'; }, 300);
+            }
+        }
+    } else {
+        // Для ПК - плавное изменение
+        mapScale = Math.max(mapScale - 0.5, 1);
+        applyMapTransform();
+    }
+}
+
+// Сброс масштаба
+function resetMapZoom() {
+    mapScale = 1;
+    mapTranslateX = 0;
+    mapTranslateY = 0;
+    applyMapTransform();
+    console.log('resetMapZoom: масштаб сброшен до 1');
+}
+
+// ====== ОБНОВЛЕНИЕ СОСТОЯНИЯ КНОПОК МАСШТАБА ======
+function updateZoomButtonsState() {
+    let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+    if (!isMobile) return;
+
+    let zoomInBtn = document.getElementById('zoom-in-btn');
+    let zoomOutBtn = document.getElementById('zoom-out-btn');
+    let resetBtn = document.getElementById('zoom-reset-btn');
+
+    if (zoomInBtn) {
+        // Блокируем кнопку "+" если достигнут максимум
+        if (mapScale >= 3) {
+            zoomInBtn.style.opacity = '0.4';
+            zoomInBtn.style.cursor = 'not-allowed';
+        } else {
+            zoomInBtn.style.opacity = '1';
+            zoomInBtn.style.cursor = 'pointer';
+        }
+    }
+
+    if (zoomOutBtn) {
+        // Блокируем кнопку "-" если достигнут минимум
+        if (mapScale <= 1) {
+            zoomOutBtn.style.opacity = '0.4';
+            zoomOutBtn.style.cursor = 'not-allowed';
+        } else {
+            zoomOutBtn.style.opacity = '1';
+            zoomOutBtn.style.cursor = 'pointer';
+        }
+    }
+
+    if (resetBtn) {
+        // Подсвечиваем кнопку сброса если масштаб не 1
+        if (mapScale !== 1) {
+            resetBtn.style.background = 'rgba(255, 165, 0, 0.7)';
+            resetBtn.style.borderColor = 'rgba(255, 165, 0, 0.8)';
+        } else {
+            resetBtn.style.background = 'rgba(0, 0, 0, 0.7)';
+            resetBtn.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+        }
+    }
+}
+
+
+alert("12:30");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
@@ -370,6 +612,9 @@ function applyMapTransform() {
     // ====== ОБНОВЛЯЕМ ИНДИКАТОР МАСШТАБА ======
     updateZoomIndicator();
 
+    // ====== ОБНОВЛЯЕМ СОСТОЯНИЕ КНОПОК ======
+    updateZoomButtonsState();
+
 /*
     // Обновляем индикатор масштаба
     let indicator = document.getElementById('map-zoom-level');
@@ -420,6 +665,7 @@ function applyMapTransform() {
     */
 }
 //alert("322");
+
 // ====== ПЕРЕСЧЕТ КООРДИНАТ КЛИКА С УЧЕТОМ МАСШТАБА ======
 function getMapCoordinates_(clientX, clientY) {
     let img = document.getElementById('img0');
@@ -1837,9 +2083,27 @@ window.addEventListener('load', function () {
     createZoomIndicator();
     setTimeout(setupMapHandlers, 500); // Инициализация обработчиков карты
     setTimeout(setupMobileMapHandlers, 500); // <-- Добавить
+    // Создаем мобильные кнопки управления
+    setTimeout(createMobileZoomControls, 400);
     console.log('Window loaded, map handlers scheduled');
 });
-window.addEventListener('resize', positionPanel);
+//window.addEventListener('resize', positionPanel);
+// При изменении размера окна обновляем кнопки
+window.addEventListener('resize', function () {
+    positionPanel();
+
+    // Проверяем, нужно ли создать/удалить кнопки для мобильных
+    let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+    let controls = document.getElementById('mobile-zoom-controls');
+
+    if (isMobile && !controls) {
+        createMobileZoomControls();
+    } else if (!isMobile && controls) {
+        controls.remove();
+    }
+});
+
+
 
 // Также вызываем после загрузки изображения
 //document.getElementById('img').addEventListener('load', positionPanel);
