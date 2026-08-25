@@ -278,7 +278,7 @@ function applyTransformToMedia() {
 
 
 // ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
-alert("12:50");
+alert("13:10");
 function createMobileZoomControls() {
     // Проверяем, существует ли уже панель
     if (document.getElementById('mobile-zoom-controls')) return;
@@ -2085,7 +2085,7 @@ window.addEventListener('load', function () {
     setTimeout(setupMapHandlers, 500); // Инициализация обработчиков карты
     setTimeout(setupMobileMapHandlers, 500); // <-- Добавить
     // Создаем мобильные кнопки управления
-    setTimeout(createMobileZoomControls, 400);
+    //setTimeout(createMobileZoomControls, 400);
     console.log('Window loaded, map handlers scheduled');
 });
 //window.addEventListener('resize', positionPanel);
@@ -2098,7 +2098,7 @@ window.addEventListener('resize', function () {
     let controls = document.getElementById('mobile-zoom-controls');
 
     if (isMobile && !controls) {
-        createMobileZoomControls();
+        //createMobileZoomControls();
     } else if (!isMobile && controls) {
         controls.remove();
     }
