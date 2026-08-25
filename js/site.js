@@ -278,7 +278,7 @@ function applyTransformToMedia() {
 
 
 // ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
-alert("21:15");
+//alert("21:15");
 
 // ====== ИНИЦИАЛИЗАЦИЯ КНОПОК (не создаем, только настраиваем) ======
 function initZoomControls() {
@@ -589,7 +589,24 @@ function updateZoomButtonsState() {
 // ====== УПРАВЛЕНИЕ ВИДИМОСТЬЮ КНОПОК МАСШТАБА ======
 function toggleZoomControlsVisibility(show) {
     let controls = document.getElementById('mobile-zoom-controls');
-    if (!controls) return;
+    if (!controls) {
+        console.log('toggleZoomControlsVisibility: controls не найдены');
+        return;
+    }
+
+    // Проверяем, открыта ли панель
+    let panel = document.getElementById('div');
+    let isPanelVisible = panel && panel.style.display !== 'none';
+
+    // Если панель открыта И мы пытаемся показать кнопки - игнорируем
+    // (это предотвращает случайное появление кнопок поверх открытой панели)
+    if (isPanelVisible && show) {
+        controls.style.display = 'none';
+        controls.style.visibility = 'hidden';
+        controls.style.opacity = '0';
+        console.log('toggleZoomControlsVisibility: панель открыта, кнопки остаются скрытыми');
+        return;
+    }
 
     if (show) {
         // Показываем кнопки только если это мобильное устройство
@@ -609,7 +626,7 @@ function toggleZoomControlsVisibility(show) {
     }
 }
 
-alert("23:40");
+alert("00:20");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
@@ -1655,6 +1672,7 @@ function updateCaption() {
 }
 
 function closePanel() {
+    /*
     document.getElementById('div').style.display = 'none';
     document.getElementById('block').innerHTML = '';
     document.getElementById("td00").textContent = '';
@@ -1665,6 +1683,59 @@ function closePanel() {
     toggleZoomControlsVisibility(true);
     // Дополнительно: показать карту, если она была скрыта
     document.getElementById('img0').hidden = false; // если скрывали
+    */
+    console.log('closePanel: начало закрытия панели');
+
+    // 1. СНАЧАЛА показываем кнопки (до скрытия панели)
+    // Используем setTimeout, чтобы кнопки появились после скрытия панели
+    setTimeout(function () {
+        let controls = document.getElementById('mobile-zoom-controls');
+        if (controls) {
+            let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+            if (isMobile) {
+                controls.style.display = 'flex';
+                controls.style.visibility = 'visible';
+                controls.style.opacity = '1';
+                console.log('closePanel: кнопки показаны (через setTimeout)');
+            }
+        }
+    }, 50);
+
+    // 2. Скрываем панель
+    document.getElementById('div').style.display = 'none';
+    console.log('closePanel: панель скрыта');
+
+    // 3. Очищаем контент
+    document.getElementById('block').innerHTML = '';
+    document.getElementById("td00").textContent = '';
+    document.getElementById("td1").textContent = '';
+    document.getElementById("td2").textContent = '';
+
+    // 4. Сбрасываем индекс объекта
+    N = 0;
+
+    // 5. Показываем карту
+    document.getElementById('img0').hidden = false;
+
+    // 6. Дополнительная проверка - показываем кнопки еще раз
+    setTimeout(function () {
+        let controls = document.getElementById('mobile-zoom-controls');
+        if (controls) {
+            let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+            if (isMobile) {
+                // Проверяем, что панель действительно скрыта
+                let panel = document.getElementById('div');
+                if (panel && panel.style.display === 'none') {
+                    controls.style.display = 'flex';
+                    controls.style.visibility = 'visible';
+                    controls.style.opacity = '1';
+                    console.log('closePanel: кнопки показаны (финальная проверка)');
+                }
+            }
+        }
+    }, 100);
+
+    console.log('closePanel: завершено');
 }
 
 function onTouchStart(e) {
@@ -1780,7 +1851,7 @@ function updateZoomIndicator() {
 
 // ====== СОЗДАНИЕ ИНДИКАТОРА МАСШТАБА ======
 function createZoomIndicator() {
-    alert("in createZoomIndicator");
+    //alert("in createZoomIndicator");
     // Проверяем, существует ли уже индикатор
     if (document.getElementById('map-zoom-indicator')) return;
 
@@ -2023,8 +2094,8 @@ function positionPanel() {
             position: absolute !important;
             top: 8px !important;
             right: 10px !important;
-            width: 44px !important;
-            height: 44px !important;
+            width: 36px !important;
+            height: 36px !important;
             background: rgba(255, 255, 255, 0.3) !important;
             border: 2px solid white !important;
             border-radius: 50% !important;
@@ -2050,8 +2121,8 @@ function positionPanel() {
                 closeBtn.style.left = (rect.right - 50) + 'px';
                 closeBtn.style.top = (rect.top + 10) + 'px';
 
-                closeBtn.style.width = '40px';
-                closeBtn.style.height = '40px';
+                closeBtn.style.width = '36px';
+                closeBtn.style.height = '36px';
                 closeBtn.style.background = 'rgba(255,255,255,0.3)';
                 closeBtn.style.border = '2px solid white';
                 closeBtn.style.borderRadius = '50%';
@@ -3122,6 +3193,8 @@ document.addEventListener('click', function (event) { // Работает хор
                 document.getElementById("td1").textContent = '';
                 document.getElementById("td2").textContent = '';
                 N = 0;
+                // ====== ПОКАЗЫВАЕМ КНОПКИ МАСШТАБА ======
+                toggleZoomControlsVisibility(true);
             }
         }
         return;
