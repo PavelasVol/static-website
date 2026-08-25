@@ -586,7 +586,7 @@ function updateZoomButtonsState() {
     }
 }
 
-alert("20:55");
+alert("21:20");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
