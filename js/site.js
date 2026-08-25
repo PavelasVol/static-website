@@ -369,8 +369,9 @@ function applyMapTransform() {
     // Обновляем индикатор масштаба
     let indicator = document.getElementById('map-zoom-level');
     if (indicator) {
-        alert("in indicator");
+        //alert("in indicator");
         indicator.textContent = mapScale.toFixed(1);
+        alert("indicator.textContent = " + indicator.textContent);
     }
     let container = document.getElementById('map-zoom-indicator');
     if (container) {
