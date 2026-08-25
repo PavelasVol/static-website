@@ -302,7 +302,7 @@ function createMobileZoomControls() {
     controls.id = 'mobile-zoom-controls';
     controls.style.cssText = `
         position: fixed !important;
-        right: 20px !important;
+        right: 100px !important;
         top: 100px;
         z-index: 9999 !important;
         display: flex !important;
