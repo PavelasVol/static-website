@@ -960,10 +960,10 @@ function setupMobileMapHandlers() {
                 let scaleFactor = currentDist / lastTouchDist;
                 let newScale = Math.min(Math.max(0.5, initialTouchScale * scaleFactor), 3.0);
                 
-                mapScale = newScale;
+                //mapScale = newScale;
 
                 let delta = e.deltaY > 0 ? -1.0 : 1.0;
-                mapScale = Math.min(Math.max(1.0, mapScale + delta), 3);
+                mapScale = Math.min(Math.max(1.0, newScale + delta), 3);
 
                 //alert("mapScale=" + mapScale);
                 applyMapTransform();
