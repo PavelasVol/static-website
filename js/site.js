@@ -586,7 +586,7 @@ function updateZoomButtonsState() {
     }
 }
 
-alert("21:50");
+alert("22:00");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
@@ -606,7 +606,7 @@ function applyMapTransform() {
     // ====== НОВАЯ ЛОГИКА: ОКРУГЛЯЕМ МАСШТАБ ДЛЯ МОБИЛЬНЫХ ======
     if (isMobile) {
         // Квантуем mapScale до 1, 2 или 3
-        alert("mapScale="+mapScale);
+        //alert("mapScale="+mapScale);
         let newScale = Math.round(mapScale);
         // Ограничиваем диапазон
         newScale = Math.min(Math.max(1, newScale), 3);
