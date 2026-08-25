@@ -274,7 +274,7 @@ function applyTransformToMedia() {
         console.log('applyTransformToMedia: currentMedia or mediaContainer is null!');
     }
 }
-alert("12:10");
+alert("12:20");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
