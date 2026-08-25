@@ -278,13 +278,14 @@ function applyTransformToMedia() {
 
 
 // ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
+alert("12:50");
 function createMobileZoomControls() {
     // Проверяем, существует ли уже панель
     if (document.getElementById('mobile-zoom-controls')) return;
 
     let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
     if (!isMobile) return;
-
+    alert("in createMobileZoomControls");
     // Создаем контейнер для кнопок
     let controls = document.createElement('div');
     controls.id = 'mobile-zoom-controls';
