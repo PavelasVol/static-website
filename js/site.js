@@ -297,12 +297,13 @@ function createMobileZoomControls() {
     console.log('createMobileZoomControls: создаем кнопки для мобильного');
 
     // Создаем контейнер для кнопок
+    //bottom: 200px !important;  /* Увеличено с 120px до 200px */
     let controls = document.createElement('div');
     controls.id = 'mobile-zoom-controls';
     controls.style.cssText = `
         position: fixed !important;
         right: 20px !important;
-        bottom: 200px !important;  /* Увеличено с 120px до 200px */
+        top: 100px;
         z-index: 9999 !important;
         display: flex !important;
         flex-direction: column !important;
