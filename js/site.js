@@ -366,17 +366,20 @@ function applyMapTransform() {
     img.style.transformOrigin = 'center center';
     img.style.transition = 'transform 0.05s ease';
 
+    // ====== ОБНОВЛЯЕМ ИНДИКАТОР МАСШТАБА ======
+    updateZoomIndicator();
+
+/*
     // Обновляем индикатор масштаба
     let indicator = document.getElementById('map-zoom-level');
-    if (indicator) {
-        //alert("in indicator");
-        indicator.textContent = mapScale.toFixed(1);
-        alert("indicator.textContent = " + indicator.textContent);
+    if (indicator) {        
+        indicator.textContent = mapScale.toFixed(1);        
     }
     let container = document.getElementById('map-zoom-indicator');
-    if (container) {
+    if (container) {        
         container.style.display = 'block';
     }
+    */
 
 
 /*
@@ -1387,13 +1390,14 @@ function onTouchEnd(e) {
 
 // ====== ИНДИКАТОР МАСШТАБА ======
 function updateZoomIndicator() {
+    /*
     let indicator = document.getElementById('map-zoom-level');
     if (indicator) {
         indicator.textContent = mapScale.toFixed(1);
     }
     let container = document.getElementById('map-zoom-indicator');
     container.style.display = 'block';
-    /*
+    
     if (container) {
         if (mapScale !== 1) {
             container.style.display = 'block';
@@ -1402,19 +1406,63 @@ function updateZoomIndicator() {
         }
     }
     */
+
+    let indicator = document.getElementById('map-zoom-indicator');
+    let level = document.getElementById('map-zoom-level');
+
+    if (!indicator || !level) {
+        console.log('updateZoomIndicator: индикатор не найден, создаем...');
+        createZoomIndicator();
+        indicator = document.getElementById('map-zoom-indicator');
+        level = document.getElementById('map-zoom-level');
+        if (!indicator || !level) return;
+    }
+
+    // Обновляем значение
+    level.textContent = mapScale.toFixed(1);
+
+    // Показываем индикатор только если масштаб не равен 1
+    if (mapScale !== 1) {
+        indicator.style.display = 'block';
+        console.log('updateZoomIndicator: показываем индикатор, масштаб=' + mapScale.toFixed(1));
+    } else {
+        indicator.style.display = 'none';
+        console.log('updateZoomIndicator: скрываем индикатор, масштаб=1');
+    }
     
 }
 
 // ====== СОЗДАНИЕ ИНДИКАТОРА МАСШТАБА ======
 function createZoomIndicator() {
+    alert("in createZoomIndicator");
     // Проверяем, существует ли уже индикатор
     if (document.getElementById('map-zoom-indicator')) return;
 
     let div = document.createElement('div');
     div.id = 'map-zoom-indicator';
-    div.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:50;background:rgba(0,0,0,0.7);color:white;padding:5px 15px;border-radius:20px;font-size:14px;display:none;pointer-events:none;font-family:Arial,sans-serif;';
+    //div.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:50;background:rgba(0,0,0,0.7);color:white;padding:5px 15px;border-radius:20px;font-size:14px;display:none;pointer-events:none;font-family:Arial,sans-serif;';
+    div.style.cssText = `
+        position: fixed !important;
+        bottom: 20px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        z-index: 1000 !important;
+        background: rgba(0, 0, 0, 0.7) !important;
+        color: white !important;
+        padding: 8px 20px !important;
+        border-radius: 25px !important;
+        font-size: 16px !important;
+        font-family: Arial, sans-serif !important;
+        pointer-events: none !important;
+        display: none !important;
+        user-select: none !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        backdrop-filter: blur(5px) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+    `;
     div.innerHTML = 'Масштаб: <span id="map-zoom-level">1.0</span>x';
     document.body.appendChild(div);
+    alert("Индикатор масштаба создан 1437");
 }
 
 function mobilePanel() {
@@ -2668,6 +2716,8 @@ document.addEventListener('click', function (event) { // Работает хор
 
         // Применяем масштаб (координаты "сжимаются" к центру)
         let scale = mapScale || 1;
+        scale = scale * 1.7;
+    
         let xScaled = 50 + (x - 50) / scale;
         let yScaled = 50 + (y - 50) / scale;
 
