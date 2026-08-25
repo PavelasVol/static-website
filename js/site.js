@@ -278,7 +278,7 @@ function applyTransformToMedia() {
 
 
 // ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
-alert("13:10");
+alert("13:40");
 
 // ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
 function createMobileZoomControls() {
@@ -302,13 +302,13 @@ function createMobileZoomControls() {
     controls.style.cssText = `
         position: fixed !important;
         right: 20px !important;
-        bottom: 120px !important;
+        bottom: 200px !important;  /* Увеличено с 120px до 200px */
         z-index: 9999 !important;
         display: flex !important;
         flex-direction: column !important;
         gap: 12px !important;
         pointer-events: auto !important;
-        background: rgba(0, 0, 0, 0.5) !important;
+        background: rgba(0, 0, 0, 0.6) !important;
         padding: 12px 10px !important;
         border-radius: 30px !important;
         backdrop-filter: blur(10px) !important;
