@@ -586,7 +586,30 @@ function updateZoomButtonsState() {
     }
 }
 
-alert("23:00");
+// ====== УПРАВЛЕНИЕ ВИДИМОСТЬЮ КНОПОК МАСШТАБА ======
+function toggleZoomControlsVisibility(show) {
+    let controls = document.getElementById('mobile-zoom-controls');
+    if (!controls) return;
+
+    if (show) {
+        // Показываем кнопки только если это мобильное устройство
+        let isMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+        if (isMobile) {
+            controls.style.display = 'flex';
+            controls.style.visibility = 'visible';
+            controls.style.opacity = '1';
+            console.log('toggleZoomControlsVisibility: кнопки показаны');
+        }
+    } else {
+        // Скрываем кнопки
+        controls.style.display = 'none';
+        controls.style.visibility = 'hidden';
+        controls.style.opacity = '0';
+        console.log('toggleZoomControlsVisibility: кнопки скрыты');
+    }
+}
+
+alert("23:40");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
@@ -1546,6 +1569,10 @@ function show_image_11_08_2026() {
 
 function show_image() {
     console.log('show_image called, N=' + N + ', n=' + n);
+
+    // ====== СКРЫВАЕМ КНОПКИ МАСШТАБА ======
+    toggleZoomControlsVisibility(false);
+
     let baseName = String(N).padStart(2, '0') + "_" + String(n).padStart(2, '0');
     let photoPath = "images/" + baseName + ".jpg";
     let videoPath = "images/" + baseName + ".mp4";
@@ -1634,6 +1661,8 @@ function closePanel() {
     document.getElementById("td1").textContent = '';
     document.getElementById("td2").textContent = '';
     N = 0;
+    // ====== ПОКАЗЫВАЕМ КНОПКИ МАСШТАБА ======
+    toggleZoomControlsVisibility(true);
     // Дополнительно: показать карту, если она была скрыта
     document.getElementById('img0').hidden = false; // если скрывали
 }
@@ -3082,6 +3111,8 @@ document.addEventListener('click', function (event) { // Работает хор
             document.getElementById('div').style.display = 'block';
             n = 1;
             direction = 1;
+            // ====== СКРЫВАЕМ КНОПКИ ======
+            toggleZoomControlsVisibility(false);
             show_image();
         } else {
             if (x < 70) {
