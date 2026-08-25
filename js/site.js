@@ -278,7 +278,7 @@ function applyTransformToMedia() {
 
 
 // ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
-alert("13:40");
+alert("14:20");
 
 // ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
 function createMobileZoomControls() {
@@ -298,11 +298,12 @@ function createMobileZoomControls() {
 
     // Создаем контейнер для кнопок
     //bottom: 200px !important;  /* Увеличено с 120px до 200px */
+    //right: 100px !important;
     let controls = document.createElement('div');
     controls.id = 'mobile-zoom-controls';
     controls.style.cssText = `
         position: fixed !important;
-        right: 100px !important;
+        left: 20px;
         top: 100px;
         z-index: 9999 !important;
         display: flex !important;
