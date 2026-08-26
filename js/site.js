@@ -926,7 +926,7 @@ function getCoordsAtScale(pointIndex, scale) {
     return { x, y };
 }
 // ====== ПЕРЕСЧЕТ КООРДИНАТ КЛИКА С УЧЕТОМ МАСШТАБА ======
- alert("21:25");
+ alert("21:40");
 function getMapCoordinates(clientX, clientY) {
     //alert("in getMapCoordinates");
     let img = document.getElementById('img0');
@@ -3154,7 +3154,9 @@ document.addEventListener('click', function (event) { // Работает хор
         let xm = coordsm.x;
         let ym = coordsm.y;
 
-        
+        x = xm;
+        y = ym;
+
         alert("getMapCoordinates xm=" + xm + " ym=" + ym);
 
         let nscale = 0;
