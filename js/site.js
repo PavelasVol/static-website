@@ -926,7 +926,10 @@ function getCoordsAtScale(pointIndex, scale) {
     return { x, y };
 }
 // ====== ПЕРЕСЧЕТ КООРДИНАТ КЛИКА С УЧЕТОМ МАСШТАБА ======
- //alert("473");
+//alert("473");
+
+
+
 function getMapCoordinates(clientX, clientY) {
     //alert("in getMapCoordinates");
     let img = document.getElementById('img0');
@@ -991,8 +994,16 @@ function getMapCoordinates(clientX, clientY) {
 
     // Применяем масштаб (координаты "сжимаются" к центру)
     let scale = mapScale || 1;
-    let xScaled = 50 + (x - 50) / scale;
-    let yScaled = 50 + (y - 50) / scale;
+
+    // Для мобильных устройств масштаб умножается на 1.7 в applyMapTransform
+    // Поэтому используем эффективный масштаб
+    let effectiveScale = scale;
+    if (isMobile) {
+        effectiveScale = scale * 1.7;
+    }
+    
+    let xScaled = 50 + (x - 50) / effectiveScale;
+    let yScaled = 50 + (y - 50) / effectiveScale;
 
     // Учитываем смещение (переводим пиксели в проценты)
     //let txPercent = (mapTranslateX || 0) / rect.width * 100;
