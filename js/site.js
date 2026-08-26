@@ -2933,7 +2933,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-//alert("00:05");
+alert("19:20");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
@@ -3124,6 +3124,8 @@ document.addEventListener('click', function (event) { // Работает хор
         // Вычисляем положение изображения на экране с учетом трансформации
         let clickX = event.clientX;
         let clickY = event.clientY;
+
+        alert("clickX = " + clickX + " clickY =" + clickY + " dx="+dx+" dy="+dy+" H1="+H1+" W1="+W1);
 
         // При повороте на 90 градусов:
         // x = (clickY - top) / height * 100
