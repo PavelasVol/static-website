@@ -2933,7 +2933,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-alert("19:20");
+alert("19:40");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
@@ -3163,10 +3163,13 @@ document.addEventListener('click', function (event) { // Работает хор
 
         alert("scale=" + scale + " xScaled=" + xScaled + " yScaled=" + yScaled);
 
+        x = xScaled;
+        y = yScaled;
 
 
         // Проверяем попадание в кружок
         let found = false;
+        /*
         for (let ii = 1; ii <= 61; ii++) {
             let dxCircle = Math.abs(x - mass[ii][0]);
             let dyCircle = Math.abs(y - mass[ii][1]);
@@ -3177,6 +3180,46 @@ document.addEventListener('click', function (event) { // Работает хор
                 break;
             }
         }
+        */
+
+        for (let ii = 1; ii <= 61; ii++) {
+            let x0 = 0.0;
+            let y0 = 0.0;
+            // alert("mapScale=" + mapScale + " nscale=" + nscale);
+            if (nscale == 1) {
+                x0 = mass[ii][0];
+                y0 = mass[ii][1];
+            }
+            if (nscale == 3) {
+                x0 = mass2_0[ii][0];
+                y0 = mass2_0[ii][1];
+            }
+            if (nscale == 5) {
+                x0 = mass3_0[ii][0];
+                y0 = mass3_0[ii][1];
+            }
+
+            //alert("in scaleCoords[mapScale][ii].x =" + scaleCoords[nscale][ii].x);
+            //alert("in scaleCoords[mapScale][ii].y =" + scaleCoords[nscale][ii].y);
+            // alert("x0="+x0+" y0="+y0);
+            let dx = Math.abs(x - x0);
+            let dy = Math.abs(y - y0);
+
+            // alert("x=" + x + " x0=" + x0 + " dx=" + dx + "y=" + y + " y0=" + y0 + " dy=" + dy);
+            //alert(" dx=" + dx + " dy=" + dy);
+            // Увеличиваем радиус захвата при большем масштабе
+            let captureRadius = mapScale > 1 ? 2.0 / mapScale : 1.0;
+            if (dx < captureRadius && dy < captureRadius) {
+                N = ii;
+                found = true;
+                console.log(`Попали в кружок №${N}!`);
+                break;
+            }
+        }
+
+
+
+
         //alert("x="+x+" y="+y)
         if (found && N > 0) {
             document.getElementById("td00").textContent = names_arr[N] || "Объект " + N;
