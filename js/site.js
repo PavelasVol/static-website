@@ -2546,6 +2546,69 @@ mass2_0[59] = new Array(45.36, 56.33);
 mass2_0[60] = new Array(45.10, 57.51);
 mass2_0[61] = new Array(46.85, 70.59);
 
+let mass2_0m = new Array()
+mass2_0m[0] = new Array(0.0, 0.0);
+mass2_0m[1] = new Array(44.23, 39.51);
+mass2_0m[2] = new Array(43.75, 32.79);
+mass2_0m[3] = new Array(45.39, 30.10);
+mass2_0m[4] = new Array(45.97, 31.86);
+mass2_0m[5] = new Array(44.21, 61.48);
+mass2_0m[6] = new Array(43.70, 48.44);
+mass2_0m[7] = new Array(45.31, 71.96);
+mass2_0m[8] = new Array(46.35, 68.44);
+mass2_0m[9] = new Array(43.00, 71.43);
+mass2_0m[10] = new Array(41.85, 72.54);
+mass2_0m[11] = new Array(46.42, 54.92);
+mass2_0m[12] = new Array(45.76, 52.26);
+mass2_0m[13] = new Array(47.51, 60.44);
+mass2_0m[14] = new Array(45.49, 61.85);
+mass2_0m[15] = new Array(42.72, 60.62);
+mass2_0m[16] = new Array(45.83, 58.32);
+mass2_0m[17] = new Array(43.04, 54.77);
+mass2_0m[18] = new Array(41.21, 48.26);
+mass2_0m[19] = new Array(41.82, 47.01);
+mass2_0m[20] = new Array(44.52, 48.37);
+mass2_0m[21] = new Array(40.92, 44.58);
+mass2_0m[22] = new Array(55.90, 70.95);
+mass2_0m[23] = new Array(50.58, 49.83);
+mass2_0m[24] = new Array(52.75, 39.90);
+mass2_0m[25] = new Array(47.49, 51.19);
+mass2_0m[26] = new Array(45.61, 46.02);
+mass2_0m[27] = new Array(39.61, 55.92);
+mass2_0m[28] = new Array(40.92, 55.05);
+mass2_0m[29] = new Array(43.55, 52.62);
+mass2_0m[30] = new Array(47.45, 42.52);
+mass2_0m[31] = new Array(49.19, 44.79);
+mass2_0m[32] = new Array(50.89, 42.20);
+mass2_0m[33] = new Array(49.63, 39.69);
+mass2_0m[34] = new Array(54.19, 41.42);
+mass2_0m[35] = new Array(54.77, 47.06);
+mass2_0m[36] = new Array(54.90, 52.23);
+mass2_0m[37] = new Array(51.04, 53.90);
+mass2_0m[38] = new Array(28.80, 61.34);
+mass2_0m[39] = new Array(37.53, 48.37);
+mass2_0m[40] = new Array(29.06, 40.13);
+mass2_0m[41] = new Array(41.09, 59.13);
+mass2_0m[42] = new Array(31.51, 37.28);
+mass2_0m[43] = new Array(40.96, 50.67);
+mass2_0m[44] = new Array(43.27, 62.18);
+mass2_0m[45] = new Array(43.88, 43.14);
+mass2_0m[46] = new Array(45.20, 27.95);
+mass2_0m[47] = new Array(45.02, 59.42);
+mass2_0m[48] = new Array(41.91, 55.11);
+mass2_0m[49] = new Array(43.18, 56.65);
+mass2_0m[50] = new Array(45.10, 46.59);
+mass2_0m[51] = new Array(48.93, 38.10);
+mass2_0m[52] = new Array(48.61, 39.93);
+mass2_0m[53] = new Array(50.27, 39.96);
+mass2_0m[54] = new Array(44.27, 56.38);
+mass2_0m[55] = new Array(42.27, 58.69);
+mass2_0m[56] = new Array(41.84, 41.15);
+mass2_0m[57] = new Array(38.57, 43.64);
+mass2_0m[58] = new Array(39.36, 46.23);
+mass2_0m[59] = new Array(45.36, 56.33);
+mass2_0m[60] = new Array(45.10, 57.51);
+mass2_0m[61] = new Array(46.85, 70.59);
 // Для масштаба 2.0 - исходные координаты
 /*
 scaleCoords[3] = [];
@@ -3205,8 +3268,8 @@ document.addEventListener('click', function (event) { // Работает хор
                 y0 = mass[ii][1];
             }
             if (nscale == 3) {
-                x0 = mass2_0[ii][0];
-                y0 = mass2_0[ii][1];
+                x0 = mass2_0m[ii][0];
+                y0 = mass2_0m[ii][1];
             }
             if (nscale == 5) {
                 x0 = mass3_0[ii][0];
