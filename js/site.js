@@ -926,10 +926,7 @@ function getCoordsAtScale(pointIndex, scale) {
     return { x, y };
 }
 // ====== ПЕРЕСЧЕТ КООРДИНАТ КЛИКА С УЧЕТОМ МАСШТАБА ======
-//alert("473");
-
-
-
+ alert("21:25");
 function getMapCoordinates(clientX, clientY) {
     //alert("in getMapCoordinates");
     let img = document.getElementById('img0');
@@ -993,7 +990,9 @@ function getMapCoordinates(clientX, clientY) {
 
 
     // Применяем масштаб (координаты "сжимаются" к центру)
-    let scale = mapScale || 1;
+    //let scale = mapScale || 1;
+    //let xScaled = 50 + (x - 50) / scale;
+    //let yScaled = 50 + (y - 50) / scale;
 
     // Для мобильных устройств масштаб умножается на 1.7 в applyMapTransform
     // Поэтому используем эффективный масштаб
@@ -1001,7 +1000,8 @@ function getMapCoordinates(clientX, clientY) {
     if (isMobile) {
         effectiveScale = scale * 1.7;
     }
-    
+
+    // Применяем масштаб - координаты "сжимаются" к центру
     let xScaled = 50 + (x - 50) / effectiveScale;
     let yScaled = 50 + (y - 50) / effectiveScale;
 
@@ -1048,7 +1048,7 @@ function getMapCoordinates(clientX, clientY) {
         finalX = Math.max(0, Math.min(100, correctedX));
         finalY = Math.max(0, Math.min(100, correctedY));
     }
-    alert("scale=" + scale + " xScaled=" + xScaled + " yScaled=" + yScaled+" finalX=" + finalX + "%, finalY=" + finalY + "%");
+    //alert("scale=" + scale + " xScaled=" + xScaled + " yScaled=" + yScaled+" finalX=" + finalX + "%, finalY=" + finalY + "%");
 
     return { x: finalX, y: finalY };
 }
@@ -2944,7 +2944,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-alert("21:00);
+alert("20:15");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
