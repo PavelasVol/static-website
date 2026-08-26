@@ -2933,7 +2933,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-alert("20:15");
+alert("20:35");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
@@ -3122,8 +3122,8 @@ document.addEventListener('click', function (event) { // Работает хор
 
         // Для повернутого изображения используем другой подход
         // Вычисляем положение изображения на экране с учетом трансформации
-        //let clickX = event.clientX;
-        //let clickY = event.clientY;
+        let clickX = event.clientX;
+        let clickY = event.clientY;
 
         //alert("clickX = " + clickX + " clickY =" + clickY + " dx="+dx+" dy="+dy+" H1="+H1+" W1="+W1);
 
@@ -3132,21 +3132,18 @@ document.addEventListener('click', function (event) { // Работает хор
         // y = (clickX - left) / width * 100
         // Но с учетом того, что изображение центрировано
 
-        //let x = (clickY - dy) / H1 * 100;
-        //let y = 100 - (clickX - dx) / W1 * 100;
+        let x = (clickY - dy) / H1 * 100;
+        let y = 100 - (clickX - dx) / W1 * 100;
 
-        //x = Math.max(0, Math.min(100, x));
-        //y = Math.max(0, Math.min(100, y));
-        //alert("x00=" + x + " y00=" + y);
+        x = Math.max(0, Math.min(100, x));
+        y = Math.max(0, Math.min(100, y));
+        alert("x00=" + x + " y00=" + y);
 
         let coordsm = getMapCoordinates(event.clientX, event.clientY);
         let xm = coordsm.x;
         let ym = coordsm.y;
 
-        let x = xm;
-        let y = ym;
-
-
+        
         alert("getMapCoordinates xm=" + xm + " ym=" + ym);
 
         let nscale = 0;
