@@ -2573,7 +2573,7 @@ mass2_0m[22] = new Array(55.90, 70.95);
 mass2_0m[23] = new Array(50.58, 49.83);
 mass2_0m[24] = new Array(52.75, 39.90);
 mass2_0m[25] = new Array(47.49, 51.19);
-mass2_0m[26] = new Array(45.61, 46.02);
+mass2_0m[26] = new Array(5.61, 6.02);
 mass2_0m[27] = new Array(39.61, 55.92);
 mass2_0m[28] = new Array(40.92, 55.05);
 mass2_0m[29] = new Array(43.55, 52.62);
@@ -3007,7 +3007,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-alert("22:40");
+alert("22:50");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
