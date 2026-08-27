@@ -3220,7 +3220,7 @@ document.addEventListener('click', function (event) { // Работает хор
         x = xm;
         y = ym;
 
-        alert("getMapCoordinates xm=" + xm + " ym=" + ym);
+        //alert("getMapCoordinates xm=" + xm + " ym=" + ym);
 
         let nscale = 0;
         if ((mapScale > 0.95) && (mapScale < 1.05)) { nscale = 1; }
