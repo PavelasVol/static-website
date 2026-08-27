@@ -3037,7 +3037,7 @@ document.addEventListener('click', function (event) { // Работает хор
         let coords = getMapCoordinates(event.clientX, event.clientY);
         let x = coords.x;
         let y = coords.y;
-        //alert("x0_PC="+x+" y0_PC="+y);
+        alert("x0_PC="+x+" y0_PC="+y+" mapScale="+mapScale);
 
         // Проверяем, что клик внутри изображения
         let rect = img.getBoundingClientRect();
@@ -3067,6 +3067,9 @@ document.addEventListener('click', function (event) { // Работает хор
             let x0 = 0.0;
             let y0 = 0.0;
             // alert("mapScale=" + mapScale + " nscale=" + nscale);
+            x0 = mass[ii][0];
+            y0 = mass[ii][1];
+            /*
             if (nscale == 1) {
                 x0 = mass[ii][0];
                 y0 = mass[ii][1];
@@ -3079,6 +3082,7 @@ document.addEventListener('click', function (event) { // Работает хор
                 x0 = mass3_0[ii][0];
                 y0 = mass3_0[ii][1];
             }
+            */
 
             //alert("in scaleCoords[mapScale][ii].x =" + scaleCoords[nscale][ii].x);
             //alert("in scaleCoords[mapScale][ii].y =" + scaleCoords[nscale][ii].y);
@@ -3240,10 +3244,7 @@ document.addEventListener('click', function (event) { // Работает хор
         let yScaled = 50 + (y - 50) / scale;
 
         //alert("mapscale=" + mapScale + " xScaled=" + xScaled + " yScaled=" + yScaled);
-
         
-
-
         // Проверяем попадание в кружок
         let found = false;
         /*
