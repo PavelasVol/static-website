@@ -626,7 +626,7 @@ function toggleZoomControlsVisibility(show) {
     }
 }
 
-alert("00:20");
+//alert("00:20");
 // ====== ПРИМЕНЕНИЕ ТРАНСФОРМАЦИЙ К КАРТЕ ======
 function applyMapTransform() {
     let img = document.getElementById('img0');
@@ -926,7 +926,7 @@ function getCoordsAtScale(pointIndex, scale) {
     return { x, y };
 }
 // ====== ПЕРЕСЧЕТ КООРДИНАТ КЛИКА С УЧЕТОМ МАСШТАБА ======
- alert("21:40");
+ //alert("21:40");
 function getMapCoordinates(clientX, clientY) {
     //alert("in getMapCoordinates");
     let img = document.getElementById('img0');
@@ -1890,11 +1890,11 @@ function createZoomIndicator() {
     `;
     div.innerHTML = 'Масштаб: <span id="map-zoom-level">1.0</span>x';
     document.body.appendChild(div);
-    alert("Индикатор масштаба создан 1437");
+    //alert("Индикатор масштаба создан 1437");
 }
 
 function mobilePanel() {
-    alert("in mobilePanel");
+    //alert("in mobilePanel");
     // ====== ПРИНУДИТЕЛЬНО ПЕРЕОПРЕДЕЛЯЕМ ВСЕ СТИЛИ ЧЕРЕЗ cssText ======
     panel.style.cssText = `
         position: fixed !important;
@@ -3007,7 +3007,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-alert("10:55");
+//alert("10:55");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
@@ -3220,7 +3220,7 @@ document.addEventListener('click', function (event) { // Работает хор
         x = xm;
         y = ym;
 
-        alert(" xm=" + xm + " ym=" + ym);
+        //alert(" xm=" + xm + " ym=" + ym);
 
         let nscale = 0;
         if ((mapScale > 0.95) && (mapScale < 1.05)) { nscale = 1; }
