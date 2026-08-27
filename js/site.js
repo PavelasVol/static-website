@@ -2547,7 +2547,7 @@ mass2_0[60] = new Array(45.10, 57.51);
 mass2_0[61] = new Array(46.85, 70.59);
 
 let mass2_0m = new Array()
-mass2_0[0] = new Array(0.0, 0.0);
+mass2_0m[0] = new Array(0.0, 0.0);
 mass2_0m[1] = new Array(42.30, 45.97);
 mass2_0m[2] = new Array(43.69, 44.92);
 mass2_0m[3] = new Array(45.33, 44.21);
@@ -3007,7 +3007,7 @@ names_arr = new Array("",
     names_arr3[63] = new Array("", "Площадь перед кинотеатром с отметкой 1976 года в 2026 году")
 
 // ====== ОБРАБОТЧИК КЛИКОВ ======
-alert("10:15");
+alert("10:55");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
 document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
    //alert("in addEventListener: CLICK");
@@ -3220,7 +3220,7 @@ document.addEventListener('click', function (event) { // Работает хор
         x = xm;
         y = ym;
 
-        //alert("getMapCoordinates xm=" + xm + " ym=" + ym);
+        alert(" xm=" + xm + " ym=" + ym);
 
         let nscale = 0;
         if ((mapScale > 0.95) && (mapScale < 1.05)) { nscale = 1; }
@@ -3275,8 +3275,8 @@ document.addEventListener('click', function (event) { // Работает хор
                 }
             }
             if (nscale == 5) {
-                x0 = mass3_0[ii][0];
-                y0 = mass3_0[ii][1];
+                x0 = mass2_0m[ii][0];
+                y0 = mass2_0m[ii][1];
             }
 
             //alert("in scaleCoords[mapScale][ii].x =" + scaleCoords[nscale][ii].x);
