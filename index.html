@@ -35,6 +35,95 @@
             background: #000;
         }
 
+
+        /*==============================================================================================================*/
+        /* ====== СТАРТОВАЯ ПАНЕЛЬ ====== */
+        #start-panel {
+            position: fixed !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 10000 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+        }
+
+            #start-panel > div {
+                width: 100% !important;
+                height: 100% !important;
+                max-width: 100% !important;
+                max-height: 100% !important;
+                border-radius: 0 !important;
+                padding: 20px 20px 100px 20px !important;
+                box-sizing: border-box !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+            }
+
+        #start-panel-btn {
+            /*position: fixed !important;*/
+            bottom: 0px !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            width: calc(100% - 40px) !important;
+            max-width: 400px !important;
+            z-index: 10001 !important;
+        }
+
+        /* Для маленьких экранов */
+        @media (max-width: 480px) {
+            #start-panel > div {
+                padding: 15px 15px 90px 15px !important;
+            }
+
+            #start-panel-btn {
+                bottom: 20px !important;
+                padding: 16px 25px !important;
+                font-size: 17px !important;
+                width: calc(100% - 30px) !important;
+            }
+        }
+
+        /* Для очень высоких экранов */
+        @media (min-height: 800px) {
+            #start-panel > div {
+                padding: 40px 30px 120px 30px !important;
+                justify-content: center !important;
+            }
+
+            #start-panel-btn {
+                bottom: 50px !important;
+            }
+        }
+
+        /* Анимация появления */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        #start-panel > div {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        #start-panel-btn {
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+            opacity: 0;
+        }
+        /*==============================================================================================================*/
         /* ====== КАРТИНКИ ====== */
         #img {
             position: absolute;
@@ -183,50 +272,7 @@
             /*height: auto !important; /* Автоматическая высота */
         }
 
-        /* Блок с фотографией */
-        /*
-        #block {
-            flex: 1;
-            min-height: 80px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: rgba(255,255,255,0.05);
-            border-radius: 4px;
-            overflow: hidden;
-            padding: 4px;
-            width: 100%;
-            position: relative;
-            cursor: grab;
-            touch-action: none; /* Отключаем стандартные жесты для всей области */
-            /*pointer-events: auto; /* Включаем обработку событий для контейнера */
-      /*  }
         
-            #block img {
-                max-width: 100%;
-                max-height: 100%;
-                width: auto;
-                height: auto;
-                object-fit: contain;
-                display: block;
-            }
-        */
-        /* Контейнер для фотографии */
-        /*
-        #media-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-            pointer-events: auto !important; /* Включаем обработку событий 
-            cursor: grab;
-            user-select: none;
-            -webkit-user-select: none;           
-        }
-        */
         #media-container {
             flex: 1 1 auto !important;
             width: 100% !important;
@@ -244,20 +290,7 @@
             padding: 0 !important; /* Убираем лишние отступы */
         }
 
-            /*
-            #media-container img, #media-container video {
-                max-width: 100%;
-                max-height: 100%;
-                width: auto;
-                height: auto;
-                object-fit: contain;
-                display: block;
-                user-select: none;
-                -webkit-user-select: none;
-                /*pointer-events: none; /* Чтобы жесты работали через родителя 
-                pointer-events: none !important; /* Отключаем события для самого медиа 
-            }
-            */
+           
             #media-container img,
             #media-container video {
                 max-width: 100% !important;
@@ -276,40 +309,7 @@
            pointer-events: auto !important; /* Включаем управление для видео */
         }
 
-        /* Описание конкретной фотографии объекта */
-        /*
-        .td1 {
-            text-align: center;
-            background: #7c82f6;
-            color: black;
-            font-size: 16px;
-            border-radius: 4px;
-            padding: 5px 8px;
-            flex-shrink: 0;
-            min-height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        */
-        /* Описание конкретной фотографии объекта - над кнопками */
-        /*
-        .td1 {
-            text-align: center;
-            background: #7c82f6;
-            color: black;
-            font-size: 16px;
-            border-radius: 4px;
-            padding: 4px 8px;
-            flex-shrink: 0;
-            min-height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 !important;
-            /* Убираем все отступы 
-        }
-        */
+        
         /* Описание конкретной фотографии (td1) */
         .td1 {
             text-align: center;
@@ -327,27 +327,7 @@
             border-top: 1px solid rgba(255,255,255,0.2); /* Небольшая разделительная линия */
         }
 
-        /* ====== БЛОК С КНОПКАМИ ====== */
-        /*
-        .tr0 {
-            flex-shrink: 0;
-            margin-top: auto;
-            border-top: 1px solid rgba(255,255,255,0.2);
-            padding-top: 4px;
-            width: 100%;
-        }
-
-        .tr0 td {
-                display: flex;
-                justify-content: center;
-                /*align-items: center;*/
-                /*gap: 20px;
-                padding: 6px 0;
-                height: 52px;
-                box-sizing: border-box;
-                position: relative;*/
-                /* Ширина устанавливается через JavaScript */
-       /* }*/
+        
         
         /* Блок с кнопками - сразу под td1 */
         .tr0 {
@@ -412,6 +392,117 @@
             align-items: center; /* Центрируем элементы по вертикали (опционально) */
             gap: 20px; /* Задаем одинаковый отступ между картинками */
         }
+
+        /* ====== ИНФОРМАЦИОННОЕ ОКНО (НА ВЕСЬ ЭКРАН) ====== */
+        #info-window {
+            position: fixed !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 99999 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            background: linear-gradient(135deg, #0a1a3a, #1a3a6b, #2d5aa0) !important;
+        }
+
+            #info-window > div {
+                width: 100% !important;
+                height: 100% !important;
+                max-width: 100% !important;
+                max-height: 100% !important;
+                border-radius: 0 !important;
+                padding: 20px 20px 20px 20px !important;
+                box-sizing: border-box !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important; /* Ключевое свойство! */
+            }
+
+        /* Кнопка закрытия (крестик) */
+        #info-close-btn-x {
+            position: absolute !important;
+            top: 20px !important;
+            right: 20px !important;
+            width: 44px !important;
+            height: 44px !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            border: 2px solid rgba(255, 255, 255, 0.3) !important;
+            border-radius: 50% !important;
+            color: white !important;
+            font-size: 28px !important;
+            font-weight: bold !important;
+            cursor: pointer !important;
+            z-index: 100000 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            line-height: 1 !important;
+            transition: all 0.3s ease !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Адаптация для маленьких экранов */
+        @media (max-width: 480px) {
+            #info-window > div {
+                padding: 15px 15px 15px 15px !important;
+                padding-top: 50px !important;
+            }
+
+            #info-close-btn-x {
+                top: 15px !important;
+                right: 15px !important;
+                width: 38px !important;
+                height: 38px !important;
+                font-size: 22px !important;
+            }
+
+            #info-window ul {
+                padding-left: 15px !important;
+            }
+
+            #info-window li {
+                font-size: 14px !important;
+                margin: 6px 0 !important;
+            }
+
+            #info-close-btn {
+                padding: 14px 25px !important;
+                font-size: 16px !important;
+                margin-bottom: 12px !important;
+            }
+        }
+
+        /* Для очень высоких экранов */
+        @media (min-height: 800px) {
+            #info-window > div {
+                padding: 40px 30px 40px 30px !important;
+            }
+        }
+
+        /* Анимация появления */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        #info-window {
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+
 
         /* ============================================== */
         /* ====== АДАПТАЦИЯ ДЛЯ СМАРТФОНОВ ====== */
@@ -943,6 +1034,161 @@
     </style>
 </head>
 <body id="body_id">
+    <!-- ====== СТАРТОВАЯ ПАНЕЛЬ-ПРИВЕТСТВИЕ (КНОПКА ВНИЗУ) ====== -->
+    <div id="start-panel" style="
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10000;
+    background: linear-gradient(135deg, #0a1a3a, #1a3a6b, #2d5aa0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    transition: opacity 0.5s ease;
+    overflow: hidden;
+">
+        <!-- Внутренний контейнер с прокруткой -->
+        <div style="
+        background: linear-gradient(135deg, rgba(26, 58, 107, 0.95), rgba(45, 90, 160, 0.95));
+        border-radius: 0;
+        padding: 30px 25px 100px 25px;
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        box-shadow: none;
+        border: none;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-sizing: border-box;
+    ">
+            <!-- Заголовок -->
+            <h1 style="
+            color: #FFD700;
+            text-align: center;
+            font-size: clamp(24px, 4vw, 42px);
+            margin: 0 0 10px 0;
+            font-family: Arial, sans-serif;
+            text-shadow: 0 2px 20px rgba(255, 215, 0, 0.3);
+            flex-shrink: 0;
+            padding-top: 20px;
+        ">
+                Санаторий ГРУ Генштаба Вооруженных Сил СССР "Эшери"
+            </h1>
+
+            <!-- Подзаголовок -->
+            <p style="
+            color: #a8c8ff;
+            text-align: center;
+            font-size: clamp(14px, 2vw, 20px);
+            margin: 0 0 20px 0;
+            font-family: Arial, sans-serif;
+            opacity: 0.9;
+            flex-shrink: 0;
+        ">
+                Интерактивная карта-схема территории
+            </p>
+
+            <!-- Изображение -->
+            <div style="
+            text-align: center;
+            margin: 5px 0 20px 0;
+            width: 100%;
+            max-width: 700px;
+            flex-shrink: 0;
+        ">
+                <img src="images/05_01.jpg" alt="Санаторий Эшери" style="
+                width: 100%;
+                max-width: 1200px;
+                height: auto;
+                max-height: 750px;
+                border-radius: 16px;
+                border: 3px solid rgba(255, 215, 0, 0.3);
+                box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+                object-fit: cover;
+            " onerror="this.style.display='none'">
+            </div>
+
+            <!-- Текст -->
+            <div style="
+            color: #e8f0ff;
+            font-size: clamp(14px, 1.8vw, 18px);
+            line-height: 1.8;
+            font-family: Arial, sans-serif;
+            margin: 0 0 30px 0;
+            padding: 0 15px;
+            max-width: 650px;
+            text-align: center;
+            flex-shrink: 0;
+        ">
+                <p style="margin: 0 0 12px 0;">
+                    Добро пожаловать на интерактивную карту-схему санатория "Эшери".
+                </p>
+                <p style="margin: 0 0 12px 0;">
+                    На карте отмечены <strong style="color: #FFD700;">61 объект</strong> санатория.
+                    <br>Нажимайте на любой кружок, чтобы узнать подробную текстовую и видео информацию.
+                </p>
+                <p style="margin: 0 0 5px 0; font-size: clamp(12px, 1.3vw, 15px); opacity: 0.7;">
+                    💡 Подсказка: Используйте кнопки +/- для масштабирования карты.
+                </p>
+            </div>
+
+            <!-- Отступ для кнопки -->
+            <div style="flex: 1; min-height: 20px;"></div>
+
+            <!-- Кнопка "Далее" (зафиксирована внизу) -->
+            <button id="start-panel-btn" style="
+            /*position: fixed;*/
+            bottom: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 200px;
+            max-height: 70px;
+            padding: 18px 35px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #1a3a6b;
+            border: none;
+            border-radius: 50px;
+            font-size: clamp(18px, 2vw, 22px);
+            font-weight: bold;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 30px rgba(255, 215, 0, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 10001;
+        "
+                    onmouseover="this.style.transform='translateX(-50%) scale(1.05)'; this.style.boxShadow='0 8px 40px rgba(255, 215, 0, 0.6)';"
+                    onmouseout="this.style.transform='translateX(-50%) scale(1)'; this.style.boxShadow='0 4px 30px rgba(255, 215, 0, 0.4)';">
+                ▶ Далее
+            </button>
+
+            <!-- Дополнительная информация -->
+            <p style="
+            color: rgba(255, 255, 255, 0.25);
+            text-align: center;
+            font-size: clamp(10px, 0.9vw, 13px);
+            margin: 0;
+            font-family: Arial, sans-serif;
+            flex-shrink: 0;
+            padding-bottom: 10px;
+        ">
+                © 2026 Волынкин П.А. • Все права защищены
+            </p>
+        </div>
+    </div>
+
     <!-- ФОН (eshera2.jpg) - виден всегда
     <img src="images/eshera2.jpg" id="img" onclick="onclick_img()" alt="Фон">
         -->
@@ -952,6 +1198,217 @@
     <!-- В HTML, рядом с картой -->
     <div id="map-zoom-indicator" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:50;background:rgba(0,0,0,0.7);color:white;padding:5px 15px;border-radius:20px;font-size:14px;display:none;">
         Масштаб: <span id="map-zoom-level">1.0</span>x
+    </div>
+
+
+    <!-- ====== КНОПКА ИНФОРМАЦИИ (левый нижний угол) ====== -->
+    <button id="info-btn" style="
+    position: fixed !important;
+    left: 20px !important;
+    bottom: 100px !important;
+    z-index: 9999 !important;
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+    border: 2px solid rgba(255, 255, 255, 0.5) !important;
+    color: #1a3a6b !important;
+    font-size: 28px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+    font-family: Arial, sans-serif !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    pointer-events: auto !important;
+"
+            onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 6px 30px rgba(255, 215, 0, 0.6)';"
+            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 20px rgba(255, 215, 0, 0.4)';">
+        ⓘ
+    </button>
+
+
+    <!-- ====== ИНФОРМАЦИОННОЕ ОКНО (НА ВЕСЬ ЭКРАН) ====== -->
+    <div id="info-window" style="
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999;
+    background: linear-gradient(135deg, #0a1a3a, #1a3a6b, #2d5aa0);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    animation: fadeIn 0.3s ease;
+    overflow: hidden;
+">
+        <!-- Внутренний контейнер - используем flex для прижатия кнопки к низу -->
+        <div style="
+        background: linear-gradient(135deg, rgba(26, 58, 107, 0.98), rgba(45, 90, 160, 0.98));
+        border-radius: 0;
+        padding: 30px 25px 30px 25px;
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        box-shadow: none;
+        border: none;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    ">
+            
+
+            <!-- ВЕРХНЯЯ ЧАСТЬ: Иконка, заголовок, текст - flex-shrink: 0 (не сжимается) -->
+            <div style="
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        ">
+               
+
+                <!-- Заголовок -->
+                <h2 style="
+                color: #FFD700;
+                text-align: center;
+                font-size: clamp(24px, 4vw, 38px);
+                margin: 0 0 20px 0;
+                font-family: Arial, sans-serif;
+                text-shadow: 0 2px 20px rgba(255, 215, 0, 0.3);
+                flex-shrink: 0;
+            ">
+                    КРАТКАЯ ИСТОРИЧЕСКАЯ СПРАВКА О САНАТОРИИ
+                </h2>
+
+                <!-- Текст max-width: 700px;-->
+                <div style="
+                color: #e8f0ff;
+                font-size: clamp(16px, 2vw, 20px);
+                line-height: 1.8;
+                font-family: Arial, sans-serif;
+                margin: 0 0 20px 0;
+                padding: 0 20px;
+
+                text-align: left;
+                flex-shrink: 0;
+                width: 100%;
+            ">
+                    <p style="margin: 0 0 15px 0;">
+                        <strong style="color: #FFD700;">В начале 1949 года</strong> на базе 75-коечного санатория ЗакВО был организован военный санаторий "ЭШЕРИ" Министерства Вооруженных Сил на 100 коек. Жилым фондом санатория было единственное здание - особняк бывшего князя Ковалевского. Первая группа отдыхающих была принята в июне 1949 года..
+                    </p>
+                    <p style="margin: 0 0 15px 0;">
+                        <strong style="color: #FFD700;">6 ноября 1949 года</strong> санаторий был переименован в клинический военный санаторий "ЭШЕРИ" на 100 мест.
+                    </p>
+                    <p style="margin: 0 0 15px 0;">
+                        <strong style="color: #FFD700;">В 1950-51 гг. </strong> территория санатория значительно расширяется, были построены деревянные коттеджи для спальных помещений, приемного отделения, управления.
+                    </p>
+                    <p style="margin: 0 0 15px 0;">
+                        <strong style="color: #FFD700;">К 1957 году</strong> были построены: здание лечебного корпуса, клуб-столовая, прачечная, гараж, склады ОВС, запчастей, КЭО, продсклад с холодильником.
+                    </p>
+                    <p style="margin: 0 0 15px 0;">
+                        <strong style="color: #FFD700;">3 мая 1957 года</strong> 3 мая 1957 года санаторий был передан в ведение Генерального Штаба МО СССР и стал функцонировать на 125 мест под названием - санаторий "ЭШЕРИ" МО СССР.
+                    </p>
+                    <p style="margin: 0 0 15px 0;">
+                        <strong style="color: #FFD700;">С 1963 года</strong> проводится генеральная реконструкция санатория и большие работы по благоустройству. С вводом в строй спальных корпусов II-го и I-го медотделений санаторий стал 200 коечный.
+                    </p>
+                    <p style="margin: 0 0 15px 0;">
+                        <strong style="color: #FFD700;">В 1969 году</strong> при санатории был открыт пансионат на 100 коек для членов семей военнослужащих и служащих СА.
+                    </p>
+                    <p style="margin: 0 0 15px 0;">
+                        <strong style="color: #FFD700;">До 1975 года</strong> сдаются в эксплуатацию летний кинотеатр на 400 мест, бытовой домик с отделением связи, лодочная станция с причалом, лечебные пляжи с аэрариями, набережная.
+                    </p>
+                    <p style="margin: 0 0 15px 0;">
+                        <strong style="color: #FFD700;">ОСНОВНЫЕ ЛЕЧЕБНЫЕ ФАКТОРЫ</strong>
+                        1. Климатотерапия.
+                        2. Морские купания
+                        3. Физические методы лечения
+                        4. Лечебная физическая культура
+                        5. Лечебное питание                        
+                    </p>
+                    <p style="margin: 0 0 15px 0;">
+                        <strong style="color: #FFD700;">Управление:</strong>
+                    </p>
+                    <ul style="
+                    margin: 0 0 15px 0;
+                    padding-left: 25px;
+                    color: #c8d8ff;
+                    list-style-type: none;
+                ">
+                        <li style="margin: 8px 0;">📍 Клик по кружку — открыть информацию об объекте</li>
+                        <li style="margin: 8px 0;">🖱️ Колесо мыши или жесты — масштабирование</li>
+                        <li style="margin: 8px 0;">✋ Перетаскивание — перемещение по карте</li>
+                        <li style="margin: 8px 0;">➕➖ Кнопки +/- — масштабирование (на мобильных)</li>
+                    </ul>
+                    <p style="margin: 0 0 5px 0; color: rgba(255,255,255,0.4); font-size: clamp(13px, 1.5vw, 16px);">
+                        💡 Для закрытия нажмите кнопку "Назад к карте"
+                    </p>
+                </div>
+            </div>
+
+            <!-- ====== РАСТЯГИВАЮЩИЙСЯ ОТСТУП (занимает всё свободное место) ====== -->
+            <div style="flex: 1 1 auto; min-height: 20px;"></div>
+
+            <!-- ====== НИЖНЯЯ ЧАСТЬ: Кнопка и копирайт (flex-shrink: 0) ====== -->
+            <div style="
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding-bottom: 10px;
+        ">
+                <!-- Кнопка "Назад к карте" -->
+                <button id="info-close-btn" style="
+                position: fixed;
+                top:0px;
+                left:0px;
+                width: 100%;
+                max-width: 400px;
+                padding: 18px 35px;
+                background: linear-gradient(135deg, #FFD700, #FFA500);
+                color: #1a3a6b;
+                border: none;
+                border-radius: 50px;
+                font-size: clamp(18px, 2vw, 22px);
+                font-weight: bold;
+                cursor: pointer;
+                font-family: Arial, sans-serif;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 30px rgba(255, 215, 0, 0.3);
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin-bottom: 15px;
+            "
+                        onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 8px 40px rgba(255, 215, 0, 0.5)';"
+                        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 30px rgba(255, 215, 0, 0.3)';">
+                    ◀ Назад к карте
+                </button>
+
+                <!-- Дополнительная информация (копирайт) -->
+                <p style="
+                color: rgba(255, 255, 255, 0.2);
+                text-align: center;
+                font-size: clamp(10px, 0.9vw, 13px);
+                margin: 0;
+                font-family: Arial, sans-serif;
+            ">
+                    © 2026 Волынкин П.А. • Все права защищены
+                </p>
+            </div>
+        </div>
     </div>
 
 
