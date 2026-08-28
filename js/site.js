@@ -2260,6 +2260,28 @@ function positionPanel() {
 
 // Вызываем при загрузке и при изменении размера окна
 window.addEventListener('load', function () {
+    // 1. Скрываем основную панель (если была открыта)
+    let panel = document.getElementById('div');
+    if (panel) {
+        panel.style.display = 'none';
+    }
+
+    // 2. Скрываем карту (она будет показана после нажатия "Далее")
+    let img = document.getElementById('img0');
+    if (img) {
+        img.hidden = true;
+    }
+
+    // 3. Показываем стартовую панель
+    setTimeout(function () {
+        showStartPanel();
+        setupStartPanelButton();
+    }, 200);
+
+    // 4. Инициализируем остальные компоненты (они будут готовы, когда понадобятся)
+   
+    
+
     setTimeout(positionPanel, 300);
     createZoomIndicator();
     setTimeout(setupMapHandlers, 500); // Инициализация обработчиков карты
@@ -2269,6 +2291,8 @@ window.addEventListener('load', function () {
         console.log('Инициализация кнопок управления масштабом...');
         initZoomControls();
     }, 600);
+    // ====== ИНИЦИАЛИЗАЦИЯ ИНФОРМАЦИОННОГО ОКНА ======
+    setTimeout(initInfoWindow,300);
     // Показываем индикатор
     setTimeout(updateZoomIndicator, 800);
     console.log('Window loaded, map handlers scheduled');
@@ -3009,7 +3033,24 @@ names_arr = new Array("",
 // ====== ОБРАБОТЧИК КЛИКОВ ======
 //alert("10:55");
 // ====== ОБРАБОТЧИК КЛИКОВ (с учетом масштаба карты) ======
-document.addEventListener('click', function (event) { // Работает хорошо только для ПК, а для мобильных нет попаданий и масштабирования
+document.addEventListener('click', function (event) { // Работает хорошо
+
+    // ====== ПРОВЕРКА: ЕСЛИ СТАРТОВАЯ ПАНЕЛЬ ОТКРЫТА - ИГНОРИРУЕМ КЛИК ======
+    let startPanel = document.getElementById('start-panel');
+    if (startPanel && startPanel.style.display !== 'none' && startPanel.style.opacity !== '0') {
+        // Проверяем, не клик ли это по кнопке "Далее"
+        let target = event.target;
+        if (target.id === 'start-panel-btn' || target.closest('#start-panel-btn')) {
+            console.log('Клик по кнопке "Далее" - передаем управление');
+            return; // Позволяем обработать событие кнопке
+        }
+        console.log('Клик по карте игнорируется - стартовая панель открыта');
+        return; // Игнорируем клик по карте, если стартовая панель открыта
+    }
+
+
+
+
    //alert("in addEventListener: CLICK");
     let img = document.getElementById('img0');
     if (!img) return;
@@ -3037,7 +3078,7 @@ document.addEventListener('click', function (event) { // Работает хор
         let coords = getMapCoordinates(event.clientX, event.clientY);
         let x = coords.x;
         let y = coords.y;
-        alert("x0_PC="+x+" y0_PC="+y+" mapScale="+mapScale);
+        //alert("x0_PC="+x+" y0_PC="+y+" mapScale="+mapScale);
 
         // Проверяем, что клик внутри изображения
         let rect = img.getBoundingClientRect();
@@ -3327,201 +3368,265 @@ document.addEventListener('click', function (event) { // Работает хор
     }
 });
 
-document.addEventListener__('click', function (event) {
-    alert("in addEventListener('click', function (event)");
+// ====== УПРАВЛЕНИЕ СТАРТОВОЙ ПАНЕЛЬЮ ======
+
+// Показать стартовую панель
+function showStartPanel() {
+    let panel = document.getElementById('start-panel');
+    if (!panel) {
+        console.log('showStartPanel: панель не найдена');
+        return;
+    }
+
+    console.log('showStartPanel: показываем');
+
+    panel.style.display = 'flex';
+    panel.style.visibility = 'visible';
+    panel.style.pointerEvents = 'auto';
+    panel.style.opacity = '1';
+
+    // Скрываем карту
     let img = document.getElementById('img0');
-    if (!img) return;
+    if (img) {
+        img.style.opacity = '0.3';
+    }
 
-    let target = event.target;
+    // Скрываем кнопки масштаба
+    toggleZoomControlsVisibility(false);
+}
 
-    // Если клик по панели или её элементам - игнорируем
-    if (target.closest('#div')) {
+// Скрыть стартовую панель
+function hideStartPanel() {
+    let panel = document.getElementById('start-panel');
+    if (!panel) {
+        console.log('hideStartPanel: панель не найдена');
         return;
     }
 
-    // Если клик по кнопкам навигации - игнорируем
-    if (target.closest('.button1') || target.closest('.button2')) {
+    if (panel.style.display === 'none') {
+        console.log('hideStartPanel: панель уже скрыта');
         return;
     }
 
-    // Если клик по медиа-контейнеру - игнорируем
-    if (target.closest('#media-container') || target.closest('#block')) {
+    console.log('hideStartPanel: скрываем панель');
+
+    // Скрываем панель
+    panel.style.display = 'none';
+    panel.style.visibility = 'hidden';
+    panel.style.pointerEvents = 'none';
+    panel.style.opacity = '0';
+
+    // Показываем карту
+    let img = document.getElementById('img0');
+    if (img) {
+        img.hidden = false;
+        img.style.opacity = '1';
+    }
+
+    // Показываем кнопки масштаба
+    setTimeout(function () {
+        toggleZoomControlsVisibility(true);
+        updateZoomButtonsState();
+    }, 200);
+
+    // Обновляем позиционирование
+    setTimeout(function () {
+        positionPanel();
+    }, 300);
+
+    console.log('hideStartPanel: завершено');
+}
+
+// ЕДИНСТВЕННАЯ НАСТРОЙКА КНОПКИ "ДАЛЕЕ"
+function setupStartPanelButton() {
+    let btn = document.getElementById('start-panel-btn');
+    if (!btn) {
+        console.log('setupStartPanelButton: кнопка не найдена');
         return;
     }
 
-    // 1. Получаем размеры окна браузера
-    let WB = window.innerWidth;
-    let HB = window.innerHeight;
-    let KB = WB / HB;
+    console.log('setupStartPanelButton: настраиваем кнопку');
 
-    // 2. Получаем реальный размер изображения из файла
-    let W0 = img.naturalWidth;
-    let H0 = img.naturalHeight;
+    // Удаляем ВСЕ старые обработчики
+    btn.onclick = null;
+    btn.removeEventListener('click', handleStartButtonClick);
+    btn.removeEventListener('click', hideStartPanel);
 
-    if (W0 === 0 || H0 === 0) {
-        console.log('Изображение еще не загружено');
+    // Используем onclick (самый надежный способ)
+    btn.onclick = function (e) {
+        // Останавливаем всплытие
+        if (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+
+        console.log('Кнопка "Далее" нажата (onclick)');
+        hideStartPanel();
+        return false;
+    };
+
+    // Блокируем touch события
+    btn.ontouchstart = function (e) {
+        e.stopPropagation();
+        return false;
+    };
+    btn.ontouchend = function (e) {
+        e.stopPropagation();
+        return false;
+    };
+
+    console.log('setupStartPanelButton: кнопка настроена через onclick');
+}
+
+// Обработчик для addEventListener (если понадобится)
+function handleStartButtonClick(e) {
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+    console.log('handleStartButtonClick: кнопка "Далее" нажата');
+    hideStartPanel();
+}
+
+// ====== УПРАВЛЕНИЕ ИНФОРМАЦИОННЫМ ОКНОМ ======
+
+// Показать информационное окно
+function showInfoWindow() {
+    let window = document.getElementById('info-window');
+    if (!window) {
+        console.log('showInfoWindow: окно не найдено');
         return;
     }
 
-    let K0 = W0 / H0;
+    window.style.display = 'flex';
+    window.style.visibility = 'visible';
+    window.style.opacity = '1';
+    window.style.pointerEvents = 'auto';
 
-    let W1, H1, dx, dy; // ширина и высота изображения в браузере и размеры черных полос по горизонтали и вертикали
+    console.log('showInfoWindow: окно показано');
+}
 
-    //alert("");
-
-    // 3. Проверяем, повернуто ли изображение (мобильная версия)
-    let isRotated = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-    //alert("isRotated=" + isRotated);
-    if (isRotated) {
-        // Для повернутого изображения меняем местами ширину и высоту
-        // Так как изображение повернуто на 90 градусов
-        let tempK = K0;
-        K0 = 1 / K0; // Меняем соотношение сторон
-        //4. Вычисляем размер изображения в браузере(W1, H1) и черные полосы(dx, dy)
-        if (K0 < KB) {
-            H1 = HB;
-            W1 = K0 * H1;
-            dx = (WB - W1) / 2;
-            dy = 0;
-        } else {
-            W1 = WB;
-            H1 = W1 / K0;
-            dx = 0;
-            dy = (HB - H1) / 2;
-        }
-
-        // Для повернутого изображения координаты клика нужно пересчитать
-        // Получаем координаты клика относительно изображения
-        let rect = img.getBoundingClientRect();
-
-        // Для повернутого изображения используем другой подход
-        // Вычисляем положение изображения на экране с учетом трансформации
-        let clickX = event.clientX;
-        let clickY = event.clientY;
-
-        // При повороте на 90 градусов:
-        // x = (clickY - top) / height * 100
-        // y = (clickX - left) / width * 100
-        // Но с учетом того, что изображение центрировано
-
-        let x = (clickY - dy) / H1 * 100;
-        let y = 100 - (clickX - dx) / W1 * 100;
-
-        x = Math.max(0, Math.min(100, x));
-        y = Math.max(0, Math.min(100, y));
-
-        // Проверяем попадание в кружок
-        let found = false;
-        for (let ii = 1; ii <= 61; ii++) {
-            let dxCircle = Math.abs(x - mass[ii][0]);
-            let dyCircle = Math.abs(y - mass[ii][1]);
-            if (dxCircle < 2.0 && dyCircle < 2.0) {
-                N = ii;
-                found = true;
-                console.log(`Попали в кружок №${N}!`);
-                break;
-            }
-        }
-        //alert("x="+x+" y="+y)
-        if (found && N > 0) {
-            document.getElementById("td00").textContent = names_arr[N] || "Объект " + N;
-            document.getElementById("td2").textContent = names_arr2[N] || "Нет описания";
-            document.getElementById('div').style.display = 'block';
-            n = 1;
-            direction = 1;
-            show_image();
-        } else {
-            if (x < 70) {
-                document.getElementById('div').style.display = 'none';
-                document.getElementById('block').innerHTML = '';
-                document.getElementById("td00").textContent = '';
-                document.getElementById("td1").textContent = '';
-                document.getElementById("td2").textContent = '';
-                N = 0;
-            }
-        }
+// Скрыть информационное окно
+function hideInfoWindow() {
+    let window = document.getElementById('info-window');
+    if (!window) {
+        console.log('hideInfoWindow: окно не найдено');
         return;
     }
 
-    
-    //let W1, H1, dx, dy;
-    // Стандартный расчет для ПК и планшетов (без поворота)
-    if (isRotated == false) {
-        // 4. Вычисляем размер изображения в браузере (W1, H1) и черные полосы (dx, dy)
-        if (K0 < KB) {
-            // 2.1: Черные полосы по бокам (слева и справа)
-            H1 = HB;
-            W1 = K0 * H1;
-            dx = (WB - W1) / 2;
-            dy = 0;
-        } else {
-            // 3.1: Черные полосы по вертикали (сверху и снизу)
-            W1 = WB;
-            H1 = W1 / K0;
-            dx = 0;
-            dy = (HB - H1) / 2;
+    window.style.display = 'none';
+    window.style.visibility = 'hidden';
+    window.style.opacity = '0';
+    window.style.pointerEvents = 'none';
+
+    console.log('hideInfoWindow: окно скрыто');
+}
+
+// ====== НАСТРОЙКА КНОПКИ ИНФОРМАЦИИ ======
+function setupInfoButton() {
+    let infoBtn = document.getElementById('info-btn');
+    if (!infoBtn) {
+        console.log('setupInfoButton: кнопка не найдена');
+        return;
+    }
+
+    console.log('setupInfoButton: настраиваем кнопку');
+
+    // Удаляем старые обработчики
+    infoBtn.removeEventListener('click', showInfoWindow);
+
+    // Добавляем обработчик
+    infoBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('Кнопка информации нажата');
+        showInfoWindow();
+    });
+
+    console.log('setupInfoButton: кнопка настроена');
+}
+
+// ====== НАСТРОЙКА КНОПКИ ЗАКРЫТИЯ ИНФОРМАЦИОННОГО ОКНА ======
+function setupInfoCloseButton() {
+    let closeBtn = document.getElementById('info-close-btn');
+    if (!closeBtn) {
+        console.log('setupInfoCloseButton: кнопка закрытия не найдена');
+        return;
+    }
+
+    console.log('setupInfoCloseButton: настраиваем кнопку закрытия');
+
+    // Удаляем старые обработчики
+    closeBtn.removeEventListener('click', hideInfoWindow);
+
+    // Добавляем обработчик
+    closeBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('Кнопка "Назад" нажата');
+        hideInfoWindow();
+    });
+
+    console.log('setupInfoCloseButton: кнопка закрытия настроена');
+}
+
+// ====== ЗАКРЫТИЕ ОКНА ПРИ КЛИКЕ ВНЕ ЕГО ======
+function setupInfoWindowClickOutside() {
+    let window = document.getElementById('info-window');
+    if (!window) {
+        console.log('setupInfoWindowClickOutside: окно не найдено');
+        return;
+    }
+
+    // Добавляем обработчик клика по фону окна
+    window.addEventListener('click', function (e) {
+        // Если клик по самому окну (фону), а не по его содержимому
+        if (e.target === window) {
+            console.log('Клик по фону окна - закрываем');
+            hideInfoWindow();
         }
+    });
 
-        // 5. Получаем координаты клика в пикселях относительно окна
-        let clickX = event.clientX;
-        let clickY = event.clientY;
-
-        // 6. Проверяем, что клик внутри изображения (не на черной полосе)
-        if (clickX < dx || clickX > dx + W1 || clickY < dy || clickY > dy + H1) {
-            console.log('Клик вне изображения (на черной полосе)');
-            return;
-        }
-
-        // 7. Вычисляем координаты в процентах относительно изображения
-        let x = ((clickX - dx) / W1) * 100;
-        let y = ((clickY - dy) / H1) * 100;
-
-        x = Math.max(0, Math.min(100, x));
-        y = Math.max(0, Math.min(100, y));
-
-        //alert("x=" + x + " y=" + y);
-
-        console.log(`=== КЛИК ===`);
-        console.log(`Окно: ${WB}x${HB}, соотношение: ${KB.toFixed(3)}`);
-        console.log(`Изображение: ${W0}x${H0}, соотношение: ${K0.toFixed(3)}`);
-        console.log(`Изображение в браузере: ${W1.toFixed(0)}x${H1.toFixed(0)}`);
-        console.log(`Черные полосы: dx=${dx.toFixed(0)}px, dy=${dy.toFixed(0)}px`);
-        console.log(`Координаты в процентах: x=${x.toFixed(2)}%, y=${y.toFixed(2)}%`);
-        console.log(`Кружок 1: ${mass[1][0]}%, ${mass[1][1]}%`);
-        console.log(`Разница с кружком 1: dx=${Math.abs(x - mass[1][0]).toFixed(2)}, dy=${Math.abs(y - mass[1][1]).toFixed(2)}`);
-        // alert("x=" + x + " y=" + y);
+    console.log('setupInfoWindowClickOutside: настроено закрытие по клику вне окна');
+}
 
 
-        let found = false;
-        for (let ii = 1; ii <= 61; ii++) {
-            let dx = Math.abs(x - mass[ii][0]);
-            let dy = Math.abs(y - mass[ii][1]);
-            //alert("x=" + x + " y=" + y);
-            if (dx < 1.0 && dy < 1.0) {
-                N = ii;
-                found = true;
-                console.log(`Попали в кружок №${N}!`);
-                break;
-            }
-        }
 
-        if (found && N > 0) {
-            document.getElementById("td00").textContent = names_arr[N] || "Объект " + N;
-            document.getElementById("td2").textContent = names_arr2[N] || "Нет описания";
-            document.getElementById('div').style.display = 'block';
-            n = 1;
-            direction = 1;
-            show_image();
-        } else {
-            // Клик мимо кружка
-            if (x < 70) { // Чтобы случайно не скрыть при клике на панель
-                document.getElementById('div').style.display = 'none';
-                document.getElementById('block').innerHTML = '';
-                document.getElementById("td00").textContent = '';
-                document.getElementById("td1").textContent = '';
-                document.getElementById("td2").textContent = '';
-                N = 0;
-            }
-        }
-    }//if isrotate==false
-});
+// ====== НАСТРОЙКА КНОПКИ ЗАКРЫТИЯ (КРЕСТИК) ======
+function setupInfoCloseButtonX() {
+    let closeBtnX = document.getElementById('info-close-btn-x');
+    if (!closeBtnX) {
+        console.log('setupInfoCloseButtonX: кнопка закрытия (крестик) не найдена');
+        return;
+    }
+
+    console.log('setupInfoCloseButtonX: настраиваем кнопку закрытия (крестик)');
+
+    // Удаляем старые обработчики
+    closeBtnX.removeEventListener('click', hideInfoWindow);
+
+    // Добавляем обработчик
+    closeBtnX.addEventListener('click', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('Кнопка "✕" нажата');
+        hideInfoWindow();
+    });
+
+    console.log('setupInfoCloseButtonX: кнопка закрытия (крестик) настроена');
+}
+
+
+
+// ====== ИНИЦИАЛИЗАЦИЯ ======
+// Добавьте эти вызовы в существующую функцию инициализации
+// или создайте отдельную:
+// ====== ОБНОВЛЕННАЯ ИНИЦИАЛИЗАЦИЯ ИНФОРМАЦИОННОГО ОКНА ======
+function initInfoWindow() {
+    console.log('initInfoWindow: начало инициализации');
+    setupInfoButton();
+    setupInfoCloseButton();    // Кнопка "Назад"
+    setupInfoCloseButtonX();   // Кнопка "✕"
+    setupInfoWindowClickOutside();
+    console.log('initInfoWindow: информационное окно инициализировано');
+}
