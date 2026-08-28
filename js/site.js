@@ -3438,6 +3438,8 @@ function hideStartPanel() {
 }
 
 // ЕДИНСТВЕННАЯ НАСТРОЙКА КНОПКИ "ДАЛЕЕ"
+
+// ====== НАСТРОЙКА КНОПКИ "ДАЛЕЕ" (РАБОТАЕТ НА ВСЕХ УСТРОЙСТВАХ) ======
 function setupStartPanelButton() {
     let btn = document.getElementById('start-panel-btn');
     if (!btn) {
@@ -3447,36 +3449,52 @@ function setupStartPanelButton() {
 
     console.log('setupStartPanelButton: настраиваем кнопку');
 
-    // Удаляем ВСЕ старые обработчики
-    btn.onclick = null;
-    btn.removeEventListener('click', handleStartButtonClick);
-    btn.removeEventListener('click', hideStartPanel);
-
-    // Используем onclick (самый надежный способ)
-    btn.onclick = function (e) {
-        // Останавливаем всплытие
+    // Функция-обработчик
+    function handleStartButtonClick(e) {
         if (e) {
             e.stopPropagation();
             e.preventDefault();
         }
+        console.log('Кнопка "Далее" нажата (обработчик)');
+        hideStartPanel();
+        return false;
+    }
 
+    // Удаляем ВСЕ старые обработчики
+    btn.onclick = null;
+    btn.ontouchstart = null;
+    btn.ontouchend = null;
+    btn.removeEventListener('click', handleStartButtonClick);
+    btn.removeEventListener('touchstart', handleStartButtonClick);
+    btn.removeEventListener('touchend', handleStartButtonClick);
+
+    // Добавляем обработчики для всех типов событий
+    btn.addEventListener('click', handleStartButtonClick);
+    btn.addEventListener('touchstart', handleStartButtonClick, { passive: false });
+    btn.addEventListener('touchend', handleStartButtonClick, { passive: false });
+
+    // Также используем onclick для надежности
+    btn.onclick = function (e) {
+        if (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
         console.log('Кнопка "Далее" нажата (onclick)');
         hideStartPanel();
         return false;
     };
 
-    // Блокируем touch события
+    // Блокируем всплытие touch событий
     btn.ontouchstart = function (e) {
         e.stopPropagation();
-        return false;
-    };
-    btn.ontouchend = function (e) {
-        e.stopPropagation();
-        return false;
+        return true;
     };
 
-    console.log('setupStartPanelButton: кнопка настроена через onclick');
+    console.log('setupStartPanelButton: кнопка настроена для всех устройств');
 }
+
+
+
 
 // Обработчик для addEventListener (если понадобится)
 function handleStartButtonClick(e) {
