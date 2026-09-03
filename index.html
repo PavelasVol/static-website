@@ -1142,35 +1142,81 @@
                 </p>
             </div>
 
+            <!--==============================================================================================-->
+            <!-- ====== ИНДИКАТОР ЗАГРУЗКИ ====== -->
+            <div id="loading-indicator" style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 15px;
+                margin: 10px 0 20px 0;
+                padding: 10px;
+">
+                <!-- Спиннер -->
+                <div style="
+                width: 40px;
+                height: 40px;
+                border: 4px solid rgba(255, 215, 0, 0.1);
+                border-top: 4px solid #FFD700;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;">
+             </div>
+
+             <!-- Текст загрузки -->
+            <p style="
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 14px;
+                font-family: Arial, sans-serif;
+                margin: 0;
+            ">
+                    Загрузка карты...
+                </p>
+            </div>
+
+            <!-- Стили для анимации спиннера -->
+            <style>
+                @keyframes spin {
+                    0% {
+                        transform: rotate(0deg);
+                    }
+
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
+            </style>
+            <!--==============================================================================================-->
             <!-- Отступ для кнопки -->
             <div style="flex: 1; min-height: 20px;"></div>
 
             <!-- Кнопка "Далее" (зафиксирована внизу) -->
             <button id="start-panel-btn" style="
-            /*position: fixed;*/
-            bottom: 0px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 40px);
-            max-width: 200px;
-            max-height: 70px;
-            padding: 18px 35px;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #1a3a6b;
-            border: none;
-            border-radius: 50px;
-            font-size: clamp(18px, 2vw, 22px);
-            font-weight: bold;
-            cursor: pointer;
-            font-family: Arial, sans-serif;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 30px rgba(255, 215, 0, 0.4);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            z-index: 10001;
-        "
-                    onmouseover="this.style.transform='translateX(-50%) scale(1.05)'; this.style.boxShadow='0 8px 40px rgba(255, 215, 0, 0.6)';"
-                    onmouseout="this.style.transform='translateX(-50%) scale(1)'; this.style.boxShadow='0 4px 30px rgba(255, 215, 0, 0.4)';">
+                width: 100%;
+                max-width: 380px;
+                max-height: 77px;
+                padding: 16px 35px;
+                background: linear-gradient(135deg, #FFD700, #FFA500);
+                color: #1a3a6b;
+                border: none;
+                border-radius: 50px;
+                font-size: clamp(18px, 2vw, 22px);
+                font-weight: bold;
+                cursor: pointer;
+                font-family: Arial, sans-serif;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 30px rgba(255, 215, 0, 0.3);
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                flex-shrink: 0;
+                margin-bottom: 20px;
+                opacity: 0.5;
+                pointer-events: none;
+                display: none; /* Скрыта до полной загрузки */
+            "
+                    disabled="disabled"
+                    onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 40px rgba(255, 215, 0, 0.5)';"
+                    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 30px rgba(255, 215, 0, 0.3)';">
                 ▶ Далее
             </button>
 
