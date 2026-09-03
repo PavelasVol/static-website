@@ -30,6 +30,190 @@ let initialTranslateX = 0;
 let initialTranslateY = 0;
 let lastTapTime = 0;
 //alert("32");
+
+//=================================================================================================
+// ====== УПРАВЛЕНИЕ ЗАГРУЗКОЙ СТРАНИЦЫ ======
+
+// Флаг загрузки
+let isPageFullyLoaded = false;
+
+// Массив для отслеживания загруженных ресурсов
+let loadedResources = {
+    images: 0,
+    totalImages: 0,
+    scripts: 0,
+    totalScripts: 0,
+    styles: 0,
+    totalStyles: 0
+};
+
+// ====== ПОКАЗАТЬ КНОПКУ ПОСЛЕ ПОЛНОЙ ЗАГРУЗКИ ======
+function enableStartButton() {
+    let btn = document.getElementById('start-panel-btn');
+    let indicator = document.getElementById('loading-indicator');
+
+    if (!btn) {
+        console.log('enableStartButton: кнопка не найдена');
+        return;
+    }
+
+    console.log('enableStartButton: активация кнопки "Далее"');
+
+    // Скрываем индикатор загрузки
+    if (indicator) {
+        indicator.style.display = 'none';
+    }
+
+    // Показываем и активируем кнопку
+    btn.style.display = 'block';
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+    btn.removeAttribute('disabled');
+
+    // Добавляем анимацию появления
+    btn.style.animation = 'fadeInUp 0.6s ease forwards';
+
+    isPageFullyLoaded = true;
+    console.log('enableStartButton: кнопка активирована');
+}
+
+// ====== ПРОВЕРКА ПОЛНОЙ ЗАГРУЗКИ СТРАНИЦЫ ======
+function checkPageFullyLoaded() {
+    console.log('checkPageFullyLoaded: проверка загрузки...');
+
+    // Проверяем, что все изображения загружены
+    let images = document.querySelectorAll('img');
+    let allImagesLoaded = true;
+    let loadedCount = 0;
+
+    images.forEach(function (img) {
+        if (!img.complete) {
+            allImagesLoaded = false;
+            console.log('checkPageFullyLoaded: изображение не загружено:', img.src);
+        } else {
+            loadedCount++;
+        }
+    });
+
+    console.log('checkPageFullyLoaded: изображения загружены:', loadedCount, 'из', images.length);
+
+    // Проверяем, что все скрипты загружены
+    let scripts = document.querySelectorAll('script');
+    let allScriptsLoaded = true;
+    scripts.forEach(function (script) {
+        if (script.src && !script.complete) {
+            allScriptsLoaded = false;
+            console.log('checkPageFullyLoaded: скрипт не загружен:', script.src);
+        }
+    });
+
+    // Проверяем, что DOM полностью загружен
+    let domReady = document.readyState === 'complete';
+    console.log('checkPageFullyLoaded: DOM состояние:', document.readyState);
+
+    // Проверяем, что карта загружена
+    let img0 = document.getElementById('img0');
+    let mapLoaded = img0 && img0.complete;
+    console.log('checkPageFullyLoaded: карта загружена:', mapLoaded);
+
+    // Если все загружено, активируем кнопку
+    if (allImagesLoaded && allScriptsLoaded && domReady && mapLoaded) {
+        console.log('checkPageFullyLoaded: ВСЕ ЗАГРУЖЕНО!');
+        enableStartButton();
+        return true;
+    } else {
+        console.log('checkPageFullyLoaded: ожидание загрузки...');
+        return false;
+    }
+}
+
+// ====== ОТСЛЕЖИВАНИЕ ЗАГРУЗКИ КАРТЫ ======
+function waitForMapLoad() {
+    let img0 = document.getElementById('img0');
+    if (!img0) {
+        console.log('waitForMapLoad: img0 не найдена');
+        return;
+    }
+
+    // Если карта уже загружена
+    if (img0.complete) {
+        console.log('waitForMapLoad: карта уже загружена');
+        checkPageFullyLoaded();
+        return;
+    }
+
+    // Ожидаем загрузку карты
+    console.log('waitForMapLoad: ожидаем загрузку карты...');
+    img0.addEventListener('load', function () {
+        console.log('waitForMapLoad: карта загружена');
+        checkPageFullyLoaded();
+    });
+
+    img0.addEventListener('error', function () {
+        console.log('waitForMapLoad: ошибка загрузки карты');
+        // Все равно пытаемся активировать кнопку
+        checkPageFullyLoaded();
+    });
+}
+
+// ====== ФОРСИРОВАННАЯ АКТИВАЦИЯ (если загрузка затянулась) ======
+function forceActivateButton() {
+    console.log('forceActivateButton: принудительная активация (таймаут)');
+    enableStartButton();
+}
+
+// ====== ИНИЦИАЛИЗАЦИЯ ЗАГРУЗКИ ======
+function initLoadManager() {
+    console.log('initLoadManager: начало управления загрузкой');
+
+    // Скрываем кнопку и показываем индикатор
+    let btn = document.getElementById('start-panel-btn');
+    let indicator = document.getElementById('loading-indicator');
+
+    if (btn) {
+        btn.style.display = 'none';
+        btn.style.opacity = '0.5';
+        btn.style.pointerEvents = 'none';
+        btn.setAttribute('disabled', 'disabled');
+    }
+
+    if (indicator) {
+        indicator.style.display = 'flex';
+    }
+
+    // Запускаем проверку загрузки
+    setTimeout(function () {
+        waitForMapLoad();
+    }, 100);
+
+    // Проверяем каждые 500 мс
+    let checkInterval = setInterval(function () {
+        if (isPageFullyLoaded) {
+            clearInterval(checkInterval);
+            return;
+        }
+
+        let loaded = checkPageFullyLoaded();
+        if (loaded) {
+            clearInterval(checkInterval);
+        }
+    }, 500);
+
+    // Таймаут - принудительная активация через 10 секунд
+    setTimeout(function () {
+        if (!isPageFullyLoaded) {
+            console.log('initLoadManager: таймаут 10 секунд, принудительная активация');
+            forceActivateButton();
+        }
+    }, 10000);
+
+    console.log('initLoadManager: завершено');
+}
+
+
+//=================================================================================================
+
+
 function onclick_01() {
     image.setAttribute("src", " ");
     image.setAttribute("style", "display: none");
@@ -324,9 +508,6 @@ function initZoomControls() {
     // Обновляем состояние
     updateZoomButtonsState();
 }
-
-
-
 
 
 // ====== СОЗДАНИЕ ПАНЕЛИ УПРАВЛЕНИЯ МАСШТАБОМ ДЛЯ МОБИЛЬНЫХ ======
@@ -2272,29 +2453,34 @@ window.addEventListener('load', function () {
         img.hidden = true;
     }
 
+    
     // 3. Показываем стартовую панель
     setTimeout(function () {
         showStartPanel();
         setupStartPanelButton();
+
+        //  Запускаем менеджер загрузки
+        initLoadManager();
     }, 200);
 
-    // 4. Инициализируем остальные компоненты (они будут готовы, когда понадобятся)
-   
-    
 
-    setTimeout(positionPanel, 300);
-    createZoomIndicator();
-    setTimeout(setupMapHandlers, 500); // Инициализация обработчиков карты
-    setTimeout(setupMobileMapHandlers, 500); // <-- Добавить
-    // Инициализируем кнопки (они уже есть в HTML)
+
+    // 4. Инициализируем остальные компоненты (они будут готовы, когда понадобятся)
+    
     setTimeout(function () {
-        console.log('Инициализация кнопок управления масштабом...');
-        initZoomControls();
-    }, 600);
-    // ====== ИНИЦИАЛИЗАЦИЯ ИНФОРМАЦИОННОГО ОКНА ======
-    setTimeout(initInfoWindow,300);
-    // Показываем индикатор
+        createZoomIndicator();
+        setupMapHandlers(); // Инициализация обработчиков карты
+        setupMobileMapHandlers(); 
+        initZoomControls(); // Инициализация кнопок управления масштабом
+        positionPanel();
+        initInfoWindow(); // ====== ИНИЦИАЛИЗАЦИЯ ИНФОРМАЦИОННОГО ОКНА ======
+    }, 300);
+
+    // 5. Показываем индикатор
     setTimeout(updateZoomIndicator, 800);
+
+    
+    
     console.log('Window loaded, map handlers scheduled');
 });
 //window.addEventListener('resize', positionPanel);
