@@ -67,12 +67,12 @@
             }
 
         #start-panel-btn {
-            /*position: fixed !important;*/
-            bottom: 0px !important;
+            position: fixed !important;
+            bottom: -50px !important;
             left: 50% !important;
             transform: translateX(-50%) !important;
             width: calc(100% - 40px) !important;
-            max-width: 400px !important;
+            max-width: 200px !important;
             z-index: 10001 !important;
         }
 
@@ -1130,12 +1130,10 @@
             text-align: center;
             flex-shrink: 0;
         ">
+
                 <p style="margin: 0 0 12px 0;">
-                    ***********************
-                </p>
-                <p style="margin: 0 0 12px 0;">
-                    На карте отмечены <strong style="color: #FFD700;">61 объект</strong> санатория.
-                    <br>Нажимайте на кружки для текстовой и видео информации.
+                    На карте отмечен <strong style="color: #FFD700;">61 объект</strong> санатория.
+                    Нажимайте на кружки для текстовой и видео информации.
                 </p>
                 <p style="margin: 0 0 5px 0; font-size: clamp(12px, 1.3vw, 15px); opacity: 0.7;">
                     💡 Подсказка: Используйте кнопки +/- для масштабирования карты.
@@ -1161,10 +1159,10 @@
                 border-top: 4px solid #FFD700;
                 border-radius: 50%;
                 animation: spin 1s linear infinite;">
-             </div>
+                </div>
 
-             <!-- Текст загрузки -->
-            <p style="
+                <!-- Текст загрузки -->
+                <p style="
                 color: rgba(255, 255, 255, 0.7);
                 font-size: 14px;
                 font-family: Arial, sans-serif;
@@ -1187,14 +1185,28 @@
                 }
             </style>
             <!--==============================================================================================-->
-            <!-- Отступ для кнопки -->
-            <div style="flex: 1; min-height: 20px;"></div>
-
+            <!-- Отступ для кнопки
+    <div style="flex: 1; min-height: 20px;"></div>
+        -->
+            <!-- Дополнительная информация -->
+            <p style="
+                color: rgba(255, 255, 255, 0.25);
+                text-align: center;
+                font-size: clamp(10px, 0.9vw, 13px);
+                margin: 0;
+                font-family: Arial, sans-serif;
+                flex-shrink: 0;
+                padding-bottom: 10px;
+            ">
+                © 2026 Волынкин П.А. • Все права защищены
+            </p>
+        
             <!-- Кнопка "Далее" (зафиксирована внизу) -->
             <button id="start-panel-btn" style="
+                bottom: -20px;
                 width: 100%;
-                max-width: 380px;
-                max-height: 77px;
+                max-width: 80px;
+                max-height: 60px;
                 padding: 16px 35px;
                 background: linear-gradient(135deg, #FFD700, #FFA500);
                 color: #1a3a6b;
@@ -1209,7 +1221,7 @@
                 text-transform: uppercase;
                 letter-spacing: 2px;
                 flex-shrink: 0;
-                margin-bottom: 20px;
+                margin-bottom: 0px;
                 opacity: 0.5;
                 pointer-events: none;
                 display: none; /* Скрыта до полной загрузки */
@@ -1220,18 +1232,7 @@
                 ▶ Далее
             </button>
 
-            <!-- Дополнительная информация -->
-            <p style="
-            color: rgba(255, 255, 255, 0.25);
-            text-align: center;
-            font-size: clamp(10px, 0.9vw, 13px);
-            margin: 0;
-            font-family: Arial, sans-serif;
-            flex-shrink: 0;
-            padding-bottom: 10px;
-        ">
-                © 2026 Волынкин П.А. • Все права защищены
-            </p>
+
         </div>
     </div>
 
